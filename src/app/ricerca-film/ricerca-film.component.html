@@ -2,39 +2,29 @@
     <button pButton (click)="click()" type="button" label="Home"></button>
 </div>
 <div class="ui-grid-col-12" align="center" style="padding-top: 3em;">
-    <p-table [value]="films">
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 250px; background-color: blue; color: white;">
-                    ID
-                </th>
-                <th style="width: 850px; background-color: blue; color: white;">
-                    Nome
-                </th>
-                <th style="width: 250px; background-color: blue; color: white;">
-                    Formato
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-film>
-            <tr>
-                <td style="width: 250px;text-align: center;">
-                    {{film._id}}
-                </td>
-                <td style="width: 850px;text-align: center;">
-                    {{film.nome}}
-                </td>
-                <td style="width: 250px;text-align: center;">
-                    {{film.formato}}
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td>
-                    No records found
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <div film-table class="ui-grid ui-grid-responsive">
+        <p-table [value]="films">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngFor="let col of cols">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-film>
+                <tr>
+                    <td *ngFor="let col of cols">
+                        {{film[col.field]}}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td>
+                        No records found
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>

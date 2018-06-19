@@ -6,11 +6,13 @@ import { FilmService } from '../_api/services/film.service';
 @Component({
   selector: 'app-ricerca-film',
   templateUrl: './ricerca-film.component.html',
-  styleUrls: ['./ricerca-film.component.css']
+  styleUrls: ['./ricerca-film.component.scss']
 })
 export class RicercaFilmComponent implements OnInit {
 
   films: Film[];
+
+  cols: any[];
 
   constructor(
     private router: Router,
@@ -21,10 +23,19 @@ export class RicercaFilmComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfFilms();
+    this.getColumns();
   }
 
   click() {
     this.router.navigate(['/home']);
+  }
+
+  getColumns() {
+    this.cols = [
+      { field: '_id', header: 'ID' },
+      { field: 'nome', header: 'Nome' },
+      { field: 'formato', header: 'Formato' }
+  ];
   }
 
   subsrcibeToListOfFilms() {

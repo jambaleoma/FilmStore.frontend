@@ -1,0 +1,42 @@
+[film-table] {
+    font-size: 20px;
+    padding-bottom: 2em;
+    .ui-table {
+      .ui-table-thead {
+        tr{
+          th {
+            background: #004990;
+            color: white;
+          }
+        }
+      }
+      .ui-table-tbody{
+        tr{
+          td{
+            text-align: center;
+            color: black;
+  
+            &.action-column{
+              width: 2.1em;
+              padding-right: 0 !important;
+              padding-left: 0 !important;
+          }
+  
+          div.ui-chkbox {
+            vertical-align: bottom;
+          }
+  
+          }
+        }
+      }
+      .ui-table-tfoot {
+        tr{
+          td {
+            background: black;
+            color: white;
+          }
+        }
+      }
+  
+    }
+  }
