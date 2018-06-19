@@ -7,6 +7,10 @@ import { HomeComponent } from './home/home.component';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
 import { LayoutsComponent } from './layouts/layouts.component';
 import { routing } from './app.routing';
+import { FilmService } from './_api/services/film.service';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiConfiguration } from './_api/api-configuration';
 
 
 
@@ -21,9 +25,14 @@ import { routing } from './app.routing';
     BrowserModule,
     ButtonModule,
     routing,
-    TableModule
+    TableModule,
+    HttpModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    FilmService,
+    ApiConfiguration
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

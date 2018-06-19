@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FilmService } from '../_api/services/film.service';
 import { Film } from '../_api/models';
+import { FilmService } from '../_api/services/film.service';
 
 @Component({
   selector: 'app-ricerca-film',
@@ -28,9 +28,12 @@ export class RicercaFilmComponent implements OnInit {
   }
 
   subsrcibeToListOfFilms() {
-    this.filmService.getFilms().then(notification => {
+    this.filmService.getFilms().subscribe(notification => {
       this.films = notification as Film[];
-    });
+    }, error => {
+      console.log(error);
+    }
+  );
   }
 
 }
