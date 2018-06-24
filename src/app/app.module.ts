@@ -11,8 +11,10 @@ import { FilmService } from './_api/services/film.service';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration } from './_api/api-configuration';
-
-
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,12 @@ import { ApiConfiguration } from './_api/api-configuration';
     routing,
     TableModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    CommonModule,
+    PanelMenuModule,
+    FormsModule
   ],
   providers: [
     FilmService,

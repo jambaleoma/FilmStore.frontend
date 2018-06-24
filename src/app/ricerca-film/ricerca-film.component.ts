@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Film } from '../_api/models';
 import { FilmService } from '../_api/services/film.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-ricerca-film',
@@ -9,6 +10,8 @@ import { FilmService } from '../_api/services/film.service';
   styleUrls: ['./ricerca-film.component.scss']
 })
 export class RicercaFilmComponent implements OnInit {
+
+  filters: any = {};
 
   films: Film[];
 
@@ -45,6 +48,12 @@ export class RicercaFilmComponent implements OnInit {
       console.log(error);
     }
   );
+  }
+
+  //  *** Reset Valori selzionati nei Filtri ***
+  reset(tr: Table) {
+    tr.reset();
+    this.filters = {};
   }
 
 }

@@ -28,8 +28,9 @@ export class FilmService extends BaseService {
     let __headers = new HttpHeaders(
       {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Expose-Headers': 'Access-Control-*',
-        'Access-Control-Allow-Headers': 'Access-Control-*, Origin, X-Requested-With, Content-Type, Accept',
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Expose-Headers': 'FooBar',
+        'Access-Control-Allow-Headers': 'X-Custom-Header',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
         'Allow': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
       }
