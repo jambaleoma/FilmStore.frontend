@@ -15,6 +15,7 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { CommonModule } from '@angular/common';
 import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 import { FormsModule } from '@angular/forms';
+// import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     LayoutsComponent
   ],
   imports: [
+    // AngularFontAwesomeModule,
     BrowserModule,
     ButtonModule,
     routing,
