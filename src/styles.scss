@@ -1,52 +1,4 @@
-.ui-table-thead {
-    tr{
-        th {
-        background: #004990;
-        color: white;
-        }
-    }
-}
-.ui-table-tbody{
-    tr{
-      td{
-        text-align: center;
-        color: black;
-
-        &.action-column{
-          width: 2.1em;
-          padding-right: 0 !important;
-          padding-left: 0 !important;
-      }
-
-      div.ui-chkbox {
-        vertical-align: bottom;
-      }
-
-      }
-    }
-  }
-  .ui-table-tfoot {
-    tr{
-      td {
-        background: black;
-        color: white;
-      }
-    }
-  }
-
-  .label {
-    color: #004990;
-    font-family: "lato";
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 15px;
-    padding-bottom: 5px;
-    &.labelRed{
-      color: red;
-    }
-  }
-
-  [sdc-input]{
+[film-input]{
     font-size: 16px;
     height: 32px;
     width: 85%;
@@ -60,3 +12,108 @@
       border-color: darkgray;
     }
   }
+
+  [film-table] {
+    &[film-loader-table]{
+      .ui-blockui{
+        height: 67% !important;
+        &.ui-widget-overlay{
+          background: rgba(255,255,255,0.5);
+          opacity:1;
+          text-align: center;
+          margin-top: 10em;
+        }      
+      }
+    }
+    font-size: 16px;
+    padding-bottom: 2em;
+    .ui-table {
+      .ui-table-thead {
+        tr{
+          th {
+            background: darkblue;
+            color: white;
+          }
+        }
+      }
+      .ui-table-tbody{
+        tr{
+          td{
+            text-align: center;
+            color: black;
+            height: 4em;
+  
+            &.action-column{
+              width: 2.1em;
+              padding-right: 0 !important;
+              padding-left: 0 !important;
+          }
+  
+          div.ui-chkbox {
+            vertical-align: bottom;
+          }
+  
+          }
+        }
+      }
+      .ui-table-tfoot {
+        tr{
+          td {
+            background: darkblue;
+            color: white;
+          }
+        }
+      }
+  
+    }
+  }
+  
+  [film-table-input]{
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 5em;
+    font-family: "Roboto";
+    color: #00478F;
+  }
+
+  [sdc-multiselect]{
+    .ui-multiselect {
+      width: 85%;
+      height: 32px;
+      max-width: 240px;
+      width: 100%;
+      border-radius: 2px;
+      border: 1px solid darkgray;
+  
+      .ui-state-highlight{
+        background-color:lightblue;
+      }
+      .ui-multiselect-label {
+        color: #000000;
+        font-family: 'Lato', sans-serif, FontAwesome;
+        text-align: left;
+        font-size: 16px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+  
+      .ui-multiselect-trigger {
+        height: 4px;	width: -22px;
+        border: white;
+        background-color: transparent;
+      }
+  
+      &:hover{
+        background:darkblue;
+        .ui-multiselect-label {
+            background: darkblue;
+            color: white;
+            font-family: 'Lato', sans-serif, FontAwesome;
+            font-size: 16px;
+        }
+        .ui-multiselect-trigger {
+          color: white;
+        }
+      }
+      }
+    }

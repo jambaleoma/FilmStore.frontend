@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Film } from '../_api/models';
 import { FilmService } from '../_api/services/film.service';
 import { Table } from 'primeng/table';
+import { ListItem } from '../_api/models/list-items';
 
 @Component({
   selector: 'app-ricerca-film',
@@ -17,12 +18,22 @@ export class RicercaFilmComponent implements OnInit {
 
   cols: any[];
 
+  formats: ListItem[];
+
+  @ViewChild('ft') table: Table;
+
   constructor(
     private router: Router,
     private filmService: FilmService
   ) {
 
-   }
+    this.formats = [
+      { _id: '1', label: 'FULL-HD', value: 'FULL-HD' },
+      { _id: '2', label: 'HD', value: 'HD' },
+      { _id: '3', label: 'DVD', value: 'DVD' },
+    ];
+
+  }
 
   ngOnInit() {
     this.subsrcibeToListOfFilms();
@@ -38,7 +49,7 @@ export class RicercaFilmComponent implements OnInit {
       { field: '_id', header: 'ID' },
       { field: 'nome', header: 'Nome' },
       { field: 'formato', header: 'Formato' }
-  ];
+    ];
   }
 
   subsrcibeToListOfFilms() {
@@ -47,7 +58,12 @@ export class RicercaFilmComponent implements OnInit {
     }, error => {
       console.log(error);
     }
-  );
+    );
+  }
+
+  onFormatsFilterChange(val: ListItem[], table: Table) {
+
+    table.filter(val, 'formato', 'filterFormats');
   }
 
   //  *** Reset Valori selzionati nei Filtri ***
