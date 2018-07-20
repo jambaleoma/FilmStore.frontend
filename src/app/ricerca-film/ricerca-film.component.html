@@ -1,7 +1,3 @@
-<div>
-    <button pButton (click)="click()" type="button" label="Home"></button>
-</div>
-
 <!-- FILTRI DI RICERCA -->
 <div class="ui-grid-col-12" style="padding-top: 3em;">
     <div class="ui-g">
@@ -38,6 +34,9 @@
                 <th style="width: 15em">
                     Formato
                 </th>
+                <th style="width: 15em">
+                    Dettagli
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-film>
@@ -50,6 +49,9 @@
                 </td>
                 <td>
                     {{film.formato}}
+                </td>
+                <td>
+                    <p-button icon="fa fa-file-video-o" (onClick)="goToFilm(film._id)"></p-button>
                 </td>
             </tr>
         </ng-template>

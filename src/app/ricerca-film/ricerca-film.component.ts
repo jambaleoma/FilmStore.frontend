@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Film } from './../_api/models/film';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Film } from '../_api/models';
 import { FilmService } from '../_api/services/film.service';
 import { Table } from 'primeng/table';
 import { ListItem } from '../_api/models/list-items';
@@ -70,6 +70,11 @@ export class RicercaFilmComponent implements OnInit {
   reset(tr: Table) {
     tr.reset();
     this.filters = {};
+  }
+
+  //  *** Vado a visulizzare nel dattaglio il film selezionato ***
+  goToFilm(filmId: string) {
+    this.router.navigate(['Film/view', filmId]);
   }
 
 }

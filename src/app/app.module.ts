@@ -5,7 +5,6 @@ import {TableModule} from 'primeng/table';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
-import { LayoutsComponent } from './layouts/layouts.component';
 import { routing } from './app.routing';
 import { FilmService } from './_api/services/film.service';
 import { HttpModule } from '@angular/http';
@@ -17,15 +16,18 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 import { FormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
+import {MenubarModule} from 'primeng/menubar';
+import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     RicercaFilmComponent,
-    LayoutsComponent
+    DettaglioFilmComponent
   ],
   imports: [
+    MenubarModule,
     MultiSelectModule,
     AngularFontAwesomeModule,
     BrowserModule,
