@@ -46,7 +46,6 @@ export class RicercaFilmComponent implements OnInit {
 
   getColumns() {
     this.cols = [
-      { field: '_id', header: 'ID' },
       { field: 'nome', header: 'Nome' },
       { field: 'formato', header: 'Formato' }
     ];

@@ -25,25 +25,19 @@
     <p-table film-table [value]="films" #ft [globalFilterFields]="['_id','title','text']">
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 25em">
-                    ID
-                </th>
                 <th>
                     Nome
                 </th>
-                <th style="width: 15em">
+                <th style="width: 10em">
                     Formato
                 </th>
-                <th style="width: 15em">
+                <th style="width: 5em">
                     Dettagli
                 </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-film>
             <tr>
-                <td>
-                    {{film._id}}
-                </td>
                 <td>
                     {{film.nome}}
                 </td>
@@ -57,7 +51,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td [attr.colspan]="cols.length">
+                <td [attr.colspan]="cols.length+1">
                     Nessun Film Trovato
                 </td>
             </tr>
