@@ -25,16 +25,7 @@ export class FilmService extends BaseService {
    */
    private getFilmsResponse(): Observable<HttpResponse<Film[]>> {
     let __params = this.newParams();
-    let __headers = new HttpHeaders(
-      {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Expose-Headers': 'FooBar',
-        'Access-Control-Allow-Headers': 'X-Custom-Header',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-        'Allow': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
-      }
-    );
+    let __headers = new HttpHeaders();
     let __body: any = null;
     let req = new HttpRequest<any>(
       "GET",
@@ -45,6 +36,16 @@ export class FilmService extends BaseService {
         params: __params,
         responseType: 'json'
       });
+
+      console.log(this.http.request<any>(req).pipe(
+        filter(_r => _r instanceof HttpResponse),
+        map(_r => {
+          let _resp = _r as HttpResponse<any>;
+          let _body: Film[] = null;
+          _body = _resp.body as Film[];
+          return _resp.clone({body: _body}) as HttpResponse<Film[]>;
+        })
+      ));
 
     return this.http.request<any>(req).pipe(
       filter(_r => _r instanceof HttpResponse),
@@ -75,11 +76,8 @@ export class FilmService extends BaseService {
     let __headers = new HttpHeaders(
       {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true',
-        'Access-Control-Expose-Headers': 'FooBar',
-        'Access-Control-Allow-Headers': 'X-Custom-Header',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD',
-        'Allow': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
+        'Access-Control-Allow-Headers': 'session-variable',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
       }
     );
     let __body: any = null;
@@ -92,6 +90,16 @@ export class FilmService extends BaseService {
         params: __params,
         responseType: 'json'
       });
+
+      console.log(this.http.request<any>(req).pipe(
+        filter(_r => _r instanceof HttpResponse),
+        map(_r => {
+          let _resp = _r as HttpResponse<any>;
+          let _body: Film[] = null;
+          _body = _resp.body as Film[];
+          return _resp.clone({body: _body}) as HttpResponse<Film[]>;
+        })
+      ));
 
     return this.http.request<any>(req).pipe(
       filter(_r => _r instanceof HttpResponse),
