@@ -16,17 +16,21 @@ import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
 import { FormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
-import {MenubarModule} from 'primeng/menubar';
+import { MenubarModule } from 'primeng/menubar';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
+import {ScheduleModule} from 'primeng/schedule';
+import { PalinsestoComponent } from './palinsesto/palinsesto.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     RicercaFilmComponent,
-    DettaglioFilmComponent
+    DettaglioFilmComponent,
+    PalinsestoComponent
   ],
   imports: [
+    ScheduleModule,
     MenubarModule,
     MultiSelectModule,
     AngularFontAwesomeModule,

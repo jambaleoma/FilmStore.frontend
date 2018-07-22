@@ -2,6 +2,7 @@ import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.componen
 import { Routes, RouterModule } from '@angular/router';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
 import { HomeComponent } from './home/home.component';
+import { PalinsestoComponent } from './palinsesto/palinsesto.component';
 
 const appRoutes: Routes = [
     /** Home */
@@ -10,6 +11,8 @@ const appRoutes: Routes = [
     { path: 'ricercaFilm', component: RicercaFilmComponent, data: { pageTitle: 'Ricerca Film' }},
     /** Dettaglio Film */
     { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' }},
+    /** Palinsesto Film */
+    { path: 'palinsesto', component: PalinsestoComponent, data: { pageTitle: 'Palinsesto Film' }},
     // otherwise redirect to home
     { path: '**', redirectTo: 'home' }
 ];

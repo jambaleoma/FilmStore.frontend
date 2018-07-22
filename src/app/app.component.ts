@@ -13,7 +13,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/home' },
-      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' }
+      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' },
+      { label: 'Palinsesto', icon: 'fa fa-calendar', routerLink: '/palinsesto' }
     ];
   }
 }

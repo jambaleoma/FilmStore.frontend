@@ -37,16 +37,6 @@ export class FilmService extends BaseService {
         responseType: 'json'
       });
 
-      console.log(this.http.request<any>(req).pipe(
-        filter(_r => _r instanceof HttpResponse),
-        map(_r => {
-          let _resp = _r as HttpResponse<any>;
-          let _body: Film[] = null;
-          _body = _resp.body as Film[];
-          return _resp.clone({body: _body}) as HttpResponse<Film[]>;
-        })
-      ));
-
     return this.http.request<any>(req).pipe(
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
@@ -71,15 +61,9 @@ export class FilmService extends BaseService {
   /**
    * @return Single Film
    */
-  private getFilmResponse(filmId: string): Observable<HttpResponse<Film[]>> {
+  private getFilmResponse(filmId: string): Observable<HttpResponse<Film>> {
     let __params = this.newParams();
-    let __headers = new HttpHeaders(
-      {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'session-variable',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'
-      }
-    );
+    let __headers = new HttpHeaders();
     let __body: any = null;
     let req = new HttpRequest<any>(
       "GET",
@@ -91,23 +75,13 @@ export class FilmService extends BaseService {
         responseType: 'json'
       });
 
-      console.log(this.http.request<any>(req).pipe(
-        filter(_r => _r instanceof HttpResponse),
-        map(_r => {
-          let _resp = _r as HttpResponse<any>;
-          let _body: Film[] = null;
-          _body = _resp.body as Film[];
-          return _resp.clone({body: _body}) as HttpResponse<Film[]>;
-        })
-      ));
-
     return this.http.request<any>(req).pipe(
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
         let _body: Film[] = null;
         _body = _resp.body as Film[];
-        return _resp.clone({body: _body}) as HttpResponse<Film[]>;
+        return _resp.clone({body: _body}) as HttpResponse<Film>;
       })
     );
   }
@@ -115,7 +89,7 @@ export class FilmService extends BaseService {
   /**
    * @return Single Film
    */
-   getFilm(idFilm: string): Observable<Film[]> {
+   getFilm(idFilm: string): Observable<Film> {
     return this.getFilmResponse(idFilm).pipe(
       map(_r => _r.body)
     );
