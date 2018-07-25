@@ -40,10 +40,6 @@ export class RicercaFilmComponent implements OnInit {
     this.getColumns();
   }
 
-  click() {
-    this.router.navigate(['/home']);
-  }
-
   getColumns() {
     this.cols = [
       { field: 'nome', header: 'Nome' },
@@ -53,7 +49,7 @@ export class RicercaFilmComponent implements OnInit {
 
   subsrcibeToListOfFilms() {
     this.filmService.getFilms().subscribe(notification => {
-      this.films = notification as Film[];
+      this.films = notification;
     }, error => {
       console.log(error);
     }
@@ -61,7 +57,6 @@ export class RicercaFilmComponent implements OnInit {
   }
 
   onFormatsFilterChange(val: ListItem[], table: Table) {
-
     table.filter(val, 'formato', 'filterFormats');
   }
 

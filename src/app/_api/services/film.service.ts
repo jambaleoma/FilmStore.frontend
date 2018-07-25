@@ -29,7 +29,7 @@ export class FilmService extends BaseService {
     let __body: any = null;
     let req = new HttpRequest<any>(
       "GET",
-      this.rootUrl + `rest/films/all.json`,
+      this.rootUrl + `rest/films/all`,
       __body,
       {
         headers: __headers,
@@ -67,7 +67,7 @@ export class FilmService extends BaseService {
     let __body: any = null;
     let req = new HttpRequest<any>(
       "GET",
-      this.rootUrl + `rest/films/`+filmId+`.json`,
+      this.rootUrl + `rest/films/`+filmId,
       __body,
       {
         headers: __headers,

@@ -1,3 +1,5 @@
+import { RichiesteListComponent } from './richieste-list/richieste-list.component';
+import { CustomersListaComponent } from './customers-lista/customers-lista.component';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
 import { Routes, RouterModule } from '@angular/router';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
@@ -13,6 +15,10 @@ const appRoutes: Routes = [
     { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' }},
     /** Palinsesto Film */
     { path: 'palinsesto', component: PalinsestoComponent, data: { pageTitle: 'Palinsesto Film' }},
+    /** Utenti */
+    { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' }},
+    /** Richieste */
+    { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' }},
     // otherwise redirect to home
     { path: '**', redirectTo: 'home' }
 ];

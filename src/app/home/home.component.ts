@@ -8,11 +8,6 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent {
 
-  constructor(
-    private router: Router) {
-  }
-
-  click() {
-    this.router.navigate(['/ricercaFilm']);
+  constructor() {
   }
 }

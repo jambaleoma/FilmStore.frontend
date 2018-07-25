@@ -1,7 +1,9 @@
+import { RichiestaService } from './_api/services/richiesta.service';
+import { CustomerService } from './_api/services/customer.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {ButtonModule} from 'primeng/button';
-import {TableModule} from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
@@ -18,8 +20,12 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
 import { MenubarModule } from 'primeng/menubar';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
-import {ScheduleModule} from 'primeng/schedule';
+import { ScheduleModule } from 'primeng/schedule';
 import { PalinsestoComponent } from './palinsesto/palinsesto.component';
+import { CustomersListaComponent } from './customers-lista/customers-lista.component';
+import { RichiesteListComponent } from './richieste-list/richieste-list.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -27,9 +33,13 @@ import { PalinsestoComponent } from './palinsesto/palinsesto.component';
     HomeComponent,
     RicercaFilmComponent,
     DettaglioFilmComponent,
-    PalinsestoComponent
+    PalinsestoComponent,
+    CustomersListaComponent,
+    RichiesteListComponent
   ],
   imports: [
+    DropdownModule,
+    DialogModule,
     ScheduleModule,
     MenubarModule,
     MultiSelectModule,
@@ -47,7 +57,9 @@ import { PalinsestoComponent } from './palinsesto/palinsesto.component';
     FormsModule
   ],
   providers: [
+    RichiestaService,
     FilmService,
+    CustomerService,
     ApiConfiguration
   ],
   bootstrap: [AppComponent]
