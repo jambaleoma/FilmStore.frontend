@@ -102,6 +102,10 @@
         border: white;
         background-color: transparent;
       }
+
+      .ui-multiselect-trigger-icon {
+        visibility: hidden;
+      }
   
       &:hover{
         background:darkblue;
@@ -117,6 +121,10 @@
       }
       }
     }
+
+    .ui-widget {
+      font-size: 20px;
+  }
 
     .ui-fluid .ui-dropdown {
       width: 100% !important;

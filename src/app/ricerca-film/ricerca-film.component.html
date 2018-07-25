@@ -1,3 +1,7 @@
+<div align="center">
+    <h1>Elenco Film</h1>
+</div>
+
 <!-- FILTRI DI RICERCA -->
 <div class="ui-grid-col-12" style="padding-top: 3em;">
     <div class="ui-g">
@@ -11,7 +15,7 @@
         </div>
         <div class="ui-g-3">
             <div class="label">Formato Film </div>
-            <p-multiSelect sdc-multiselect [options]="formats" [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
+            <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats" [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
         </div>
         <div film-button-third class="ui-g-3 resetButton ">
             <button pButton type="button" label="Reset Filtri" (click)="reset(ft)"></button>

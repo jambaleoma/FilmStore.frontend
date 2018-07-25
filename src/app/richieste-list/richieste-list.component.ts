@@ -4,7 +4,6 @@ import { RichiestaService } from './../_api/services/richiesta.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Customer } from '../_api/models';
 import { SelectItem } from 'primeng/api';
-import { timestamp } from '../../../node_modules/rxjs/operator/timestamp';
 import { DatePipe } from '../../../node_modules/@angular/common';
 import { Table } from '../../../node_modules/primeng/table';
 
@@ -19,7 +18,7 @@ export class RichiesteListComponent implements OnInit {
 
   listaRichiedenti: string[];
 
-  pipe = new DatePipe('it-VA');
+  pipe: DatePipe = new DatePipe('it');
 
   richiestaSelezionata: Richiesta;
 
@@ -82,7 +81,6 @@ export class RichiesteListComponent implements OnInit {
       this.richieste = notification;
       this.showRichieste = true;
     }, error => {
-      console.log(error);
       this.showRichieste = true;
     }
     );
@@ -110,26 +108,24 @@ export class RichiesteListComponent implements OnInit {
   }
 
   save() {
-    const richieste = [...this.richieste];
     if (this.newRichiesta) {
-      this.richiesta.nomeCliente = 'Vincenzo';
-      this.richiesta.dataInserimento = '24072018000000';
+      this.richiesta.nomeCliente = sessionStorage.getItem('customer');
+      this.richiesta.dataInserimento = this.pipe.transform(new Date(), 'fullDate');
       this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
         if (response !== null) {
-        richieste.push(this.richiesta);
-        this.richieste = richieste;
-        this.richiesta = null;
-        this.displayDialog = false;
-        this.rt.reset();
+          this.richieste = response as Richiesta[];
+          this.richiesta = null;
+          this.displayDialog = false;
+          this.rt.reset();
         }
       });
     } else {
-      richieste[this.richieste.indexOf(this.richiestaSelezionata)] = this.richiesta;
       this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
         if (response !== null) {
-        this.richiesta = null;
-        this.displayDialog = false;
-        this.rt.reset();
+          this.richieste = response as Richiesta[];
+          this.richiesta = null;
+          this.displayDialog = false;
+          this.rt.reset();
         }
       });
     }
@@ -137,19 +133,24 @@ export class RichiesteListComponent implements OnInit {
 
   delete() {
     this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
-      const index = this.richieste.indexOf(this.richiestaSelezionata);
-      this.richieste = this.richieste.filter((val, i) => i !== index);
-      this.richiesta = null;
-      this.displayDialog = false;
-      this.rt.reset();
-    });
+      if (response !== null) {
+        const index = this.richieste.indexOf(this.richiestaSelezionata);
+        this.richieste = this.richieste.filter((val, i) => i !== index);
+        this.richiesta = null;
+        this.displayDialog = false;
+        this.rt.reset();
+      }
+            });
+  }
+
+  close() {
+    this.displayDialog = false;
   }
 
   getListaRichiedentiRichieste(idRichiedente: string) {
     if (idRichiedente) {
       this.customerService.getCustomerById(idRichiedente).subscribe(notification => {
         this.richiedente = notification;
-        console.log(this.richiedente.firstName);
       });
     }
     return this.richiedente.firstName;

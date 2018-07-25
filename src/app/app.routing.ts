@@ -1,3 +1,4 @@
+import { LoginComponent } from './login/login.component';
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
 import { CustomersListaComponent } from './customers-lista/customers-lista.component';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
@@ -7,6 +8,8 @@ import { HomeComponent } from './home/home.component';
 import { PalinsestoComponent } from './palinsesto/palinsesto.component';
 
 const appRoutes: Routes = [
+    /** Login */
+    { path: 'login', component: LoginComponent, data: { pageTitle: 'Login' }},
     /** Home */
     { path: 'home', component: HomeComponent, data: { pageTitle: 'Home' }},
     /** Ricerca Film */
@@ -20,7 +23,7 @@ const appRoutes: Routes = [
     /** Richieste */
     { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' }},
     // otherwise redirect to home
-    { path: '**', redirectTo: 'home' }
+    { path: '**', redirectTo: 'login' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

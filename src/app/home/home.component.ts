@@ -10,4 +10,6 @@ export class HomeComponent {
 
   constructor() {
   }
+
+  customerName = sessionStorage.getItem('customer');
 }

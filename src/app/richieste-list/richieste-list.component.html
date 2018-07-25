@@ -25,14 +25,15 @@
 
         <ng-template pTemplate="summary" let-rowData>
             <div style="text-align:center">
-                <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Add"></button>
+                <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
             </div>
         </ng-template>
     </p-table>
 </div>
 
-<p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="500" [height]="350">
-    <div class="ui-g ui-fluid" *ngIf="richiesta">
+<p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
+    [height]="450">
+    <div class="ui-g ui-fluid" *ngIf="richiesta" style="padding-bottom: 6em">
         <div class="ui-g-12">
             <div class="ui-g-4">
                 <label for="vin">Titolo</label>
@@ -41,7 +42,7 @@
                 <input pInputText id="titolo" [(ngModel)]="richiesta.titoloFilmRichiesto" style="width: 100%" />
             </div>
         </div>
-        <div class="ui-g-12" style="padding-bottom: 8em">
+        <div class="ui-g-12">
             <div class="ui-g-4">
                 <label for="year">Formato</label>
             </div>
@@ -49,19 +50,17 @@
                 <p-dropdown [options]="formats" id="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
             </div>
         </div>
+        <div class="ui-g-12" *ngIf="!newRichiesta">
+            <button type="button" pButton class="ui-button-danger" icon="fa fa-close" (click)="delete()" label="Elimina"></button>
+        </div>
     </div>
     <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="!newRichiesta">
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
             <div class="ui-g-6" align="left">
-                <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+                <button type="button" pButton icon="fa fa-close" (click)="close()" label="Chiudi"></button>
             </div>
             <div class="ui-g-6" align="right">
-                <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
-            </div>
-        </div>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="newRichiesta">
-            <div>
-                <button type="button" pButton icon="fa fa-check" (click)="save()" label="Save"></button>
+                <button type="button" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
             </div>
         </div>
     </p-footer>

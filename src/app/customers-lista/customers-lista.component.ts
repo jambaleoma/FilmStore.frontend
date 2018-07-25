@@ -11,7 +11,7 @@ export class CustomersListaComponent implements OnInit {
 
   customers: Customer[];
 
-  cols = 3;
+  cols: any[];
 
   showCustomers = false;
 
@@ -20,16 +20,21 @@ export class CustomersListaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-   this.subsrcibeToListOfCustomers();
+    this.subsrcibeToListOfCustomers();
+    this.getColumns();
+  }
+
+  getColumns() {
+    this.cols = [
+      { field: 'firstName', header: 'Nome' },
+      { field: 'lastName', header: 'Cognome' }
+    ];
   }
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
       this.customers = notification;
       this.showCustomers = true;
-    }, error => {
-      console.log(error);
-      this.showCustomers = false;
     }
     );
   }

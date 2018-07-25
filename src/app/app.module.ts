@@ -26,6 +26,12 @@ import { CustomersListaComponent } from './customers-lista/customers-lista.compo
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
+import {ListboxModule} from 'primeng/listbox';
+import { LoginComponent } from './login/login.component';
+import { registerLocaleData } from '@angular/common';
+import localeITCA from '@angular/common/locales/it';
+
+registerLocaleData(localeITCA);
 
 @NgModule({
   declarations: [
@@ -35,9 +41,11 @@ import { DropdownModule } from 'primeng/dropdown';
     DettaglioFilmComponent,
     PalinsestoComponent,
     CustomersListaComponent,
-    RichiesteListComponent
+    RichiesteListComponent,
+    LoginComponent
   ],
   imports: [
+    ListboxModule,
     DropdownModule,
     DialogModule,
     ScheduleModule,
@@ -60,7 +68,7 @@ import { DropdownModule } from 'primeng/dropdown';
     RichiestaService,
     FilmService,
     CustomerService,
-    ApiConfiguration
+    ApiConfiguration,
   ],
   bootstrap: [AppComponent]
 })

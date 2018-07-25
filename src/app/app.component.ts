@@ -10,13 +10,16 @@ export class AppComponent implements OnInit {
 
   items: MenuItem[];
 
+  loginComponent: boolean;
+
   ngOnInit() {
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/home' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' },
       { label: 'Palinsesto', icon: 'fa fa-calendar', routerLink: '/palinsesto' },
       { label: 'Utenti', icon: 'fa fa-users', routerLink: '/utenti'},
-      { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste'}
+      { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste'},
+      { label: 'Log-Out', icon: 'fa fa-sign-out', routerLink: '/login'}
     ];
   }
 }

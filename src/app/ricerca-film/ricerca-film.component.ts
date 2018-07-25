@@ -50,8 +50,6 @@ export class RicercaFilmComponent implements OnInit {
   subsrcibeToListOfFilms() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
-    }, error => {
-      console.log(error);
     }
     );
   }

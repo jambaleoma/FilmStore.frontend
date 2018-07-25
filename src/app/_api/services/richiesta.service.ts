@@ -98,7 +98,7 @@ export class RichiestaService extends BaseService {
    * @param body Richiesta
    * @return Added Richiesta
    */
-  private addRichiestaResponse(body: Richiesta): Observable<HttpResponse<Richiesta>> {
+  private addRichiestaResponse(body: Richiesta): Observable<HttpResponse<Richiesta[]>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -117,9 +117,9 @@ export class RichiestaService extends BaseService {
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
-        let _body: Richiesta = null;
-        _body = _resp.body as Richiesta;
-        return _resp.clone({body: _body}) as HttpResponse<Richiesta>;
+        let _body: Richiesta[] = null;
+        _body = _resp.body as Richiesta[];
+        return _resp.clone({body: _body}) as HttpResponse<Richiesta[]>;
       })
     );
   }
@@ -128,7 +128,7 @@ export class RichiestaService extends BaseService {
    * @param body Richiesta
    * @return Added Richiesta
    */
-   addRichiesta(body: Richiesta): Observable<Richiesta> {
+   addRichiesta(body: Richiesta): Observable<Richiesta[]> {
     return this.addRichiestaResponse(body).pipe(
       map(_r => _r.body)
     );
@@ -144,7 +144,7 @@ export class RichiestaService extends BaseService {
    *
    * @return Updated Richiesta
    */
-  private updateRichiestaResponse(params: Richiesta): Observable<HttpResponse<Richiesta>> {
+  private updateRichiestaResponse(params: Richiesta): Observable<HttpResponse<Richiesta[]>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -164,9 +164,9 @@ export class RichiestaService extends BaseService {
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
-        let _body: Richiesta = null;
-        _body = _resp.body as Richiesta;
-        return _resp.clone({body: _body}) as HttpResponse<Richiesta>;
+        let _body: Richiesta[] = null;
+        _body = _resp.body as Richiesta[];
+        return _resp.clone({body: _body}) as HttpResponse<Richiesta[]>;
       })
     );
   }
@@ -180,7 +180,7 @@ export class RichiestaService extends BaseService {
    *
    * @return Updated Richiesta
    */
-   updateRichiesta(params: Richiesta): Observable<Richiesta> {
+   updateRichiesta(params: Richiesta): Observable<Richiesta[]> {
     return this.updateRichiestaResponse(params).pipe(
       map(_r => _r.body)
     );
