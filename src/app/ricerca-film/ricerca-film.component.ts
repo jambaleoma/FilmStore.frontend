@@ -1,4 +1,4 @@
-import { Film } from './../_api/models/film';
+import { Film } from '../_api/models/film';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FilmService } from '../_api/services/film.service';

@@ -1,6 +1,6 @@
 <div class="ui-grid-col-12" style="padding-top: 3em; padding-bottom: 2em;" align="center">
-    <p-listbox [options]="customersItems" [(ngModel)]="selectedCustomer" (onChange)="selectSessionCustomer()" (onDblClick)="loginCustomer()"
-    [style]="{'width':'25%'}" [listStyle]="{'min-height':'25%'}">
+    <p-listbox [options]="customersItems" [(ngModel)]="selectedCustomer" (onDblClick)="showLoginDilog()"
+        [style]="{'width':'25%'}" [listStyle]="{'min-height':'25%'}">
         <p-header style="padding-top: 2em">
             Esegui Accesso Come: {{selectedCustomer||''}}
         </p-header>
@@ -12,3 +12,29 @@
         </ng-template>
     </p-listbox>
 </div>
+
+<p-dialog header="Login Utente" [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
+    [height]="450">
+    <form name="form" #flogin="ngForm">
+        <div class="ui-g ui-fluid" *ngIf="selectedCustomer" style="padding-bottom: 5em; padding-top: 3em">
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="vin">Password</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="psw" name="psw" [(ngModel)]="psw" style="width: 100%" type="password">
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <div class="ui-g-6" align="left">
+                    <button type="button" pButton (click)="close()" label="Annulla"></button>
+                </div>
+                <div class="ui-g-6" align="right">
+                    <button type="submit" pButton class="ui-button-success" (click)="loginCustomer(psw)" label="Login"></button>
+                </div>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>

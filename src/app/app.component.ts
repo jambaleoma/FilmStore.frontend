@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from '../../node_modules/primeng/components/common/menuitem';
+import { MenuItem } from 'primeng/components/common/menuitem';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +10,35 @@ export class AppComponent implements OnInit {
 
   items: MenuItem[];
 
-  loginComponent: boolean;
+  logOutItems: MenuItem[];
+
+  showMenuItems = false;
 
   ngOnInit() {
+
+    if (sessionStorage.getItem('customerfirstName') !== null) {
+      this.showMenuItems = true;
+    }
+
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/home' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' },
       { label: 'Palinsesto', icon: 'fa fa-calendar', routerLink: '/palinsesto' },
-      { label: 'Utenti', icon: 'fa fa-users', routerLink: '/utenti'},
-      { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste'},
-      { label: 'Log-Out', icon: 'fa fa-sign-out', routerLink: '/login'}
+      { label: 'Utenti', icon: 'fa fa-users', routerLink: '/utenti' },
+      { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste' },
+    ];
+
+    this.logOutItems = [
+      {
+        label: 'Logout',
+        icon: 'fa fa-sign-out',
+        routerLink: '/login',
+        command: () => {
+          sessionStorage.clear();
+          location.reload();
+        },
+      }
     ];
   }
+
 }

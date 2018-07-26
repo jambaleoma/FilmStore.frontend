@@ -1,11 +1,11 @@
-import { CustomerService } from './../_api/services/customer.service';
-import { Richiesta } from './../_api/models/richiesta';
-import { RichiestaService } from './../_api/services/richiesta.service';
+import { CustomerService } from '../_api/services/customer.service';
+import { Richiesta } from '../_api/models/richiesta';
+import { RichiestaService } from '../_api/services/richiesta.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Customer } from '../_api/models';
 import { SelectItem } from 'primeng/api';
-import { DatePipe } from '../../../node_modules/@angular/common';
-import { Table } from '../../../node_modules/primeng/table';
+import { DatePipe } from '@angular/common';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-richieste-list',
@@ -109,7 +109,7 @@ export class RichiesteListComponent implements OnInit {
 
   save() {
     if (this.newRichiesta) {
-      this.richiesta.nomeCliente = sessionStorage.getItem('customer');
+      this.richiesta.nomeCliente = sessionStorage.getItem('customerfirstName');
       this.richiesta.dataInserimento = this.pipe.transform(new Date(), 'fullDate');
       this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
         if (response !== null) {
@@ -120,27 +120,35 @@ export class RichiesteListComponent implements OnInit {
         }
       });
     } else {
-      this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
+      if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName')) {
+        this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
+          if (response !== null) {
+            this.richieste = response as Richiesta[];
+            this.richiesta = null;
+            this.displayDialog = false;
+            this.rt.reset();
+          }
+        });
+      } else {
+        alert('Puoi modificare solo le tue richieste');
+      }
+    }
+  }
+
+  delete() {
+    if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName')) {
+      this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
         if (response !== null) {
-          this.richieste = response as Richiesta[];
+          const index = this.richieste.indexOf(this.richiestaSelezionata);
+          this.richieste = this.richieste.filter((val, i) => i !== index);
           this.richiesta = null;
           this.displayDialog = false;
           this.rt.reset();
         }
       });
+    } else {
+      alert('Puoi eliminare solo le tue richieste');
     }
-  }
-
-  delete() {
-    this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
-      if (response !== null) {
-        const index = this.richieste.indexOf(this.richiestaSelezionata);
-        this.richieste = this.richieste.filter((val, i) => i !== index);
-        this.richiesta = null;
-        this.displayDialog = false;
-        this.rt.reset();
-      }
-            });
   }
 
   close() {

@@ -11,5 +11,5 @@ export class HomeComponent {
   constructor() {
   }
 
-  customerName = sessionStorage.getItem('customer');
+  customerfirstName = sessionStorage.getItem('customerfirstName');
 }

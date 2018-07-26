@@ -1,5 +1,5 @@
-import { RichiestaService } from './../_api/services/richiesta.service';
-import { CustomerService } from './../_api/services/customer.service';
+import { RichiestaService } from '../_api/services/richiesta.service';
+import { CustomerService } from '../_api/services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../_api/models/customer';
 import { Richiesta } from '../_api/models';

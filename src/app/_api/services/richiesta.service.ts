@@ -1,4 +1,4 @@
-import { Richiesta } from './../models/richiesta';
+import { Richiesta } from '../models/richiesta';
 /* tslint:disable */
 import { Injectable } from '@angular/core';
 import {

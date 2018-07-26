@@ -1,7 +1,7 @@
-import { FilmService } from './../_api/services/film.service';
-import { Film } from './../_api/models/film';
+import { FilmService } from '../_api/services/film.service';
+import { Film } from '../_api/models/film';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '../../../node_modules/@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dettaglio-film',

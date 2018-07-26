@@ -1,4 +1,4 @@
-import { Customer } from './../models/customer';
+import { Customer } from '../models/customer';
 /* tslint:disable */
 import { Injectable } from '@angular/core';
 import {
