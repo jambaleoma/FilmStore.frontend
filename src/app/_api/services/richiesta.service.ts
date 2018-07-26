@@ -226,4 +226,41 @@ export class RichiestaService extends BaseService {
       map(_r => _r.body)
     );
   }
+
+  /**
+   * @return List of Richiste By CustomerName
+   */
+  private getRichiesteByCustomerNameResponse(nome: string): Observable<HttpResponse<Richiesta[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      "GET",
+      this.rootUrl + `rest/richieste/byNomeCliente/`+nome,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: Richiesta[] = null;
+        _body = _resp.body as Richiesta[];
+        return _resp.clone({body: _body}) as HttpResponse<Richiesta[]>;
+      })
+    );
+  }
+
+  /**
+   * @return List of Richiste
+   */
+  getRichiesteByCustomerName(nome: string): Observable<Richiesta[]> {
+    return this.getRichiesteByCustomerNameResponse(nome).pipe(
+      map(_r => _r.body)
+    );
+  }
 }
