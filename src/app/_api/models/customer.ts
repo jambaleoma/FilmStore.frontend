@@ -6,4 +6,5 @@ export interface Customer {
     lastName?: string;
     password?: string;
     richieste?: Richiesta[];
+    numeroRichieste?: number;
 }

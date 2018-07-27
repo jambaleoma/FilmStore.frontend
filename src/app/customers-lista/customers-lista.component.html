@@ -8,9 +8,6 @@
                 <th *ngFor="let col of columns">
                     {{col.header}}
                 </th>
-                <th>
-                    Richieste
-                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-customer let-columns="columns">
@@ -21,17 +18,15 @@
                 <td *ngFor="let col of columns">
                         {{customer[col.field]}}
                 </td>
-                <td>
-                    <!-- {{ subsrcibeToListOfRichiesteByCustomerName(customer.firstName) }} -->
-                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td [attr.colspan]="cols">
-                    Nessun Film Trovato
+                <td [attr.colspan]="cols.length+1">
+                    Nessun Utente Trovato
                 </td>
             </tr>
         </ng-template>
     </p-table>
+    <button type="button" pButton class="ui-button-success" (click)="buttonConsoleLog()" label="consoLog"></button>
 </div>

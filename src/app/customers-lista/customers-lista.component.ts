@@ -15,9 +15,9 @@ export class CustomersListaComponent implements OnInit {
 
   cols: any[];
 
-  richieste2Customer: Richiesta[];
+  richiesteSub: Richiesta[];
 
-  showCustomers = false;
+  // TODO: create a MAP <string, Richiesta[]> Richieste2Customer
 
   constructor(
     private customerService: CustomerService,
@@ -32,25 +32,43 @@ export class CustomersListaComponent implements OnInit {
   getColumns() {
     this.cols = [
       { field: 'firstName', header: 'Nome' },
-      { field: 'lastName', header: 'Cognome' }
+      { field: 'lastName', header: 'Cognome' },
+      { field: 'numeroRichieste', header: 'Richieste' }
     ];
   }
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
       this.customers = notification;
-      for (let i = 0; i < this.customers.length; i++) {
-        // this.customers[i].richieste.push(this.subsrcibeToListOfRichiesteByCustomerName(this.customers[i].firstName));
-      }
-      this.showCustomers = true;
+      this.getRichiesteOfCustomers();
     });
+  }
+
+  getRichiesteOfCustomers() {
+    if (this.customers) {
+      for (let i = 0; i < this.customers.length; i++) {
+        const richieste2Customer: Richiesta[] = this.subsrcibeToListOfRichiesteByCustomerName(this.customers[i].firstName);
+      if (richieste2Customer) {   // QUI NON CI ENTRA MAI!!!!!!!
+          this.customers[i].richieste.push(richieste2Customer[i]);
+          this.customers[i].numeroRichieste = this.customers[i].richieste.length;
+        }
+      }
+      console.log(this.customers);
+    }
   }
 
   subsrcibeToListOfRichiesteByCustomerName(name: string) {
     this.richiestaService.getRichiesteByCustomerName(name).subscribe(notification => {
-      this.richieste2Customer = notification;
+      this.richiesteSub = notification;
+      console.log(this.richiesteSub);
     });
-    return this.richieste2Customer;
+    if (this.richiesteSub) {
+      return this.richiesteSub;
+    }
+  }
+
+  buttonConsoleLog() {
+    console.log(this.customers);
   }
 
 }
