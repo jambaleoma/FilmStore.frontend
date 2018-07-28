@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
-import { SelectItem } from '../_api/models';
+import { Customer } from '../_api/models';
 
 @Component({
   selector: 'app-login',
@@ -10,17 +10,19 @@ import { SelectItem } from '../_api/models';
 })
 export class LoginComponent implements OnInit {
 
-  customersItems: SelectItem[];
+  customersItems: Customer[];
 
   psw: string;
 
   selectedCustomer: string;
 
-  customer: SelectItem;
+  customer: Customer;
 
   showDialog = false;
 
   customerAutenticate: boolean;
+
+  @ViewChild('loginPassword') inputEl: ElementRef;
 
   constructor(
     private router: Router,
@@ -33,12 +35,15 @@ export class LoginComponent implements OnInit {
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      this.customersItems = notification as SelectItem[];
+      this.customersItems = notification;
     });
   }
 
   showLoginDilog() {
     this.showDialog = true;
+    setTimeout(() => {
+      this.inputEl.nativeElement.focus();
+    }, 0);
   }
 
   loginCustomer(password: string) {
@@ -61,6 +66,7 @@ export class LoginComponent implements OnInit {
   }
 
   close() {
+    this.psw = null;
     this.showDialog = false;
   }
 

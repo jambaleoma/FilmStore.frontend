@@ -20,7 +20,6 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
 import { MenubarModule } from 'primeng/menubar';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
-import { ScheduleModule } from 'primeng/schedule';
 import { PalinsestoComponent } from './palinsesto/palinsesto.component';
 import { CustomersListaComponent } from './customers-lista/customers-lista.component';
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
@@ -48,7 +47,6 @@ registerLocaleData(localeITCA);
     ListboxModule,
     DropdownModule,
     DialogModule,
-    ScheduleModule,
     MenubarModule,
     MultiSelectModule,
     AngularFontAwesomeModule,

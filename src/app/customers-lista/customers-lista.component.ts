@@ -17,8 +17,6 @@ export class CustomersListaComponent implements OnInit {
 
   richiesteSub: Richiesta[];
 
-  // TODO: create a MAP <string, Richiesta[]> Richieste2Customer
-
   constructor(
     private customerService: CustomerService,
     private richiestaService: RichiestaService
@@ -45,30 +43,14 @@ export class CustomersListaComponent implements OnInit {
   }
 
   getRichiesteOfCustomers() {
-    if (this.customers) {
+    if (this.customers.length > 0) {
       for (let i = 0; i < this.customers.length; i++) {
-        const richieste2Customer: Richiesta[] = this.subsrcibeToListOfRichiesteByCustomerName(this.customers[i].firstName);
-      if (richieste2Customer) {   // QUI NON CI ENTRA MAI!!!!!!!
-          this.customers[i].richieste.push(richieste2Customer[i]);
-          this.customers[i].numeroRichieste = this.customers[i].richieste.length;
-        }
+        this.richiestaService.getRichiesteByCustomerName(this.customers[i].firstName).subscribe(notification => {
+          this.richiesteSub = notification;
+            this.customers[i].numeroRichieste = this.richiesteSub.length;
+        });
       }
-      console.log(this.customers);
     }
-  }
-
-  subsrcibeToListOfRichiesteByCustomerName(name: string) {
-    this.richiestaService.getRichiesteByCustomerName(name).subscribe(notification => {
-      this.richiesteSub = notification;
-      console.log(this.richiesteSub);
-    });
-    if (this.richiesteSub) {
-      return this.richiesteSub;
-    }
-  }
-
-  buttonConsoleLog() {
-    console.log(this.customers);
   }
 
 }

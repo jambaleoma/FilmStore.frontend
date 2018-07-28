@@ -2,9 +2,14 @@ import { Richiesta } from './richiesta';
 
 export interface Customer {
     id?: string;
+    label?: string;
+    value: any;
+    styleClass?: string;
+    icon?: string;
+    title?: string;
+    password?: string;
+    numeroRichieste?: number;
     firstName?: string;
     lastName?: string;
-    password?: string;
     richieste?: Richiesta[];
-    numeroRichieste?: number;
 }
