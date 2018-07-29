@@ -29,6 +29,8 @@ import {ListboxModule} from 'primeng/listbox';
 import { LoginComponent } from './login/login.component';
 import { registerLocaleData } from '@angular/common';
 import localeITCA from '@angular/common/locales/it';
+import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
+import { SerieTVService } from './_api/services/serieTV.service';
 
 registerLocaleData(localeITCA);
 
@@ -41,7 +43,8 @@ registerLocaleData(localeITCA);
     PalinsestoComponent,
     CustomersListaComponent,
     RichiesteListComponent,
-    LoginComponent
+    LoginComponent,
+    RicercaSerieTvComponent
   ],
   imports: [
     ListboxModule,
@@ -64,6 +67,7 @@ registerLocaleData(localeITCA);
   ],
   providers: [
     RichiestaService,
+    SerieTVService,
     FilmService,
     CustomerService,
     ApiConfiguration,

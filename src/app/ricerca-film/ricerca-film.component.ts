@@ -30,7 +30,7 @@ export class RicercaFilmComponent implements OnInit {
     this.formats = [
       { _id: '1', label: 'FULL-HD', value: 'FULL-HD' },
       { _id: '2', label: 'HD', value: 'HD' },
-      { _id: '3', label: 'DVD', value: 'DVD' },
+      { _id: '3', label: 'DVD', value: 'DVD' }
     ];
 
   }
@@ -50,8 +50,7 @@ export class RicercaFilmComponent implements OnInit {
   subsrcibeToListOfFilms() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
-    }
-    );
+    });
   }
 
   onFormatsFilterChange(val: ListItem[], table: Table) {

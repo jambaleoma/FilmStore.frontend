@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/home' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' },
+      { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/ricercaSerieTV' },
       { label: 'Palinsesto', icon: 'fa fa-calendar', routerLink: '/palinsesto' },
       { label: 'Utenti', icon: 'fa fa-users', routerLink: '/utenti' },
       { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste' },

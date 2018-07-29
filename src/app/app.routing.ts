@@ -1,3 +1,4 @@
+import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { LoginComponent } from './login/login.component';
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
 import { CustomersListaComponent } from './customers-lista/customers-lista.component';
@@ -14,6 +15,8 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, data: { pageTitle: 'Home' }},
     /** Ricerca Film */
     { path: 'ricercaFilm', component: RicercaFilmComponent, data: { pageTitle: 'Ricerca Film' }},
+    /** Ricerca SerieTV */
+    { path: 'ricercaSerieTV', component: RicercaSerieTvComponent, data: { pageTitle: 'Ricerca SerieTV' }},
     /** Dettaglio Film */
     { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' }},
     /** Palinsesto Film */

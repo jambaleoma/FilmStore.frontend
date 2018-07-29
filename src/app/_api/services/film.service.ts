@@ -1,8 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import {
-  HttpClient, HttpRequest, HttpResponse,
-  HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +21,7 @@ export class FilmService extends BaseService {
   /**
    * @return List of Films
    */
-   private getFilmsResponse(): Observable<HttpResponse<Film[]>> {
+  private getFilmsResponse(): Observable<HttpResponse<Film[]>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -43,7 +41,7 @@ export class FilmService extends BaseService {
         let _resp = _r as HttpResponse<any>;
         let _body: Film[] = null;
         _body = _resp.body as Film[];
-        return _resp.clone({body: _body}) as HttpResponse<Film[]>;
+        return _resp.clone({ body: _body }) as HttpResponse<Film[]>;
       })
     );
   }
@@ -51,7 +49,7 @@ export class FilmService extends BaseService {
   /**
    * @return List of Films
    */
-   getFilms(): Observable<Film[]> {
+  getFilms(): Observable<Film[]> {
     return this.getFilmsResponse().pipe(
       map(_r => _r.body)
     );
@@ -67,7 +65,7 @@ export class FilmService extends BaseService {
     let __body: any = null;
     let req = new HttpRequest<any>(
       "GET",
-      this.rootUrl + `rest/films/`+filmId,
+      this.rootUrl + `rest/films/` + filmId,
       __body,
       {
         headers: __headers,
@@ -81,7 +79,7 @@ export class FilmService extends BaseService {
         let _resp = _r as HttpResponse<any>;
         let _body: Film[] = null;
         _body = _resp.body as Film[];
-        return _resp.clone({body: _body}) as HttpResponse<Film>;
+        return _resp.clone({ body: _body }) as HttpResponse<Film>;
       })
     );
   }
@@ -89,7 +87,7 @@ export class FilmService extends BaseService {
   /**
    * @return Single Film
    */
-   getFilm(idFilm: string): Observable<Film> {
+  getFilm(idFilm: string): Observable<Film> {
     return this.getFilmResponse(idFilm).pipe(
       map(_r => _r.body)
     );
