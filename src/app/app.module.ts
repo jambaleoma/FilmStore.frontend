@@ -31,6 +31,7 @@ import { registerLocaleData } from '@angular/common';
 import localeITCA from '@angular/common/locales/it';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { SerieTVService } from './_api/services/serieTV.service';
+import { SliderModule } from 'primeng/slider';
 
 registerLocaleData(localeITCA);
 
@@ -47,6 +48,7 @@ registerLocaleData(localeITCA);
     RicercaSerieTvComponent
   ],
   imports: [
+    SliderModule,
     ListboxModule,
     DropdownModule,
     DialogModule,

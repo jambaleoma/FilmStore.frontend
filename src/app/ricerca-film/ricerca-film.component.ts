@@ -20,6 +20,12 @@ export class RicercaFilmComponent implements OnInit {
 
   formats: ListItem[];
 
+  yearFilter: number;
+
+  // yearFilter: number[] = [1996, 2018];
+
+  yearTimeout: any;
+
   @ViewChild('ft') table: Table;
 
   constructor(
@@ -61,11 +67,22 @@ export class RicercaFilmComponent implements OnInit {
   reset(tr: Table) {
     tr.reset();
     this.filters = {};
+    this.yearFilter = null;
   }
 
   //  *** Vado a visulizzare nel dattaglio il film selezionato ***
   goToFilm(filmId: string) {
     this.router.navigate(['Film/view', filmId]);
   }
+
+  onYearChange(event, ft) {
+    if (this.yearTimeout) {
+        clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+       ft.filter(event.value - 1, 'anno', 'gt');
+    }, 250);
+}
 
 }

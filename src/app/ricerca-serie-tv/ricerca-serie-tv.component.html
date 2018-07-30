@@ -5,17 +5,21 @@
 <!-- FILTRI DI RICERCA -->
 <div class="ui-grid-col-12" style="padding-top: 3em;">
   <div class="ui-g">
-    <div class="ui-g-4">
+    <div class="ui-g-3">
       <div class="label"> Nome SerieTV </div>
       <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleMsg" (input)="stvt.filter($event.target.value, 'nome', 'contains')">
     </div>
-    <div class="ui-g-4">
+    <div class="ui-g-3">
       <div class="label">Formato SerieTV </div>
       <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats" [(ngModel)]="filters.format"
         defaultLabel=" &#xF002; Formato" (onChange)="stvt.filter($event.value, 'formato', 'in')"></p-multiSelect>
     </div>
-    <div film-button-third class="ui-g-3 resetButton ">
-      <button pButton type="button" label="Reset Filtri" (click)="reset(stvt)"></button>
+    <div class="ui-g-3">
+        <div class="label">N° Stagione SerieTV {{stagioneFilter}} </div>
+        <p-slider [style]="{'width':'80%','margin-top':'8px'}" [step]="1" [(ngModel)]="stagioneFilter" [min]="1" [max]="5" (onChange)="onStagioneChange($event, stvt)"></p-slider>
+    </div>
+    <div film-button-third class="ui-g-3 resetButton" align="center">
+        <button pButton type="button" label="Reset Filtri" (click)="reset(stvt)" style="margin-top: 14px;"></button>
     </div>
   </div>
 </div>

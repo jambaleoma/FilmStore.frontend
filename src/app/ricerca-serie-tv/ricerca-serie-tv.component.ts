@@ -19,6 +19,10 @@ export class RicercaSerieTvComponent implements OnInit {
 
   formats: ListItem[];
 
+  stagioneFilter: number;
+
+  stagioneTimeout: any;
+
   @ViewChild('stvt') table: Table;
 
   constructor(
@@ -60,6 +64,17 @@ export class RicercaSerieTvComponent implements OnInit {
   reset(stvt: Table) {
     stvt.reset();
     this.filters = {};
+    this.stagioneFilter = null;
   }
+
+  onStagioneChange(event, ft) {
+    if (this.stagioneTimeout) {
+        clearTimeout(this.stagioneTimeout);
+    }
+
+    this.stagioneTimeout = setTimeout(() => {
+       ft.filter(event.value, 'numeroStagione', 'equals');
+    }, 250);
+}
 
 }
