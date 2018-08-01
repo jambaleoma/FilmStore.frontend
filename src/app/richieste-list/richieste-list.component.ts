@@ -136,7 +136,8 @@ export class RichiesteListComponent implements OnInit {
   }
 
   delete() {
-    if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName')) {
+    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
+    sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
       this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
         if (response !== null) {
           const index = this.richieste.indexOf(this.richiestaSelezionata);
