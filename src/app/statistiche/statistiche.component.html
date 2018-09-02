@@ -1,14 +1,46 @@
 <div align="center">
-  <h1>Statistiche delle Richieste</h1>
+    <h1>Statistiche Richieste</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em;">
-  <div class="ui-g">
-      <div class="ui-g-6">
-          <p-chart type="pie" [data]="data"></p-chart>
-      </div>
-      <div class="ui-g-6">
-          <p-chart type="line" [data]="data1"></p-chart>
-      </div>
-  </div>
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 2em;">
+    <div class="ui-g">
+        <div class="ui-g-7">
+            <p-chart type="line" [data]="dataLineRichieste"></p-chart>
+        </div>
+        <div class="ui-g-5">
+            <p-chart type="pie" [data]="dataPieRichieste"></p-chart>
+        </div>
+        <!-- <div class="ui-g-3">
+            <p-chart type="bar" [data]="dataBarRichieste"></p-chart>
+        </div> -->
+    </div>
+</div>
+
+<div align="center">
+    <h1>Statistiche Film</h1>
+</div>
+
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 2em;">
+    <div class="ui-g">
+        <div class="ui-g-6">
+            <p-chart type="doughnut" [data]="dataDoughnutFilm"></p-chart>
+        </div>
+        <div class="ui-g-6">
+            <p-chart type="line" [data]="dataLineFilm"></p-chart>
+        </div>
+    </div>
+</div>
+
+<div align="center">
+    <h1>Statistiche Serie TV</h1>
+</div>
+
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 2em;">
+    <div class="ui-g">
+        <div class="ui-g-3"></div>
+        <div class="ui-g-6">
+            <p-chart type="bar" [data]="dataBarSerieTV"></p-chart>
+        </div>
+        <div class="ui-g-3"></div>
+    </div>
 </div>
