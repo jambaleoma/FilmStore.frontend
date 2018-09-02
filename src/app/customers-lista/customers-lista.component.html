@@ -1,4 +1,8 @@
-<div class="ui-grid-col-12" style="padding-top: 3em;">
+<div align="center">
+    <h1>Richieste degli Utenti</h1>
+</div>
+
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 3em;">
     <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
         <ng-template pTemplate="header" let-columns>
             <tr>

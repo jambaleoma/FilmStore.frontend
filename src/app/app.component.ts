@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       { label: 'Home', icon: 'fa fa-home', routerLink: '/home' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/ricercaFilm' },
       { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/ricercaSerieTV' },
-      { label: 'Palinsesto', icon: 'fa fa-calendar', routerLink: '/palinsesto' },
+      { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/statistiche' },
       { label: 'Utenti', icon: 'fa fa-users', routerLink: '/utenti' },
       { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/richieste' },
     ];

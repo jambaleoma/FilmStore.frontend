@@ -44,7 +44,6 @@ export class RicercaSerieTvComponent implements OnInit {
 
   getColumns() {
     this.cols = [
-      { field: 'nome', header: 'Nome' },
       { field: 'numeroStagione', header: 'Stagione N°' },
       { field: 'formato', header: 'Formato' },
     ];

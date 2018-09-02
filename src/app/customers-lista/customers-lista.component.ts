@@ -1,6 +1,6 @@
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { CustomerService } from '../_api/services/customer.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Customer } from '../_api/models/customer';
 import { Richiesta } from '../_api/models';
 
@@ -11,11 +11,11 @@ import { Richiesta } from '../_api/models';
 })
 export class CustomersListaComponent implements OnInit {
 
-  customers: Customer[];
+  customers: Customer[] = [];
+
+  richiestePerNomeUtente: Richiesta[];
 
   cols: any[];
-
-  richiesteSub: Richiesta[];
 
   constructor(
     private customerService: CustomerService,
@@ -46,11 +46,10 @@ export class CustomersListaComponent implements OnInit {
     if (this.customers.length > 0) {
       for (let i = 0; i < this.customers.length; i++) {
         this.richiestaService.getRichiesteByCustomerName(this.customers[i].firstName).subscribe(notification => {
-          this.richiesteSub = notification;
-            this.customers[i].numeroRichieste = this.richiesteSub.length;
+          this.richiestePerNomeUtente = notification;
+          this.customers[i].numeroRichieste = this.richiestePerNomeUtente.length;
         });
       }
     }
   }
-
 }

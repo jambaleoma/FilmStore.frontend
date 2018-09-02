@@ -26,34 +26,29 @@
 <!-- / FILTRI DI RICERCA -->
 
 <div class="ui-grid-col-12" style="padding-top: 3em;">
-  <p-table film-table [value]="serieTV" #stvt>
-    <ng-template pTemplate="header">
+  <p-table film-table [columns]="cols" [value]="serieTV" #stvt>
+    <ng-template pTemplate="header" let-columns>
       <tr>
-        <th>
+        <th style="width: 60%">
           Nome
         </th>
-        <th style="width: 10em">
-          Stagione N°
-        </th>
-        <th style="width: 10em">
-          Formato
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
         <th style="width: 5em">
           Dettagli
         </th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-serieTV>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
-        <td>
-          {{serieTV.nome}}
-        </td>
-        <td>
-          {{serieTV.numeroStagione}}
-        </td>
-        <td>
-          {{serieTV.formato}}
-        </td>
+          <td>
+              {{rowData.nome}}
+          </td>
+          <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+          </td>
         <td>
           <p-button icon="fa fa-file-video-o"></p-button>
         </td>
@@ -61,7 +56,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length+1">
+        <td [attr.colspan]="cols.length+2">
           Nessuna SerieTV Trovata
         </td>
       </tr>

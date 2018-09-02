@@ -20,7 +20,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
 import { MenubarModule } from 'primeng/menubar';
 import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.component';
-import { PalinsestoComponent } from './palinsesto/palinsesto.component';
+import { StatisticheComponent } from './statistiche/statistiche.component';
 import { CustomersListaComponent } from './customers-lista/customers-lista.component';
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
 import { DialogModule } from 'primeng/dialog';
@@ -32,6 +32,7 @@ import localeITCA from '@angular/common/locales/it';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { SerieTVService } from './_api/services/serieTV.service';
 import { SliderModule } from 'primeng/slider';
+import {ChartModule} from 'primeng/chart';
 
 registerLocaleData(localeITCA);
 
@@ -41,13 +42,14 @@ registerLocaleData(localeITCA);
     HomeComponent,
     RicercaFilmComponent,
     DettaglioFilmComponent,
-    PalinsestoComponent,
+    StatisticheComponent,
     CustomersListaComponent,
     RichiesteListComponent,
     LoginComponent,
     RicercaSerieTvComponent
   ],
   imports: [
+    ChartModule,
     SliderModule,
     ListboxModule,
     DropdownModule,

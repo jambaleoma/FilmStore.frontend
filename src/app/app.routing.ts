@@ -1,3 +1,4 @@
+import { StatisticheComponent } from './statistiche/statistiche.component';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { LoginComponent } from './login/login.component';
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
@@ -6,7 +7,6 @@ import { DettaglioFilmComponent } from './dettaglio-film/dettaglio-film.componen
 import { Routes, RouterModule } from '@angular/router';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
 import { HomeComponent } from './home/home.component';
-import { PalinsestoComponent } from './palinsesto/palinsesto.component';
 
 const appRoutes: Routes = [
     /** Login */
@@ -19,8 +19,8 @@ const appRoutes: Routes = [
     { path: 'ricercaSerieTV', component: RicercaSerieTvComponent, data: { pageTitle: 'Ricerca SerieTV' }},
     /** Dettaglio Film */
     { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' }},
-    /** Palinsesto Film */
-    { path: 'palinsesto', component: PalinsestoComponent, data: { pageTitle: 'Palinsesto Film' }},
+    /** Statistiche */
+    { path: 'statistiche', component: StatisticheComponent, data: { pageTitle: 'Statistiche' }},
     /** Utenti */
     { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' }},
     /** Richieste */
