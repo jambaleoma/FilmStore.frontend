@@ -40,8 +40,6 @@ export class StatisticheComponent implements OnInit {
   mesiAnno: string[] = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
     'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
 
-  richiestePerNomeUtente: Richiesta[];
-
   formatiFilms: string[] = [];
 
   filmsFormati: number[] = [];
@@ -72,16 +70,23 @@ export class StatisticheComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getRichieste();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
     this.subsrcibeToListOfSerieTVs();
-    this.getRichieste();
   }
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
       this.customers = notification;
-      this.getRichiesteOfCustomers();
+      if (this.customers.length > 0) {
+        for (let i = 0; i < this.customers.length; i++) {
+          this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+        }
+        this.loadChartRichiestePerMeseLine();
+        this.loadChartCustomerRichiestePie();
+        // this.loadChartCustomerRichiesteBar();
+      }
     });
   }
 
@@ -102,21 +107,6 @@ export class StatisticheComponent implements OnInit {
       }
       this.richiestaMese = Array.from(this.mese2richieste.values());
     });
-  }
-
-  getRichiesteOfCustomers() {
-    if (this.customers.length > 0) {
-      for (let i = 0; i < this.customers.length; i++) {
-        this.richiestaService.getRichiesteByCustomerName(this.customers[i].firstName).subscribe(notification => {
-          this.richiestePerNomeUtente = notification;
-          this.customers[i].numeroRichieste = this.richiestePerNomeUtente.length;
-          this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
-          this.loadChartRichiestePerMeseLine();
-          this.loadChartCustomerRichiestePie();
-          // this.loadChartCustomerRichiesteBar();
-        });
-      }
-    }
   }
 
   loadChartRichiestePerMeseLine() {
@@ -256,8 +246,8 @@ export class StatisticheComponent implements OnInit {
     if (this.films.length > 0) {
       this.dataDoughnutFilm = {
         labels: ['Film in Formato ' + this.formatiFilms[0],
-                 'Film in Formato ' + this.formatiFilms[1],
-                 'Film in Formato ' + this.formatiFilms[2]],
+        'Film in Formato ' + this.formatiFilms[1],
+        'Film in Formato ' + this.formatiFilms[2]],
         datasets: [
           {
             data: this.filmsFormati,

@@ -52,9 +52,19 @@ export class RichiesteListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getRichiedenteRichiesta(sessionStorage.getItem('customerfirstName'));
     this.subsrcibeToListOfRichieste();
     this.getCols();
   }
+
+  getRichiedenteRichiesta(nomeRichiedente: string) {
+    if (nomeRichiedente) {
+      this.customerService.getCustomerByName(nomeRichiedente).subscribe(notification => {
+        this.richiedente = notification;
+      });
+    }
+  }
+
   getCols() {
     this.cols = [
       {
@@ -117,11 +127,13 @@ export class RichiesteListComponent implements OnInit {
           this.richiesta = null;
           this.displayDialog = false;
           this.rt.reset();
+          this.richiedente.numeroRichieste++;
+          this.customerService.updateCustomer(this.richiedente).subscribe();
         }
       });
     } else {
-      if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName') ||
-      sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+      if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
+        sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
         this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
           if (response !== null) {
             this.richieste = response as Richiesta[];
@@ -137,8 +149,7 @@ export class RichiesteListComponent implements OnInit {
   }
 
   delete() {
-    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-    sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName')) {
       this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
         if (response !== null) {
           const index = this.richieste.indexOf(this.richiestaSelezionata);
@@ -146,6 +157,8 @@ export class RichiesteListComponent implements OnInit {
           this.richiesta = null;
           this.displayDialog = false;
           this.rt.reset();
+          this.richiedente.numeroRichieste--;
+          this.customerService.updateCustomer(this.richiedente).subscribe();
         }
       });
     } else {
@@ -155,15 +168,6 @@ export class RichiesteListComponent implements OnInit {
 
   close() {
     this.displayDialog = false;
-  }
-
-  getListaRichiedentiRichieste(idRichiedente: string) {
-    if (idRichiedente) {
-      this.customerService.getCustomerById(idRichiedente).subscribe(notification => {
-        this.richiedente = notification;
-      });
-    }
-    return this.richiedente.firstName;
   }
 
 }
