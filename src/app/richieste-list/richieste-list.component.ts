@@ -120,7 +120,8 @@ export class RichiesteListComponent implements OnInit {
         }
       });
     } else {
-      if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName')) {
+      if (this.richiesta.nomeCliente ===  sessionStorage.getItem('customerfirstName') ||
+      sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
         this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
           if (response !== null) {
             this.richieste = response as Richiesta[];

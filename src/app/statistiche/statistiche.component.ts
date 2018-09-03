@@ -205,8 +205,6 @@ export class StatisticheComponent implements OnInit {
       }
       this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
       this.serieTVFormati = Array.from(this.formato2serieTV.values());
-      console.log(this.formatiSerieTV);
-      console.log(this.serieTVFormati);
       this.loadChartFormatiSerieTVBar();
     });
   }
