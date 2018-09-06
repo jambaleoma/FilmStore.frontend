@@ -14,8 +14,6 @@ import { Table } from 'primeng/table';
 })
 export class RichiesteListComponent implements OnInit {
 
-  richiedente: Customer;
-
   listaRichiedenti: string[];
 
   pipe: DatePipe = new DatePipe('it');
@@ -36,6 +34,8 @@ export class RichiesteListComponent implements OnInit {
 
   displayDialog: boolean;
 
+  customerOfRichiesta: Customer;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -52,17 +52,8 @@ export class RichiesteListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getRichiedenteRichiesta(sessionStorage.getItem('customerfirstName'));
     this.subsrcibeToListOfRichieste();
     this.getCols();
-  }
-
-  getRichiedenteRichiesta(nomeRichiedente: string) {
-    if (nomeRichiedente) {
-      this.customerService.getCustomerByName(nomeRichiedente).subscribe(notification => {
-        this.richiedente = notification;
-      });
-    }
   }
 
   getCols() {
@@ -99,6 +90,9 @@ export class RichiesteListComponent implements OnInit {
   onRowSelect(event) {
     this.newRichiesta = false;
     this.richiesta = this.cloneRichiesta(event.data);
+    this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe( response => {
+      this.customerOfRichiesta = response;
+    });
     this.displayDialog = true;
   }
 
@@ -114,6 +108,9 @@ export class RichiesteListComponent implements OnInit {
   showDialogToAdd() {
     this.newRichiesta = true;
     this.richiesta = { id: null };
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe( response => {
+      this.customerOfRichiesta = response;
+    });
     this.displayDialog = true;
   }
 
@@ -127,8 +124,8 @@ export class RichiesteListComponent implements OnInit {
           this.richiesta = null;
           this.displayDialog = false;
           this.rt.reset();
-          this.richiedente.numeroRichieste++;
-          this.customerService.updateCustomer(this.richiedente).subscribe();
+          this.customerOfRichiesta.numeroRichieste++;
+          this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
         }
       });
     } else {
@@ -149,7 +146,8 @@ export class RichiesteListComponent implements OnInit {
   }
 
   delete() {
-    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName')) {
+    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
+    sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
       this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
         if (response !== null) {
           const index = this.richieste.indexOf(this.richiestaSelezionata);
@@ -157,8 +155,8 @@ export class RichiesteListComponent implements OnInit {
           this.richiesta = null;
           this.displayDialog = false;
           this.rt.reset();
-          this.richiedente.numeroRichieste--;
-          this.customerService.updateCustomer(this.richiedente).subscribe();
+          this.customerOfRichiesta.numeroRichieste--;
+          this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
         }
       });
     } else {

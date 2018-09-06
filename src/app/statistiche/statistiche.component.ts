@@ -35,10 +35,14 @@ export class StatisticheComponent implements OnInit {
 
   dataBarSerieTV: any;
 
-  richiestaMese: number[] = [];
+  richiestaMese2017: number[] = [];
+
+  richiestaMese2018: number[] = [];
 
   mesiAnno: string[] = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
     'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+
+  anni: string[] = ['2017', '2018'];
 
   formatiFilms: string[] = [];
 
@@ -52,7 +56,7 @@ export class StatisticheComponent implements OnInit {
 
   serieTVFormati: number[] = [];
 
-  mese2richieste: Map<string, number> = new Map;
+  anno2_mese2richieste: Map<string, Map<string, number>> = new Map;
 
   customer2richieste: Map<string, number> = new Map;
 
@@ -91,21 +95,27 @@ export class StatisticheComponent implements OnInit {
   }
 
   getRichieste() {
+    const map = new Map();
+    const map1 = new Map();
+    for (const meseAnno of this.mesiAnno) {
+      this.anno2_mese2richieste.set(this.anni[0], map.set(meseAnno, 0));
+      this.anno2_mese2richieste.set(this.anni[1], map1.set(meseAnno, 0));
+    }
     this.richiestaService.getRichieste().subscribe(notification => {
       this.richieste = notification;
-      for (const meseAnno of this.mesiAnno) {
-        this.mese2richieste.set(meseAnno, 0);
-      }
       for (const richiesta of this.richieste) {
-        const meseRichiesta = richiesta.dataInserimento.split(' ');
-        const mese = meseRichiesta[2];
-        if (this.mese2richieste.has(mese)) {
-          this.mese2richieste.set(mese, this.mese2richieste.get(mese) + 1);
-        } else {
-          this.mese2richieste.set(mese, 1);
+        const dataRichiesta = richiesta.dataInserimento.split(' ');
+        const anno = dataRichiesta[3];
+        const mese = dataRichiesta[2];
+        if (anno === this.anni[0]) {
+          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map.get(mese) + 1));
+        }
+        if (anno === this.anni[1]) {
+          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map1.get(mese) + 1));
         }
       }
-      this.richiestaMese = Array.from(this.mese2richieste.values());
+      this.richiestaMese2017 = Array.from(this.anno2_mese2richieste.get('2017').values());
+      this.richiestaMese2018 = Array.from(this.anno2_mese2richieste.get('2018').values());
     });
   }
 
@@ -116,11 +126,18 @@ export class StatisticheComponent implements OnInit {
         datasets: [
           {
             label: 'Richieste nel 2018',
-            data: this.richiestaMese,
+            data: this.richiestaMese2018,
             fill: false,
-            borderColor: '#4bc0c0',
-            backgroundColor: '#4bc0c0'
-          }
+            borderColor: '#427F31',
+            backgroundColor: '#427F31'
+          },
+          {
+            label: 'Richieste nel 2017',
+            data: this.richiestaMese2017,
+            fill: false,
+            borderColor: '#0020C2',
+            backgroundColor: '#0020C2'
+          },
         ]
       };
     }
@@ -130,9 +147,9 @@ export class StatisticheComponent implements OnInit {
     if (this.customers.length > 0) {
       this.dataPieRichieste = {
         labels: ['Richieste di ' + this.customers[0].firstName,
-                 'Richieste di ' + this.customers[1].firstName,
-                 'Richieste di ' + this.customers[2].firstName,
-                 'Richieste di ' + this.customers[3].firstName],
+        'Richieste di ' + this.customers[1].firstName,
+        'Richieste di ' + this.customers[2].firstName,
+        'Richieste di ' + this.customers[3].firstName],
         datasets: [
           {
             data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
