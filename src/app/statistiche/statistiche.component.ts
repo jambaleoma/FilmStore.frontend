@@ -128,8 +128,8 @@ export class StatisticheComponent implements OnInit {
             label: 'Richieste nel 2018',
             data: this.richiestaMese2018,
             fill: false,
-            borderColor: '#427F31',
-            backgroundColor: '#427F31'
+            borderColor: '#008000',
+            backgroundColor: '#008000'
           },
           {
             label: 'Richieste nel 2017',
@@ -158,13 +158,13 @@ export class StatisticheComponent implements OnInit {
               '#f70236',
               '#36A2EB',
               '#FFCE56',
-              '#427F31'
+              '#006400'
             ],
             hoverBackgroundColor: [
               '#f70236',
               '#36A2EB',
               '#FFCE56',
-              '#427F31'
+              '#006400'
             ]
           }]
       };
