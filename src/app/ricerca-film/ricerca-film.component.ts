@@ -22,8 +22,6 @@ export class RicercaFilmComponent implements OnInit {
 
   yearFilter: number;
 
-  // yearFilter: number[] = [1996, 2018];
-
   yearTimeout: any;
 
   @ViewChild('ft') table: Table;
