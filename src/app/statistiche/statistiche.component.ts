@@ -27,8 +27,6 @@ export class StatisticheComponent implements OnInit {
 
   dataLineRichieste: any;
 
-  // dataBarRichieste: any;
-
   dataLineFilm: any;
 
   dataDoughnutFilm: any;
@@ -80,6 +78,31 @@ export class StatisticheComponent implements OnInit {
     this.subsrcibeToListOfSerieTVs();
   }
 
+  getRichieste() {
+    const map2017 = new Map();
+    const map2018 = new Map();
+    for (const meseAnno of this.mesiAnno) {
+      this.anno2_mese2richieste.set(this.anni[0], map2017.set(meseAnno, 0));
+      this.anno2_mese2richieste.set(this.anni[1], map2018.set(meseAnno, 0));
+    }
+    this.richiestaService.getRichieste().subscribe(notification => {
+      this.richieste = notification;
+      for (const richiesta of this.richieste) {
+        const dataRichiesta = richiesta.dataInserimento.split(' ');
+        const anno = dataRichiesta[3];
+        const mese = dataRichiesta[2];
+        if (anno === this.anni[0]) {
+          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2017.get(mese) + 1));
+        }
+        if (anno === this.anni[1]) {
+          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2018.get(mese) + 1));
+        }
+      }
+      this.richiestaMese2017 = Array.from(this.anno2_mese2richieste.get(this.anni[0]).values());
+      this.richiestaMese2018 = Array.from(this.anno2_mese2richieste.get(this.anni[1]).values());
+    });
+  }
+
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
       this.customers = notification;
@@ -89,33 +112,7 @@ export class StatisticheComponent implements OnInit {
         }
         this.loadChartRichiestePerMeseLine();
         this.loadChartCustomerRichiestePie();
-        // this.loadChartCustomerRichiesteBar();
       }
-    });
-  }
-
-  getRichieste() {
-    const map = new Map();
-    const map1 = new Map();
-    for (const meseAnno of this.mesiAnno) {
-      this.anno2_mese2richieste.set(this.anni[0], map.set(meseAnno, 0));
-      this.anno2_mese2richieste.set(this.anni[1], map1.set(meseAnno, 0));
-    }
-    this.richiestaService.getRichieste().subscribe(notification => {
-      this.richieste = notification;
-      for (const richiesta of this.richieste) {
-        const dataRichiesta = richiesta.dataInserimento.split(' ');
-        const anno = dataRichiesta[3];
-        const mese = dataRichiesta[2];
-        if (anno === this.anni[0]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map.get(mese) + 1));
-        }
-        if (anno === this.anni[1]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map1.get(mese) + 1));
-        }
-      }
-      this.richiestaMese2017 = Array.from(this.anno2_mese2richieste.get('2017').values());
-      this.richiestaMese2018 = Array.from(this.anno2_mese2richieste.get('2018').values());
     });
   }
 
@@ -146,10 +143,11 @@ export class StatisticheComponent implements OnInit {
   loadChartCustomerRichiestePie() {
     if (this.customers.length > 0) {
       this.dataPieRichieste = {
-        labels: ['Richieste di ' + this.customers[0].firstName,
-        'Richieste di ' + this.customers[1].firstName,
-        'Richieste di ' + this.customers[2].firstName,
-        'Richieste di ' + this.customers[3].firstName],
+        labels: [
+          'Richieste di ' + this.customers[0].firstName,
+          'Richieste di ' + this.customers[1].firstName,
+          'Richieste di ' + this.customers[2].firstName,
+          'Richieste di ' + this.customers[3].firstName],
         datasets: [
           {
             data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
@@ -200,65 +198,6 @@ export class StatisticheComponent implements OnInit {
     });
   }
 
-  subsrcibeToListOfSerieTVs() {
-    this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.serieTV = notification;
-      for (const serietv of this.serieTV) {
-        if (this.formato2serieTV.has(serietv.formato)) {
-          this.formato2serieTV.set(serietv.formato, this.formato2serieTV.get(serietv.formato) + 1);
-        } else {
-          this.formato2serieTV.set(serietv.formato, 1);
-        }
-      }
-      this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
-      this.serieTVFormati = Array.from(this.formato2serieTV.values());
-      this.loadChartFormatiSerieTVBar();
-    });
-  }
-
-  // loadChartCustomerRichiesteBar() {
-  //   if (this.customers.length > 0) {
-  //     this.dataBarRichieste = {
-  //       datasets: [
-  //         {
-  //           data: [this.customer2richieste.get(this.customers[0].firstName)],
-  //           fill: false,
-  //           backgroundColor: '#FF6384',
-  //           hoverBackgroundColor: '#FF6384',
-  //           label: this.customers[0].firstName
-  //         },
-  //         {
-  //           data: [this.customer2richieste.get(this.customers[1].firstName)],
-  //           fill: false,
-  //           backgroundColor: '#36A2EB',
-  //           hoverBackgroundColor: '#36A2EB',
-  //           label: this.customers[1].firstName
-  //         },
-  //         {
-  //           data: [this.customer2richieste.get(this.customers[2].firstName)],
-  //           fill: false,
-  //           backgroundColor: '#FFCE56',
-  //           hoverBackgroundColor: '#FFCE56',
-  //           label: this.customers[2].firstName
-  //         },
-  //         {
-  //           data: [this.customer2richieste.get(this.customers[3].firstName)],
-  //           fill: false,
-  //           backgroundColor: '#427F31',
-  //           hoverBackgroundColor: '#427F31',
-  //           label: this.customers[3].firstName
-  //         },
-  //         {
-  //           data: [0],
-  //           label: '',
-  //           backgroundColor: 'white',
-  //           hoverBackgroundColor: 'white'
-  //         }
-  //       ]
-  //     };
-  //   }
-  // }
-
   loadChartFilmsPerFormatoDoughnut() {
     if (this.films.length > 0) {
       this.dataDoughnutFilm = {
@@ -298,6 +237,22 @@ export class StatisticheComponent implements OnInit {
         ]
       };
     }
+  }
+
+  subsrcibeToListOfSerieTVs() {
+    this.serieTVService.getSerieTVs().subscribe(notification => {
+      this.serieTV = notification;
+      for (const serietv of this.serieTV) {
+        if (this.formato2serieTV.has(serietv.formato)) {
+          this.formato2serieTV.set(serietv.formato, this.formato2serieTV.get(serietv.formato) + 1);
+        } else {
+          this.formato2serieTV.set(serietv.formato, 1);
+        }
+      }
+      this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
+      this.serieTVFormati = Array.from(this.formato2serieTV.values());
+      this.loadChartFormatiSerieTVBar();
+    });
   }
 
   loadChartFormatiSerieTVBar() {
