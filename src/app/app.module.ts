@@ -33,6 +33,7 @@ import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.com
 import { SerieTVService } from './_api/services/serieTV.service';
 import { SliderModule } from 'primeng/slider';
 import {ChartModule} from 'primeng/chart';
+import {CardModule} from 'primeng/card';
 
 registerLocaleData(localeITCA);
 
@@ -49,6 +50,7 @@ registerLocaleData(localeITCA);
     RicercaSerieTvComponent
   ],
   imports: [
+    CardModule,
     ChartModule,
     SliderModule,
     ListboxModule,
