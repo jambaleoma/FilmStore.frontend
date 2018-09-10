@@ -1,6 +1,6 @@
-import { SerieTVService } from './../_api/services/serieTV.service';
+import { SerieService } from '../_api/services/serie.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ListItem, SerieTV } from '../_api/models';
+import { ListItem, Serie } from '../_api/models';
 import { Router } from '../../../node_modules/@angular/router';
 import { Table } from '../../../node_modules/primeng/table';
 
@@ -13,7 +13,7 @@ export class RicercaSerieTvComponent implements OnInit {
 
   filters: any = {};
 
-  serieTV: SerieTV[];
+  serieTV: Serie[];
 
   cols: any[];
 
@@ -27,7 +27,7 @@ export class RicercaSerieTvComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private serieTVService: SerieTVService
+    private serieTVService: SerieService
   ) {
 
     this.formats = [

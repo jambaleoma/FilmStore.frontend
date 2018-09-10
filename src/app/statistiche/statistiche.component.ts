@@ -1,5 +1,5 @@
-import { SerieTV } from './../_api/models/serieTV';
-import { SerieTVService } from './../_api/services/serieTV.service';
+import { Serie } from '../_api/models/serie';
+import { SerieService } from '../_api/services/serie.service';
 import { FilmService } from './../_api/services/film.service';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../_api/models/customer';
@@ -21,7 +21,7 @@ export class StatisticheComponent implements OnInit {
 
   films: Film[] = [];
 
-  serieTV: SerieTV[] = [];
+  serieTV: Serie[] = [];
 
   dataPieRichieste: any;
 
@@ -68,7 +68,7 @@ export class StatisticheComponent implements OnInit {
     private customerService: CustomerService,
     private richiestaService: RichiestaService,
     private filmService: FilmService,
-    private serieTVService: SerieTVService
+    private serieTVService: SerieService
   ) { }
 
   ngOnInit() {

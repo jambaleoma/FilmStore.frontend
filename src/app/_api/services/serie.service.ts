@@ -6,10 +6,10 @@ import { ApiConfiguration } from '../api-configuration';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { filter } from 'rxjs/operators/filter';
-import { SerieTV } from '../models';
+import { Serie } from '../models';
 
 @Injectable()
-export class SerieTVService extends BaseService {
+export class SerieService extends BaseService {
     constructor(
         config: ApiConfiguration,
         http: HttpClient
@@ -20,13 +20,13 @@ export class SerieTVService extends BaseService {
     /**
      * @return List of SerieTVs
      */
-    private getSerieTVsResponse(): Observable<HttpResponse<SerieTV[]>> {
+    private getSerieTVsResponse(): Observable<HttpResponse<Serie[]>> {
         let __params = this.newParams();
         let __headers = new HttpHeaders();
         let __body: any = null;
         let req = new HttpRequest<any>(
             "GET",
-            this.rootUrl + `rest/serieTV/all`,
+            this.rootUrl + `rest/serie/all`,
             __body,
             {
                 headers: __headers,
@@ -38,9 +38,9 @@ export class SerieTVService extends BaseService {
             filter(_r => _r instanceof HttpResponse),
             map(_r => {
                 let _resp = _r as HttpResponse<any>;
-                let _body: SerieTV[] = null;
-                _body = _resp.body as SerieTV[];
-                return _resp.clone({ body: _body }) as HttpResponse<SerieTV[]>;
+                let _body: Serie[] = null;
+                _body = _resp.body as Serie[];
+                return _resp.clone({ body: _body }) as HttpResponse<Serie[]>;
             })
         );
     }
@@ -48,7 +48,7 @@ export class SerieTVService extends BaseService {
     /**
      * @return List of SerieTVs
      */
-    getSerieTVs(): Observable<SerieTV[]> {
+    getSerieTVs(): Observable<Serie[]> {
         return this.getSerieTVsResponse().pipe(
             map(_r => _r.body)
         );

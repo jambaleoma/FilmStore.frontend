@@ -30,7 +30,7 @@ import { LoginComponent } from './login/login.component';
 import { registerLocaleData } from '@angular/common';
 import localeITCA from '@angular/common/locales/it';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
-import { SerieTVService } from './_api/services/serieTV.service';
+import { SerieService } from './_api/services/serie.service';
 import { SliderModule } from 'primeng/slider';
 import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
@@ -73,7 +73,7 @@ registerLocaleData(localeITCA);
   ],
   providers: [
     RichiestaService,
-    SerieTVService,
+    SerieService,
     FilmService,
     CustomerService,
     ApiConfiguration,
