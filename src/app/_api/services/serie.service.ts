@@ -155,7 +155,7 @@ export class SerieService extends BaseService {
 
     let req = new HttpRequest<any>(
       "DELETE",
-      this.rootUrl + 'rest/richieste/deleteSerieById/' + id,
+      this.rootUrl + 'rest/serie/deleteSerieById/' + id,
       __body,
       {
         headers: __headers,
