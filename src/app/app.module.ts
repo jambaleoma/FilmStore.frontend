@@ -34,6 +34,9 @@ import { SerieService } from './_api/services/serie.service';
 import { SliderModule } from 'primeng/slider';
 import {ChartModule} from 'primeng/chart';
 import {CardModule} from 'primeng/card';
+import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
+import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
+import {SpinnerModule} from 'primeng/spinner';
 
 registerLocaleData(localeITCA);
 
@@ -47,9 +50,12 @@ registerLocaleData(localeITCA);
     CustomersListaComponent,
     RichiesteListComponent,
     LoginComponent,
-    RicercaSerieTvComponent
+    RicercaSerieTvComponent,
+    GestioneFilmComponent,
+    GestioneSerieTvComponent
   ],
   imports: [
+    SpinnerModule,
     CardModule,
     ChartModule,
     SliderModule,

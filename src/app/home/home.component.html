@@ -12,6 +12,7 @@
         informazioni che cerchi.</div>
       <p-footer>
         <button pButton type="button" label="Cerca Serie TV" icon="fa fa-video-camera" (click)="goToSerieTv()"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToSerieTvOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>
@@ -24,11 +25,12 @@
         informazioni che cerchi.</div>
       <p-footer>
         <button pButton type="button" label="Cerca Film" icon="fa fa-film" (click)="goToFilms()"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToFilmsOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>
   <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+    <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo!" [style]="{width: '360px'}" styleClass="ui-card-shadow">
       <p-header>
         <img src="Card" src="assets\showcase\images\HomePage\Card\CardRichieste.jpg">
       </p-header>
@@ -36,6 +38,7 @@
         lista.</div>
       <p-footer>
         <button pButton type="button" label="Fai una Richiesta" icon="pi pi-plus" (click)="goToRicheiste()"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToRicheisteOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>

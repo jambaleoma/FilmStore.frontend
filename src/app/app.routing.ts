@@ -1,3 +1,5 @@
+import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
+import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
 import { StatisticheComponent } from './statistiche/statistiche.component';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { LoginComponent } from './login/login.component';
@@ -15,8 +17,12 @@ const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, data: { pageTitle: 'Home' }},
     /** Ricerca Film */
     { path: 'ricercaFilm', component: RicercaFilmComponent, data: { pageTitle: 'Ricerca Film' }},
+    /** Gestione Film (Admin MODE) */
+    { path: 'gestioneFilm', component: GestioneFilmComponent, data: { pageTitle: 'Gestione Film' }},
     /** Ricerca SerieTV */
     { path: 'ricercaSerieTV', component: RicercaSerieTvComponent, data: { pageTitle: 'Ricerca SerieTV' }},
+    /** Gestione SerieTV (Admin MODE) */
+    { path: 'gestioneSerieTV', component: GestioneSerieTvComponent, data: { pageTitle: 'Gestione SerieTV' }},
     /** Dettaglio Film */
     { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' }},
     /** Statistiche */

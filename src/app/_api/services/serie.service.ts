@@ -54,4 +54,134 @@ export class SerieService extends BaseService {
         );
     }
 
+    /**
+     * @param body SerieTV
+     * @return Added SerieTV
+     */
+    private addSerieResponse(body: Serie): Observable<HttpResponse<Serie[]>> {
+        let __params = this.newParams();
+        let __headers = new HttpHeaders();
+        let __body: any = null;
+        __body = body;
+        let req = new HttpRequest<any>(
+            "POST",
+            this.rootUrl + `rest/serie/insertSerie`,
+            __body,
+            {
+                headers: __headers,
+                params: __params,
+                responseType: 'json'
+            });
+
+        return this.http.request<any>(req).pipe(
+            filter(_r => _r instanceof HttpResponse),
+            map(_r => {
+                let _resp = _r as HttpResponse<any>;
+                let _body: Serie[] = null;
+                _body = _resp.body as Serie[];
+                return _resp.clone({ body: _body }) as HttpResponse<Serie[]>;
+            })
+        );
+    }
+
+    /**
+     * @param body Richiesta
+     * @return Added Richiesta
+     */
+    addSerie(body: Serie): Observable<Serie[]> {
+        return this.addSerieResponse(body).pipe(
+            map(_r => _r.body)
+        );
+    }
+
+  /**
+   *
+   * - `id`: 
+   *
+   * - `body`: 
+   *
+   * @return Updated Serie
+   */
+  private updateSerieResponse(params: Serie): Observable<HttpResponse<Serie[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params;
+    let req = new HttpRequest<any>(
+      "PUT",
+      this.rootUrl + 'rest/serie/upDateSerieById/' + params._id,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: Serie[] = null;
+        _body = _resp.body as Serie[];
+        return _resp.clone({body: _body}) as HttpResponse<Serie[]>;
+      })
+    );
+  }
+
+  /**
+   *
+   * - `id`: 
+   *
+   * - `body`: 
+   *
+   * @return Updated Serie
+   */
+   updateSerie(params: Serie): Observable<Serie[]> {
+    return this.updateSerieResponse(params).pipe(
+      map(_r => _r.body)
+    );
+  }
+
+
+  /**
+   * @param id undefined
+   * @return Deleted status
+   */
+  private deleteSerieResponse(id: string): Observable<HttpResponse<boolean>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      "DELETE",
+      this.rootUrl + 'rest/richieste/deleteSerieById/' + id,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: boolean = null;
+        _body = _resp.body == 'true';
+        return _resp.clone({body: _body}) as HttpResponse<boolean>;
+      })
+    );
+  }
+
+  /**
+   * @param id undefined
+   * @return Deleted status
+   */
+   deleteSerie(id: string): Observable<boolean> {
+    return this.deleteSerieResponse(id).pipe(
+      map(_r => _r.body)
+    );
+  }
+
 }
