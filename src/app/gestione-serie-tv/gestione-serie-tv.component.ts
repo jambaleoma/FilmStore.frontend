@@ -12,8 +12,6 @@ import { Table } from 'primeng/table';
 })
 export class GestioneSerieTvComponent implements OnInit {
 
-  listaRichiedenti: string[];
-
   serieSelezionata: Serie;
 
   serie: Serie[];

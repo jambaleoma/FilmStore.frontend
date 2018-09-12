@@ -70,9 +70,12 @@
           <div class="ui-g-6" align="left">
               <button type="button" pButton icon="fa fa-close" (click)="close()" label="Chiudi"></button>
           </div>
-          <div class="ui-g-6" align="right">
+          <div class="ui-g-6" align="right" *ngIf="newSerie">
               <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
           </div>
+          <div class="ui-g-6" align="right" *ngIf="!newSerie">
+            <button type="submit" pButton class="ui-button-warning" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        </div>
       </div>
   </p-footer>
   </form>
