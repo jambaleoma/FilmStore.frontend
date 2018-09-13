@@ -37,6 +37,8 @@ import {CardModule} from 'primeng/card';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
 import {SpinnerModule} from 'primeng/spinner';
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
 
 registerLocaleData(localeITCA);
 
@@ -55,6 +57,7 @@ registerLocaleData(localeITCA);
     GestioneSerieTvComponent
   ],
   imports: [
+    ToastModule,
     SpinnerModule,
     CardModule,
     ChartModule,
@@ -78,6 +81,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    MessageService,
     RichiestaService,
     SerieService,
     FilmService,

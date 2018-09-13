@@ -1,11 +1,12 @@
+import { Customer } from './../_api/models/customer';
 import { CustomerService } from '../_api/services/customer.service';
 import { Richiesta } from '../_api/models/richiesta';
 import { RichiestaService } from '../_api/services/richiesta.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Customer } from '../_api/models';
-import { SelectItem } from 'primeng/api';
+import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import { SelectItem, MessageService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
+import { ListItem } from '../_api/models';
 
 @Component({
   selector: 'app-richieste-list',
@@ -14,7 +15,7 @@ import { Table } from 'primeng/table';
 })
 export class RichiesteListComponent implements OnInit {
 
-  listaRichiedenti: string[];
+  listaRichiedenti: SelectItem[] = [];
 
   pipe: DatePipe = new DatePipe('it');
 
@@ -40,7 +41,9 @@ export class RichiesteListComponent implements OnInit {
 
   constructor(
     private richiestaService: RichiestaService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private messageService: MessageService,
+    private renderer: Renderer2
   ) {
 
     this.formats = [
@@ -53,6 +56,7 @@ export class RichiesteListComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfRichieste();
+    this.subsrcibeToListOfCustomer();
     this.getCols();
   }
 
@@ -77,6 +81,31 @@ export class RichiesteListComponent implements OnInit {
     ];
   }
 
+  subsrcibeToListOfCustomer() {
+    this.customerService.getCustomers().subscribe(notification => {
+      if (notification) {
+        this.listaRichiedenti = [
+          {
+            label: notification[0].firstName.toString(),
+            value: notification[0].firstName.toString()
+          },
+          {
+            label: notification[1].firstName.toString(),
+            value: notification[1].firstName.toString()
+          },
+          {
+            label: notification[2].firstName.toString(),
+            value: notification[2].firstName.toString()
+          },
+          {
+            label: notification[3].firstName.toString(),
+            value: notification[3].firstName.toString()
+          },
+        ];
+      }
+    });
+  }
+
   subsrcibeToListOfRichieste() {
     this.richiestaService.getRichieste().subscribe(notification => {
       this.richieste = notification;
@@ -87,13 +116,24 @@ export class RichiesteListComponent implements OnInit {
     );
   }
 
+  notAdmin() {
+    if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   onRowSelect(event) {
     this.newRichiesta = false;
     this.richiesta = this.cloneRichiesta(event.data);
-    this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe( response => {
+    this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe(response => {
       this.customerOfRichiesta = response;
     });
     this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
   }
 
   cloneRichiesta(r: Richiesta): Richiesta {
@@ -107,17 +147,28 @@ export class RichiesteListComponent implements OnInit {
 
   showDialogToAdd() {
     this.newRichiesta = true;
-    this.richiesta = { id: null };
-    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe( response => {
+    this.richiesta = {
+      id: null,
+      dataInserimento: this.pipe.transform(new Date(), 'fullDate'),
+      nomeCliente: sessionStorage.getItem('customerfirstName')};
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(response => {
       this.customerOfRichiesta = response;
     });
     this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
+  }
+
+  changeCustomer(event) {
+    this.customerService.getCustomerByName(event.value).subscribe(response => {
+      this.customerOfRichiesta = response;
+    });
   }
 
   save() {
     if (this.newRichiesta) {
-      this.richiesta.nomeCliente = sessionStorage.getItem('customerfirstName');
-      this.richiesta.dataInserimento = this.pipe.transform(new Date(), 'fullDate');
+      this.richiesta.nomeCliente = this.customerOfRichiesta.firstName;
       this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
         if (response !== null) {
           this.richieste = response as Richiesta[];
@@ -126,6 +177,7 @@ export class RichiesteListComponent implements OnInit {
           this.rt.reset();
           this.customerOfRichiesta.numeroRichieste++;
           this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+          this.messageService.add({key: 'OK', summary: 'Inserimento Eseguito', detail: 'Inserimento Eseguito con Successo'});
         }
       });
     } else {
@@ -137,17 +189,18 @@ export class RichiesteListComponent implements OnInit {
             this.richiesta = null;
             this.displayDialog = false;
             this.rt.reset();
+            this.messageService.add({key: 'OK', summary: 'Aggiornamento Eseguito', detail: 'Aggiornamento Eseguito con Successo'});
           }
         });
       } else {
-        alert('Puoi modificare solo le tue richieste');
+        this.messageService.add({key: 'KO', summary: 'Aggiornamento Negato', detail: 'Puoi Modificare solo le tue richieste'});
       }
     }
   }
 
   delete() {
     if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-    sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+      sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
       this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
         if (response !== null) {
           const index = this.richieste.indexOf(this.richiestaSelezionata);
@@ -157,10 +210,11 @@ export class RichiesteListComponent implements OnInit {
           this.rt.reset();
           this.customerOfRichiesta.numeroRichieste--;
           this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+          this.messageService.add({key: 'OK', summary: 'Eliminazione Eseguita', detail: 'Eliminazione Eseguita con Successo'});
         }
       });
     } else {
-      alert('Puoi eliminare solo le tue richieste');
+      this.messageService.add({key: 'KO', summary: 'Eliminazione Negata', detail: 'Puoi Eliminare solo le tue richieste' });
     }
   }
 

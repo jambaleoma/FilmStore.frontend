@@ -13,6 +13,20 @@
     }
   }
 
+  .ui-widget {
+    font-size: 18px !important;
+  }
+
+  .error-toast .ui-toast-message {
+    color: #ffffff;
+    background: red !important;
+  }
+
+  .succes-toast .ui-toast-message {
+    color: #ffffff;
+    background: green !important;
+  }
+
   [film-table] {
     &[film-loader-table]{
       .ui-blockui{
