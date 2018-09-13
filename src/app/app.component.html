@@ -1,10 +1,1 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div>
-  <p-menubar *ngIf="showMenuItems && !adminMode" [model]="items">
-    <p-menubar [model]="logOutItems"></p-menubar>
-  </p-menubar>
-  <p-menubar *ngIf="showMenuItems && adminMode" [model]="adminItems">
-    <p-menubar [model]="logOutItems"></p-menubar>
-  </p-menubar>
-  <router-outlet></router-outlet>
-</div>
+<router-outlet></router-outlet>

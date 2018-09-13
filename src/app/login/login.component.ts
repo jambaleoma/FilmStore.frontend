@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
       }
     }
     if (this.customerAutenticate) {
-      this.router.navigate(['home']);
+      this.router.navigate(['filmStore']);
       location.reload();
     } else {
       this.messageService.add({key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
