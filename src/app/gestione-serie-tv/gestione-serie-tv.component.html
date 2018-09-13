@@ -2,7 +2,7 @@
     <h1>Gestione Serie TV</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em; text-align: center">
+<div class="ui-grid-col-12" style="padding-top: 1em; text-align: center">
   <p-table [columns]="cols" #rt [value]="serie" selectionMode="single" [(selection)]="serieSelezionata" (onRowSelect)="onRowSelect($event)"
     [rows]="50">
     <ng-template pTemplate="header" let-columns>
