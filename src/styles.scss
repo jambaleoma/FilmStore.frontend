@@ -17,14 +17,35 @@
     font-size: 18px !important;
   }
 
-  .error-toast .ui-toast-message {
-    color: #ffffff;
+  .ui-growl .ui-growl-item-container.ui-growl-message-success {
+    color: #ffffff !important;
+    background: green !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image{
+    color: #ffffff !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-warn {
+    background: orange !important;
+    color: black !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image{
+    color: black !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-error {
+    color: #ffffff !important;
     background: red !important;
   }
 
-  .succes-toast .ui-toast-message {
-    color: #ffffff;
-    background: green !important;
+  .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image{
+    color: #ffffff !important;
+  }
+
+  .ui-confirmdialog.ui-dialog .ui-dialog-content {
+    padding: 1em 3.7em;
   }
 
   .ui-dialog .ui-dialog-titlebar {

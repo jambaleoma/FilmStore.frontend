@@ -39,6 +39,10 @@ import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.
 import {SpinnerModule} from 'primeng/spinner';
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import {MessagesModule} from 'primeng/messages';
+import {GrowlModule} from 'primeng/growl';
 
 registerLocaleData(localeITCA);
 
@@ -57,6 +61,9 @@ registerLocaleData(localeITCA);
     GestioneSerieTvComponent
   ],
   imports: [
+    GrowlModule,
+    MessagesModule,
+    ConfirmDialogModule,
     ToastModule,
     SpinnerModule,
     CardModule,
@@ -81,6 +88,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    ConfirmationService,
     MessageService,
     RichiestaService,
     SerieService,

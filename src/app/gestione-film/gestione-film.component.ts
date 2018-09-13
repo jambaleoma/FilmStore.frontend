@@ -1,6 +1,6 @@
 import { Film } from './../_api/models/film';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { FilmService } from '../_api/services/film.service';
 
@@ -23,6 +23,8 @@ export class GestioneFilmComponent implements OnInit {
 
   formats: SelectItem[];
 
+  msgs: Message[] = [];
+
   newFilm: boolean;
 
   displayDialog: boolean;
@@ -30,6 +32,7 @@ export class GestioneFilmComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private filmService: FilmService,
     private renderer: Renderer2
   ) {
@@ -104,41 +107,68 @@ export class GestioneFilmComponent implements OnInit {
 
   save() {
     if (this.newFilm) {
-      this.filmService.addFilm(this.film).subscribe(response => {
-        if (response !== null) {
-          this.films = response as Film[];
-          this.film = null;
-          this.displayDialog = false;
-          this.rt.reset();
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Inserire questo Film?',
+        header: 'Inserimento Film',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.filmService.addFilm(this.film).subscribe(response => {
+            if (response !== null) {
+              this.films = response as Film[];
+              this.film = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Film Inserito' }];
+            }
+          });
+        },
+        reject: () => {
         }
       });
     } else {
-      this.filmService.updateFilm(this.film).subscribe(response => {
-        if (response !== null) {
-          this.films = response as Film[];
-          this.film = null;
-          this.displayDialog = false;
-          this.rt.reset();
-        }
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Aggiornare questo Film?',
+        header: 'Aggiornamento Film',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.filmService.updateFilm(this.film).subscribe(response => {
+            if (response !== null) {
+              this.films = response as Film[];
+              this.film = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'warn', summary: 'Aggiornamento Completato', detail: 'Film Aggiornato' }];
+            }
+          });
+        },
+        reject: () => { }
       });
     }
   }
 
   delete() {
-      this.filmService.deleteFilm(this.filmSelezionato._id).subscribe(response => {
-        if (response !== null) {
-          const index = this.films.indexOf(this.filmSelezionato);
-          this.films = this.films.filter((val, i) => i !== index);
-          this.film = null;
-          this.displayDialog = false;
-          this.rt.reset();
-        }
-      });
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare questo Film?',
+      header: 'Eliminazione Film',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.filmService.deleteFilm(this.filmSelezionato._id).subscribe(response => {
+          if (response !== null) {
+            const index = this.films.indexOf(this.filmSelezionato);
+            this.films = this.films.filter((val, i) => i !== index);
+            this.film = null;
+            this.displayDialog = false;
+            this.rt.reset();
+            this.msgs = [{ severity: 'error', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
   close() {
     this.displayDialog = false;
   }
-
 
 }

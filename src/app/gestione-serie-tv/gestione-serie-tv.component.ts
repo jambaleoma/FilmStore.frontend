@@ -1,8 +1,7 @@
 import { SerieService } from './../_api/services/serie.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { DatePipe } from '@angular/common';
 import { Serie } from '../_api/models';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
 @Component({
@@ -24,6 +23,8 @@ export class GestioneSerieTvComponent implements OnInit {
 
   formats: SelectItem[];
 
+  msgs: Message[] = [];
+
   newSerie: boolean;
 
   displayDialog: boolean;
@@ -31,6 +32,7 @@ export class GestioneSerieTvComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private serieService: SerieService,
     private renderer: Renderer2
   ) {
@@ -103,41 +105,68 @@ export class GestioneSerieTvComponent implements OnInit {
 
   save() {
     if (this.newSerie) {
-      this.serieService.addSerie(this.singolaSerie).subscribe(response => {
-        if (response !== null) {
-          this.serie = response as Serie[];
-          this.singolaSerie = null;
-          this.displayDialog = false;
-          this.rt.reset();
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Inserire questa Serie TV?',
+        header: 'Inserimento Serie TV',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.serieService.addSerie(this.singolaSerie).subscribe(response => {
+            if (response !== null) {
+              this.serie = response as Serie[];
+              this.singolaSerie = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Serie TV Inserita' }];
+            }
+          });
+        },
+        reject: () => {
         }
       });
     } else {
-      this.serieService.updateSerie(this.singolaSerie).subscribe(response => {
-        if (response !== null) {
-          this.serie = response as Serie[];
-          this.singolaSerie = null;
-          this.displayDialog = false;
-          this.rt.reset();
-        }
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Aggiornare questa Serie TV?',
+        header: 'Aggiornamento Serie TV',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.serieService.updateSerie(this.singolaSerie).subscribe(response => {
+            if (response !== null) {
+              this.serie = response as Serie[];
+              this.singolaSerie = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'warn', summary: 'Aggiornamento Completato', detail: 'Serie TV Aggiornata' }];
+            }
+          });
+        },
+        reject: () => { }
       });
     }
   }
 
   delete() {
-      this.serieService.deleteSerie(this.serieSelezionata._id).subscribe(response => {
-        if (response !== null) {
-          const index = this.serie.indexOf(this.serieSelezionata);
-          this.serie = this.serie.filter((val, i) => i !== index);
-          this.singolaSerie = null;
-          this.displayDialog = false;
-          this.rt.reset();
-        }
-      });
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare questa Serie TV?',
+      header: 'Eliminazione Serie TV',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.serieService.deleteSerie(this.serieSelezionata._id).subscribe(response => {
+          if (response !== null) {
+            const index = this.serie.indexOf(this.serieSelezionata);
+            this.serie = this.serie.filter((val, i) => i !== index);
+            this.singolaSerie = null;
+            this.displayDialog = false;
+            this.rt.reset();
+            this.msgs = [{ severity: 'error', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
   close() {
     this.displayDialog = false;
   }
-
 
 }

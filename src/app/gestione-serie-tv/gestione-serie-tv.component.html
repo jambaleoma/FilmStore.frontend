@@ -1,5 +1,7 @@
+<p-growl [(value)]="msgs"></p-growl>
+
 <div align="center">
-    <h1>Gestione Serie TV</h1>
+  <h1>Gestione Serie TV</h1>
 </div>
 
 <div class="ui-grid-col-12" style="padding-top: 1em; text-align: center">
@@ -61,25 +63,36 @@
         </div>
         <div class="ui-g-9">
           <p-spinner size="30" id="numeroStagione" name="numeroStagione" [(ngModel)]="singolaSerie.numeroStagione"
-            [max]="100" [step]="1" style="width: 100%"></p-spinner>
+            [max]="100" [min]="1" [step]="1" style="width: 100%"></p-spinner>
         </div>
       </div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-3">
-          <button type="button" pButton icon="fa fa-close" (click)="close()" label="Chiudi"></button>
-        </div>
         <div class="ui-g-6" *ngIf="!newSerie" align="center">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
         </div>
-        <div class="ui-g-9" *ngIf="newSerie" align="right">
+        <div class="ui-g-12" *ngIf="newSerie" align="center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
         </div>
-        <div class="ui-g-3" *ngIf="!newSerie" align="right">
-          <button type="submit" pButton class="ui-button-warning" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        <div class="ui-g-6" *ngIf="!newSerie" align="center">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
         </div>
       </div>
     </p-footer>
   </form>
 </p-dialog>
+
+<p-confirmDialog #cd>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

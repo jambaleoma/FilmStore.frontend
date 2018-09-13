@@ -3,10 +3,9 @@ import { CustomerService } from '../_api/services/customer.service';
 import { Richiesta } from '../_api/models/richiesta';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { SelectItem, MessageService } from 'primeng/api';
+import { SelectItem, MessageService, ConfirmationService, Message } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
-import { ListItem } from '../_api/models';
 
 @Component({
   selector: 'app-richieste-list',
@@ -31,6 +30,8 @@ export class RichiesteListComponent implements OnInit {
 
   formats: SelectItem[];
 
+  msgs: Message[] = [];
+
   newRichiesta: boolean;
 
   displayDialog: boolean;
@@ -40,6 +41,7 @@ export class RichiesteListComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private confirmationService: ConfirmationService,
     private richiestaService: RichiestaService,
     private customerService: CustomerService,
     private messageService: MessageService,
@@ -168,54 +170,77 @@ export class RichiesteListComponent implements OnInit {
 
   save() {
     if (this.newRichiesta) {
-      this.richiesta.nomeCliente = this.customerOfRichiesta.firstName;
-      this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
-        if (response !== null) {
-          this.richieste = response as Richiesta[];
-          this.richiesta = null;
-          this.displayDialog = false;
-          this.rt.reset();
-          this.customerOfRichiesta.numeroRichieste++;
-          this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
-          this.messageService.add({key: 'OK', summary: 'Inserimento Eseguito', detail: 'Inserimento Eseguito con Successo'});
-        }
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Inserire questa Richiesta?',
+        header: 'Inserimento Richiesta',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.richiesta.nomeCliente = this.customerOfRichiesta.firstName;
+          this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
+            if (response !== null) {
+              this.richieste = response as Richiesta[];
+              this.richiesta = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.customerOfRichiesta.numeroRichieste++;
+              this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+              this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Richiesta Inserita' }];
+            }
+          });
+        },
+        reject: () => { }
       });
     } else {
-      if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-        sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-        this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
-          if (response !== null) {
-            this.richieste = response as Richiesta[];
-            this.richiesta = null;
-            this.displayDialog = false;
-            this.rt.reset();
-            this.messageService.add({key: 'OK', summary: 'Aggiornamento Eseguito', detail: 'Aggiornamento Eseguito con Successo'});
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Aggiornare questa Richiesta?',
+        header: 'Aggiornamento Richiesta',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
+            sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+            this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
+              if (response !== null) {
+                this.richieste = response as Richiesta[];
+                this.richiesta = null;
+                this.displayDialog = false;
+                this.rt.reset();
+                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
+              }
+            });
+          } else {
+            this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Non Puoi Aggiornare le Richieste di altri Utenti' }];
           }
-        });
-      } else {
-        this.messageService.add({key: 'KO', summary: 'Aggiornamento Negato', detail: 'Puoi Modificare solo le tue richieste'});
-      }
+        },
+        reject: () => { }
+      });
     }
   }
 
   delete() {
-    if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-      sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
-        if (response !== null) {
-          const index = this.richieste.indexOf(this.richiestaSelezionata);
-          this.richieste = this.richieste.filter((val, i) => i !== index);
-          this.richiesta = null;
-          this.displayDialog = false;
-          this.rt.reset();
-          this.customerOfRichiesta.numeroRichieste--;
-          this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
-          this.messageService.add({key: 'OK', summary: 'Eliminazione Eseguita', detail: 'Eliminazione Eseguita con Successo'});
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare questa Richiesta?',
+      header: 'Eliminazione Richiesta',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
+          sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
+          this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
+            if (response !== null) {
+              const index = this.richieste.indexOf(this.richiestaSelezionata);
+              this.richieste = this.richieste.filter((val, i) => i !== index);
+              this.richiesta = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.customerOfRichiesta.numeroRichieste--;
+              this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+              this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
+            }
+          });
+        } else {
+          this.msgs = [{ severity: 'error', summary: 'Attenzione', detail: 'Non Puoi Eliminare le Richieste di altri Utenti' }];
         }
-      });
-    } else {
-      this.messageService.add({key: 'KO', summary: 'Eliminazione Negata', detail: 'Puoi Eliminare solo le tue richieste' });
-    }
+      }, reject: () => { }
+    });
   }
 
   close() {
