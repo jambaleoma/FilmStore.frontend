@@ -1,5 +1,5 @@
 import { CustomerService } from '../_api/services/customer.service';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Customer } from '../_api/models/customer';
 import { Richiesta } from '../_api/models';
 
@@ -15,6 +15,8 @@ export class CustomersListaComponent implements OnInit {
   richiestePerNomeUtente: Richiesta[];
 
   cols: any[];
+
+  adminMode = false;
 
   constructor(
     private customerService: CustomerService
@@ -35,7 +37,13 @@ export class CustomersListaComponent implements OnInit {
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      this.customers = notification;
+      if (sessionStorage.getItem('customerfirstName') !== 'Vincenzo') {
+        this.customers[0] = notification.find(customer => customer.firstName === sessionStorage.getItem('customerfirstName'));
+        this.adminMode = false;
+      } else {
+        this.customers = notification;
+        this.adminMode = true;
+      }
     });
   }
 

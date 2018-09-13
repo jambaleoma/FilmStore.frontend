@@ -27,6 +27,16 @@
     background: green !important;
   }
 
+  .ui-dialog .ui-dialog-titlebar {
+    background-color: darkblue !important;
+    color: white !important;
+  }
+
+  .ui-card-body {
+    padding: 0em !important;
+    padding-bottom: 1em !important;
+}
+
   [film-table] {
     &[film-loader-table]{
       .ui-blockui{

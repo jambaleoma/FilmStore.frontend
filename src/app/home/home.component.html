@@ -4,7 +4,7 @@
   <h2>CIAO {{customerfirstName}} !</h2>
 
   <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Ricerca Serie TV" subtitle="Trova una Serie che ti piace!" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+    <p-card title="Ricerca Serie TV" subtitle="Trova una Serie che ti piace!" [style]="{width: '375px'}" styleClass="ui-card-shadow">
       <p-header>
         <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaSerieTV.jpg">
       </p-header>
@@ -12,12 +12,12 @@
         informazioni che cerchi.</div>
       <p-footer>
         <button pButton type="button" label="Cerca Serie TV" icon="fa fa-video-camera" (click)="goToSerieTv()"></button>
-        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToSerieTvOnAdminMode()" class="ui-button-danger"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Gestisci Serie TV" icon="fa fa-cog" (click)="goToSerieTvOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>
   <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Ricerca Film" subtitle="Trova un Film che ti piace!" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+    <p-card title="Ricerca Film" subtitle="Trova un Film che ti piace!" [style]="{width: '375px'}" styleClass="ui-card-shadow">
       <p-header>
         <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaFilm.jpg">
       </p-header>
@@ -25,20 +25,20 @@
         informazioni che cerchi.</div>
       <p-footer>
         <button pButton type="button" label="Cerca Film" icon="fa fa-film" (click)="goToFilms()"></button>
-        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToFilmsOnAdminMode()" class="ui-button-danger"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Gestisci Film" icon="fa fa-cog" (click)="goToFilmsOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>
   <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo!" [style]="{width: '360px'}" styleClass="ui-card-shadow">
+    <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo!" [style]="{width: '375px'}" styleClass="ui-card-shadow">
       <p-header>
         <img src="Card" src="assets\showcase\images\HomePage\Card\CardRichieste.jpg">
       </p-header>
       <div style="padding-bottom: 24px;">Qui potrai chiedere tu stesso un film o una Serie TV che non sono presenti in
         lista.</div>
       <p-footer>
-        <button pButton type="button" label="Fai una Richiesta" icon="pi pi-plus" (click)="goToRicheiste()"></button>
-        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Admin Privileges" icon="fa fa-unlock-alt" (click)="goToRicheisteOnAdminMode()" class="ui-button-danger"></button>
+        <button pButton type="button" label="Fai una Richiesta" icon="pi pi-plus" (click)="goToRicheiste()" *ngIf="customerfirstName !== 'Vincenzo'"></button>
+        <button style="margin-top: 10px;" *ngIf="customerfirstName === 'Vincenzo'" pButton type="button" label="Gestisci Richieste" icon="fa fa-cog" (click)="goToRicheisteOnAdminMode()" class="ui-button-danger"></button>
       </p-footer>
     </p-card>
   </div>

@@ -1,5 +1,5 @@
 import { Film } from './../_api/models/film';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { FilmService } from '../_api/services/film.service';
@@ -30,7 +30,8 @@ export class GestioneFilmComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
-    private filmService: FilmService
+    private filmService: FilmService,
+    private renderer: Renderer2
   ) {
 
     this.formats = [
@@ -77,6 +78,9 @@ export class GestioneFilmComponent implements OnInit {
     this.newFilm = false;
     this.film = this.cloneFilm(event.data);
     this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
   }
 
   cloneFilm(r: Film): Film {
@@ -92,6 +96,10 @@ export class GestioneFilmComponent implements OnInit {
     this.newFilm = true;
     this.film = { _id: null };
     this.displayDialog = true;
+    this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
   }
 
   save() {

@@ -1,24 +1,10 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div>
-  <p-menubar *ngIf="showMenuItems" [model]="items">
+  <p-menubar *ngIf="showMenuItems && !adminMode" [model]="items">
     <p-menubar [model]="logOutItems"></p-menubar>
   </p-menubar>
-  <!-- <p-dialog header="LogOut Utente" [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500">
-    <form name="form" #flogin="ngForm">
-      <p-header>
-        <h2>Sicuro di voler Uscire?</h2>
-      </p-header>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <div class="ui-g-6" align="left">
-            <button type="button" pButton (click)="showDialog=false" label="No"></button>
-          </div>
-          <div class="ui-g-6" align="right">
-            <button type="submit" pButton class="ui-button-success" (click)="logOut()" label="Si"></button>
-          </div>
-        </div>
-      </p-footer>
-    </form>
-  </p-dialog> -->
+  <p-menubar *ngIf="showMenuItems && adminMode" [model]="adminItems">
+    <p-menubar [model]="logOutItems"></p-menubar>
+  </p-menubar>
   <router-outlet></router-outlet>
 </div>

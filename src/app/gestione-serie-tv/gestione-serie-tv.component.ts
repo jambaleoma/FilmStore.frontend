@@ -1,5 +1,5 @@
 import { SerieService } from './../_api/services/serie.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Serie } from '../_api/models';
 import { SelectItem } from 'primeng/api';
@@ -31,7 +31,8 @@ export class GestioneSerieTvComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
-    private serieService: SerieService
+    private serieService: SerieService,
+    private renderer: Renderer2
   ) {
 
     this.formats = [
@@ -77,6 +78,9 @@ export class GestioneSerieTvComponent implements OnInit {
     this.newSerie = false;
     this.singolaSerie = this.cloneSerie(event.data);
     this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
   }
 
   cloneSerie(r: Serie): Serie {
@@ -92,6 +96,9 @@ export class GestioneSerieTvComponent implements OnInit {
     this.newSerie = true;
     this.singolaSerie = { _id: null };
     this.displayDialog = true;
+    setTimeout(() => {
+      this.renderer.selectRootElement('#titolo').focus();
+    }, 100);
   }
 
   save() {

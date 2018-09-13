@@ -1,6 +1,10 @@
-<div align="center">
+<div align="center" *ngIf="adminMode">
     <h1>Richieste degli Utenti</h1>
 </div>
+
+<div align="center" *ngIf="!adminMode">
+        <h1>Richieste</h1>
+    </div>
 
 <div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 3em;">
     <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
