@@ -70,7 +70,7 @@ export class RicercaFilmComponent implements OnInit {
 
   //  *** Vado a visulizzare nel dattaglio il film selezionato ***
   goToFilm(filmId: string) {
-    this.router.navigate(['Film/view', filmId]);
+    this.router.navigate(['filmStore/Film/view', filmId]);
   }
 
   onYearChange(event, ft) {

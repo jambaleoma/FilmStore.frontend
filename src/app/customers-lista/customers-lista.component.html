@@ -3,7 +3,7 @@
 </div>
 
 <div align="center" *ngIf="!adminMode">
-        <h1>Profilo Personale di {{customers[0].firstName}}</h1>
+        <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
     </div>
 
 <div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 3em;">
@@ -16,6 +16,9 @@
                 <th *ngFor="let col of columns">
                     {{col.header}}
                 </th>
+                <th style="width: 7em">
+                    Dettaglio Richieste
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-customer let-columns="columns">
@@ -25,6 +28,9 @@
                 </td>
                 <td *ngFor="let col of columns">
                     {{customer[col.field]}}
+                </td>
+                <td>
+                    <p-button icon="fa fa-file-video-o" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
                 </td>
             </tr>
         </ng-template>

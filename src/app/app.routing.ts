@@ -10,6 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutsComponent } from './layouts/admin/layouts.component';
+import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
 
 const appRoutes: Routes = [
     /** Login */
@@ -35,6 +36,8 @@ const appRoutes: Routes = [
         { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' } },
         /** Richieste */
         { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' } },
+        /** Richieste Utente*/
+        { path: 'richieste/view/:firstName', component: RichiesteUtenteComponent, data: { pageTitle: 'Richieste Utente' } },
     ]},
     // otherwise redirect to home
     { path: '**', redirectTo: 'login' }

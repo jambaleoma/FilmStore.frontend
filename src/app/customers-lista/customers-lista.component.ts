@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../_api/models/customer';
@@ -19,7 +20,8 @@ export class CustomersListaComponent implements OnInit {
   adminMode = false;
 
   constructor(
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -45,6 +47,10 @@ export class CustomersListaComponent implements OnInit {
         this.adminMode = true;
       }
     });
+  }
+
+  goToListaRichiesteCustomer(nomeCustomer: string) {
+    this.router.navigate(['filmStore/richieste/view', nomeCustomer]);
   }
 
 }
