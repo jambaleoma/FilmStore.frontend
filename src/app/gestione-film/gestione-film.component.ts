@@ -137,7 +137,7 @@ export class GestioneFilmComponent implements OnInit {
               this.film = null;
               this.displayDialog = false;
               this.rt.reset();
-              this.msgs = [{ severity: 'warn', summary: 'Aggiornamento Completato', detail: 'Film Aggiornato' }];
+              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Film Aggiornato' }];
             }
           });
         },
@@ -159,7 +159,7 @@ export class GestioneFilmComponent implements OnInit {
             this.film = null;
             this.displayDialog = false;
             this.rt.reset();
-            this.msgs = [{ severity: 'error', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
           }
         });
       },

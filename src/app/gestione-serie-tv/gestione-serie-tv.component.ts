@@ -135,7 +135,7 @@ export class GestioneSerieTvComponent implements OnInit {
               this.singolaSerie = null;
               this.displayDialog = false;
               this.rt.reset();
-              this.msgs = [{ severity: 'warn', summary: 'Aggiornamento Completato', detail: 'Serie TV Aggiornata' }];
+              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Serie TV Aggiornata' }];
             }
           });
         },
@@ -157,7 +157,7 @@ export class GestioneSerieTvComponent implements OnInit {
             this.singolaSerie = null;
             this.displayDialog = false;
             this.rt.reset();
-            this.msgs = [{ severity: 'error', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
           }
         });
       },

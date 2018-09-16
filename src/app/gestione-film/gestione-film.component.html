@@ -1,7 +1,14 @@
 <p-growl [(value)]="msgs"></p-growl>
 
-<div align="center">
-  <h1>Gestione Film</h1>
+<div class="ui-grid-col-12">
+  <div class="ui-g">
+      <div class="ui-g-6" align="right">
+          <h1>Gestione Film</h1>
+        </div>
+    <div class="ui-g-6" align="right">
+      <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film" style="margin-top: 1em;"></button>
+    </div>
+  </div>
 </div>
 
 <div class="ui-grid-col-12" style="padding-top: 1em; text-align: center">
@@ -27,12 +34,6 @@
           Nessun Film Presente
         </td>
       </tr>
-    </ng-template>
-
-    <ng-template pTemplate="summary" let-rowData>
-      <div style="text-align:center">
-        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film"></button>
-      </div>
     </ng-template>
   </p-table>
 </div>
