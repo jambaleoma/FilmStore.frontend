@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
 import { Customer } from '../_api/models';
@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
     private customerService: CustomerService,
     private renderer: Renderer2,
     private messageService: MessageService
-  ) { }
+  ) {
+    this.renderer.addClass(document.body, 'backImage');
+  }
 
   ngOnInit() {
     this.subsrcibeToListOfCustomers();
