@@ -51,18 +51,13 @@ export class GestioneSerieTvComponent implements OnInit {
 
   getCols() {
     this.cols = [
-      {
-        field: 'nome',
-        header: 'Nome Serie TV',
-      },
-      {
-        field: 'numeroStagione',
-        header: 'Numero Della Stagione'
-      },
-      {
-        field: 'formato',
-        header: 'Formato'
-      }
+      { field: 'nome', header: 'Nome Serie TV' },
+      { field: 'formato', header: 'Formato' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
+      { field: 'anno', header: 'Anno' },
+      { field: 'numeroEpisodi', header: 'Episodi N°' },
+      { field: 'numeroStagione', header: 'Stagione N°' }
     ];
   }
 

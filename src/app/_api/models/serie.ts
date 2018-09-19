@@ -3,4 +3,8 @@ export interface Serie {
     nome?: string;
     numeroStagione?: number;
     formato?: string;
+    anno?: number;
+    numeroEpisodi?: number;
+    linguaAudio?: string;
+    linguaSottotitoli?: string;
 }

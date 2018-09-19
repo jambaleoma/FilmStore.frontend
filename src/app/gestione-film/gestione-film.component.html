@@ -2,16 +2,16 @@
 
 <div class="ui-grid-col-12">
   <div class="ui-g">
-      <div class="ui-g-6" align="right">
+      <div class="ui-g-12" align="center" style="margin-bottom: -100%">
           <h1>Gestione Film</h1>
         </div>
-    <div class="ui-g-6" align="right">
+    <div class="ui-g-12" align="right">
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film" style="margin-top: 1em;"></button>
     </div>
   </div>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em; text-align: center">
+<div class="ui-grid-col-12" style="padding-top: 1em;"  align="center">
   <p-table [columns]="cols" #rt [value]="films" selectionMode="single" [(selection)]="filmSelezionato" (onRowSelect)="onRowSelect($event)"
     [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -35,6 +35,9 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="summary">
+        Sono Presenti {{ this.rt.totalRecords }} Film
+      </ng-template>
   </p-table>
 </div>
 
@@ -48,6 +51,20 @@
         </div>
         <div class="ui-g-9">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="film.nome" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Audio</label>
+        </div>
+        <div class="ui-g-3">
+          <input pInputText id="audio" name="audio" [(ngModel)]="film.linguaAudio" style="width: 100%" />
+        </div>
+        <div class="ui-g-3">
+          <label>Sottotitoli</label>
+        </div>
+        <div class="ui-g-3">
+          <input pInputText id="subtitle" name="subtitle" [(ngModel)]="film.linguaSottotitoli" style="width: 100%" />
         </div>
       </div>
       <div class="ui-g-12">

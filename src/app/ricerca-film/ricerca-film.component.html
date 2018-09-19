@@ -1,67 +1,68 @@
 <div align="center">
-    <h1>Elenco Film</h1>
+  <h1>Elenco Film</h1>
 </div>
 
 <!-- FILTRI DI RICERCA -->
-<div class="ui-grid-col-12" style="padding-top: 3em;">
-    <div class="ui-g">
-        <div class="ui-g-3">
-            <div class="label"> Nome Film </div>
-            <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleMsg"
-                (input)="ft.filter($event.target.value, 'nome', 'contains')">
-        </div>
-        <div class="ui-g-3">
-            <div class="label">Formato Film </div>
-            <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
-                [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
-        </div>
-        <div class="ui-g-3">
-            <div class="label">Anno Film dal {{yearFilter || 1996}} a Oggi </div>
-            <p-slider [style]="{'width':'80%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1996" [max]="2018"
-                (onChange)="onYearChange($event, ft)"></p-slider>
-        </div>
-        <div film-button-third class="ui-g-3 resetButton" align="center">
-            <button pButton type="button" label="Reset Filtri" (click)="reset(ft)" style="margin-top: 14px;"></button>
-        </div>
+<div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
+  <div class="ui-g">
+    <div class="ui-g-3" align="right">
+      <div class="label" style="padding-right: 18%;"> Nome Film </div>
+      <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleMsg" (input)="ft.filter($event.target.value, 'nome', 'contains')">
     </div>
+    <div class="ui-g-3">
+      <div class="label">Formato Film </div>
+      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
+        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
+    </div>
+    <div class="ui-g-3">
+      <div class="label">Anno Film dal {{yearFilter || 1996}} a Oggi </div>
+      <p-slider [style]="{'width':'80%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1996" [max]="2018"
+        (onChange)="onYearChange($event, ft)"></p-slider>
+    </div>
+    <div film-button-third class="ui-g-3 resetButton" align="center">
+      <button pButton type="button" label="Reset Filtri" (click)="reset(ft)" style="margin-top: 14px;"></button>
+    </div>
+  </div>
 </div>
 <!-- / FILTRI DI RICERCA -->
 
-<div class="ui-grid-col-12" style="padding-top: 3em;">
-    <p-table film-table [columns]="cols" [value]="films" #ft>
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th style="width: 60%">
-                    Nome
-                </th>
-                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                    {{col.header}}
-                    <p-sortIcon [field]="col.field"></p-sortIcon>
-                </th>
-                <th style="width: 7em">
-                    Dettagli
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-                <td>
-                    {{rowData.nome}}
-                </td>
-                <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
-                </td>
-                <td>
-                    <p-button icon="fa fa-file-video-o" (onClick)="goToFilm(rowData._id)"></p-button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td [attr.colspan]="cols.length+2">
-                    Nessun Film Trovato
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+<div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
+  <p-table film-table [columns]="cols" [value]="films" #ft>
+    <ng-template pTemplate="colgroup" let-columns>
+      <colgroup>
+        <col *ngFor="let col of columns">
+      </colgroup>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th style="width: 7em">
+          Dettagli
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{rowData[col.field]}}
+        </td>
+        <td>
+          <p-button icon="fa fa-file-video-o" (onClick)="goToFilm(rowData._id)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length + 1">
+          Nessun Film Trovato
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Torvati {{this.table.filteredValue ? this.table.filteredValue.length : this.table.totalRecords }} Film
+    </ng-template>
+  </p-table>
 </div>

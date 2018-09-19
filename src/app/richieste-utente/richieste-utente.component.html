@@ -1,10 +1,10 @@
 <p-growl [(value)]="msgs"></p-growl>
 
 <div align="center">
-    <h1>Richieste di {{nomeCustomer}} </h1>
+  <h1>Richieste di {{nomeCustomer}} </h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em; text-align: center">
+<div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
   <p-table [columns]="cols" #rt [value]="richieste" selectionMode="single" [(selection)]="richiestaSelezionata"
     (onRowSelect)="onRowSelect($event)" [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -28,13 +28,10 @@
         </td>
       </tr>
     </ng-template>
-
-    <ng-template pTemplate="summary" let-rowData>
-      <div style="text-align:center">
-        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
-      </div>
-    </ng-template>
   </p-table>
+  <div style="text-align:center" style="padding-top: 2em;">
+    <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
+  </div>
 </div>
 
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
@@ -84,16 +81,15 @@
 </p-dialog>
 
 <p-confirmDialog #cd>
-    <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-3">
-          <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
-        </div>
-        <div class="ui-g-6"></div>
-        <div class="ui-g-3">
-          <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
-        </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
       </div>
-    </p-footer>
-  </p-confirmDialog>
-  
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

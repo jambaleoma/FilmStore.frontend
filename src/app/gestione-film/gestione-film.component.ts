@@ -52,18 +52,11 @@ export class GestioneFilmComponent implements OnInit {
 
   getCols() {
     this.cols = [
-      {
-        field: 'nome',
-        header: 'Nome Film',
-      },
-      {
-        field: 'formato',
-        header: 'Formato del Film'
-      },
-      {
-        field: 'anno',
-        header: 'Usicta del Film'
-      }
+      { field: 'nome', header: 'Titolo' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
+      { field: 'anno', header: 'Anno' },
+      { field: 'formato', header: 'Formato' }
     ];
   }
 
