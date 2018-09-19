@@ -1,3 +1,4 @@
+import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
 import { StatisticheComponent } from './statistiche/statistiche.component';
@@ -30,6 +31,8 @@ const appRoutes: Routes = [
         { path: 'gestioneSerieTV', component: GestioneSerieTvComponent, data: { pageTitle: 'Gestione SerieTV' } },
         /** Dettaglio Film */
         { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' } },
+        /** Dettaglio SerieTV */
+        { path: 'SerieTV/view/:id', component: DettaglioSerieTvComponent, data: { pageTitle: 'Dettaglio SerieTV' } },
         /** Statistiche */
         { path: 'statistiche', component: StatisticheComponent, data: { pageTitle: 'Statistiche' } },
         /** Utenti */

@@ -44,8 +44,13 @@ export class RicercaSerieTvComponent implements OnInit {
 
   getColumns() {
     this.cols = [
-      { field: 'numeroStagione', header: 'Stagione N°' },
+      { field: 'nome', header: 'Titolo' },
       { field: 'formato', header: 'Formato' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
+      { field: 'anno', header: 'Anno' },
+      { field: 'numeroEpisodi', header: 'Episodi N°' },
+      { field: 'numeroStagione', header: 'Stagione N°' }
     ];
   }
 
@@ -64,6 +69,11 @@ export class RicercaSerieTvComponent implements OnInit {
     stvt.reset();
     this.filters = {};
     this.stagioneFilter = null;
+  }
+
+  //  *** Vado a visulizzare nel dattaglio la Serie TV selezionata ***
+  goToSerie(serieId: string) {
+    this.router.navigate(['filmStore/SerieTV/view', serieId]);
   }
 
   onStagioneChange(event, ft) {

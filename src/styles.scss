@@ -117,13 +117,17 @@ body.backImage{
   
     }
   }
-  
-  [film-table-input]{
-    max-width: 100%;
-    min-width: 100%;
-    min-height: 5em;
-    font-family: "Roboto";
-    color: #00478F;
+
+  .ui-table table {
+    border-collapse: collapse;
+    width: auto !important;
+    table-layout: fixed;
+  }
+
+  .ui-table-summary {
+    border-collapse: collapse;
+    width: max-content !important;
+    table-layout: fixed;
   }
 
   [sdc-multiselect]{

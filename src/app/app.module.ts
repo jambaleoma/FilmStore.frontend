@@ -44,6 +44,7 @@ import {ConfirmationService} from 'primeng/api';
 import {MessagesModule} from 'primeng/messages';
 import {GrowlModule} from 'primeng/growl';
 import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
+import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 
 registerLocaleData(localeITCA);
 
@@ -60,7 +61,8 @@ registerLocaleData(localeITCA);
     RicercaSerieTvComponent,
     GestioneFilmComponent,
     GestioneSerieTvComponent,
-    RichiesteUtenteComponent
+    RichiesteUtenteComponent,
+    DettaglioSerieTvComponent
   ],
   imports: [
     GrowlModule,
