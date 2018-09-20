@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
 import { Customer } from '../_api/models';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +23,14 @@ export class LoginComponent implements OnInit {
 
   customerAutenticate: boolean;
 
-  @ViewChild('loginPassword') inputEl: ElementRef;
-
   constructor(
     private router: Router,
-    private customerService: CustomerService
-  ) { }
+    private customerService: CustomerService,
+    private renderer: Renderer2,
+    private messageService: MessageService
+  ) {
+    this.renderer.addClass(document.body, 'backImage');
+  }
 
   ngOnInit() {
     this.subsrcibeToListOfCustomers();
@@ -42,8 +45,8 @@ export class LoginComponent implements OnInit {
   showLoginDilog() {
     this.showDialog = true;
     setTimeout(() => {
-      this.inputEl.nativeElement.focus();
-    }, 0);
+      this.renderer.selectRootElement('#loginPassword').focus();
+    }, 100);
   }
 
   loginCustomer(password: string) {
@@ -58,10 +61,10 @@ export class LoginComponent implements OnInit {
       }
     }
     if (this.customerAutenticate) {
-      this.router.navigate(['home']);
+      this.router.navigate(['filmStore']);
       location.reload();
     } else {
-      alert('Password Errata');
+      this.messageService.add({key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
     }
   }
 

@@ -1,4 +1,17 @@
-<div class="ui-grid-col-12" style="padding-top: 3em; text-align: center">
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="ui-grid-col-12">
+  <div class="ui-g">
+      <div class="ui-g-12" align="center" style="margin-bottom: -100%">
+          <h1>Gestione Film</h1>
+        </div>
+    <div class="ui-g-12" align="right">
+      <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film" style="margin-top: 1em;"></button>
+    </div>
+  </div>
+</div>
+
+<div class="ui-grid-col-12" style="padding-top: 1em;"  align="center">
   <p-table [columns]="cols" #rt [value]="films" selectionMode="single" [(selection)]="filmSelezionato" (onRowSelect)="onRowSelect($event)"
     [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -10,7 +23,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(rowData, col) : rowData[col.field]">
+        <td *ngFor="let col of columns">
           {{rowData[col.field]}}
         </td>
       </tr>
@@ -22,12 +35,9 @@
         </td>
       </tr>
     </ng-template>
-
-    <ng-template pTemplate="summary" let-rowData>
-      <div style="text-align:center">
-        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film"></button>
-      </div>
-    </ng-template>
+    <ng-template pTemplate="summary">
+        Sono Presenti {{ this.rt.totalRecords }} Film
+      </ng-template>
   </p-table>
 </div>
 
@@ -37,7 +47,7 @@
     <div class="ui-g ui-fluid" *ngIf="film" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label for="vin">Titolo Film</label>
+          <label>Titolo Film</label>
         </div>
         <div class="ui-g-9">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="film.nome" style="width: 100%" />
@@ -45,7 +55,21 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label for="year">Anno Film</label>
+          <label>Audio</label>
+        </div>
+        <div class="ui-g-3">
+          <input pInputText id="audio" name="audio" [(ngModel)]="film.linguaAudio" style="width: 100%" />
+        </div>
+        <div class="ui-g-3">
+          <label>Sottotitoli</label>
+        </div>
+        <div class="ui-g-3">
+          <input pInputText id="subtitle" name="subtitle" [(ngModel)]="film.linguaSottotitoli" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Anno Film</label>
         </div>
         <div class="ui-g-9">
           <input pInputText id="anno" name="anno" [(ngModel)]="film.anno" style="width: 100%" />
@@ -53,30 +77,39 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label for="year">Formato Film</label>
+          <label>Formato Film</label>
         </div>
         <div class="ui-g-9">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="film.formato"></p-dropdown>
         </div>
       </div>
-      <div class="ui-g-3"></div>
-      <div class="ui-g-6" *ngIf="!newFilm">
-        <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
-      </div>
-      <div class="ui-g-3"></div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-6" align="left">
-          <button type="button" pButton icon="fa fa-close" (click)="close()" label="Chiudi"></button>
+        <div class="ui-g-6" *ngIf="!newFilm" align="center">
+          <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
         </div>
-        <div class="ui-g-6" align="right" *ngIf="newFilm">
+        <div class="ui-g-12" *ngIf="newFilm" align="center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
         </div>
-        <div class="ui-g-6" align="right" *ngIf="!newFilm">
-          <button type="submit" pButton class="ui-button-warning" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
-      </div>
+        <div class="ui-g-6" *ngIf="!newFilm" align="center">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        </div>
       </div>
     </p-footer>
   </form>
 </p-dialog>
+
+<p-confirmDialog #cd>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

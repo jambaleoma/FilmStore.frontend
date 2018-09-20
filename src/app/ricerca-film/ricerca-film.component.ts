@@ -46,6 +46,9 @@ export class RicercaFilmComponent implements OnInit {
 
   getColumns() {
     this.cols = [
+      { field: 'nome', header: 'Titolo' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' },
       { field: 'formato', header: 'Formato' }
     ];
@@ -70,17 +73,17 @@ export class RicercaFilmComponent implements OnInit {
 
   //  *** Vado a visulizzare nel dattaglio il film selezionato ***
   goToFilm(filmId: string) {
-    this.router.navigate(['Film/view', filmId]);
+    this.router.navigate(['filmStore/Film/view', filmId]);
   }
 
   onYearChange(event, ft) {
     if (this.yearTimeout) {
-        clearTimeout(this.yearTimeout);
+      clearTimeout(this.yearTimeout);
     }
 
     this.yearTimeout = setTimeout(() => {
-       ft.filter(event.value - 1, 'anno', 'gt');
+      ft.filter(event.value - 1, 'anno', 'gt');
     }, 250);
-}
+  }
 
 }

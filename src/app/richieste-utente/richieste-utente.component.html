@@ -1,7 +1,7 @@
 <p-growl [(value)]="msgs"></p-growl>
 
 <div align="center">
-  <h1>Richieste degli Utenti</h1>
+  <h1>Richieste di {{nomeCustomer}} </h1>
 </div>
 
 <div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
@@ -52,15 +52,6 @@
         </div>
         <div class="ui-g-10">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
-        </div>
-      </div>
-      <div class="ui-g-12" style="padding-top: 1.5em;">
-        <div class="ui-g-2">
-          <label>Richiedente</label>
-        </div>
-        <div class="ui-g-10">
-          <p-dropdown [options]="listaRichiedenti" id="richiedente" name="richiedente" (onChange)="changeCustomer($event)"
-            [(ngModel)]="richiesta.nomeCliente" [disabled]="notAdmin()"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">

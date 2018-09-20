@@ -37,6 +37,14 @@ import {CardModule} from 'primeng/card';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
 import {SpinnerModule} from 'primeng/spinner';
+import {ToastModule} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import {MessagesModule} from 'primeng/messages';
+import {GrowlModule} from 'primeng/growl';
+import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
+import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 
 registerLocaleData(localeITCA);
 
@@ -52,9 +60,15 @@ registerLocaleData(localeITCA);
     LoginComponent,
     RicercaSerieTvComponent,
     GestioneFilmComponent,
-    GestioneSerieTvComponent
+    GestioneSerieTvComponent,
+    RichiesteUtenteComponent,
+    DettaglioSerieTvComponent
   ],
   imports: [
+    GrowlModule,
+    MessagesModule,
+    ConfirmDialogModule,
+    ToastModule,
     SpinnerModule,
     CardModule,
     ChartModule,
@@ -78,6 +92,8 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    ConfirmationService,
+    MessageService,
     RichiestaService,
     SerieService,
     FilmService,

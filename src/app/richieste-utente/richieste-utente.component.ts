@@ -1,20 +1,25 @@
+import { Router } from '@angular/router';
 import { Customer } from './../_api/models/customer';
 import { CustomerService } from '../_api/services/customer.service';
 import { Richiesta } from '../_api/models/richiesta';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { SelectItem, MessageService, ConfirmationService, Message } from 'primeng/api';
+import { SelectItem, ConfirmationService, Message } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
 
 @Component({
-  selector: 'app-richieste-list',
-  templateUrl: './richieste-list.component.html',
-  styleUrls: ['./richieste-list.component.scss']
+  selector: 'app-richieste-utente',
+  templateUrl: './richieste-utente.component.html',
+  styleUrls: ['./richieste-utente.component.scss']
 })
-export class RichiesteListComponent implements OnInit {
+export class RichiesteUtenteComponent implements OnInit {
 
-  listaRichiedenti: SelectItem[] = [];
+  nomeCustomer: string;
+
+  urlRichiesteCustomer: string;
+
+  arrayStringUrl: string[];
 
   pipe: DatePipe = new DatePipe('it');
 
@@ -44,8 +49,12 @@ export class RichiesteListComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private richiestaService: RichiestaService,
     private customerService: CustomerService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) {
+    this.urlRichiesteCustomer = this.router.url.substring(0, this.router.url.length);
+    this.arrayStringUrl = this.urlRichiesteCustomer.split('/');
+    this.nomeCustomer = this.arrayStringUrl[this.arrayStringUrl.length - 1];
 
     this.formats = [
       { label: '', value: '' },
@@ -57,7 +66,6 @@ export class RichiesteListComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfRichieste();
-    this.subsrcibeToListOfCustomer();
     this.getCols();
   }
 
@@ -82,34 +90,10 @@ export class RichiesteListComponent implements OnInit {
     ];
   }
 
-  subsrcibeToListOfCustomer() {
-    this.customerService.getCustomers().subscribe(notification => {
-      if (notification) {
-        this.listaRichiedenti = [
-          {
-            label: notification[0].firstName.toString(),
-            value: notification[0].firstName.toString()
-          },
-          {
-            label: notification[1].firstName.toString(),
-            value: notification[1].firstName.toString()
-          },
-          {
-            label: notification[2].firstName.toString(),
-            value: notification[2].firstName.toString()
-          },
-          {
-            label: notification[3].firstName.toString(),
-            value: notification[3].firstName.toString()
-          },
-        ];
-      }
-    });
-  }
-
   subsrcibeToListOfRichieste() {
     this.richiestaService.getRichieste().subscribe(notification => {
       this.richieste = notification;
+      this.richieste = this.richieste.filter((val, i) => val.nomeCliente === this.nomeCustomer);
       this.showRichieste = true;
     }, error => {
       this.showRichieste = true;

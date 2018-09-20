@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,26 +17,26 @@ export class HomeComponent {
   customerfirstName = sessionStorage.getItem('customerfirstName');
 
   goToSerieTv() {
-    this.router.navigate(['/ricercaSerieTV']);
+    this.router.navigate(['filmStore/ricercaSerieTV']);
   }
 
   goToSerieTvOnAdminMode() {
-    this.router.navigate(['/gestioneSerieTV']);
+    this.router.navigate(['filmStore/gestioneSerieTV']);
   }
 
   goToFilms() {
-    this.router.navigate(['/ricercaFilm']);
+    this.router.navigate(['filmStore/ricercaFilm']);
   }
 
   goToFilmsOnAdminMode() {
-    this.router.navigate(['/gestioneFilm']);
+    this.router.navigate(['filmStore/gestioneFilm']);
   }
 
   goToRicheiste() {
-    this.router.navigate(['/richieste']);
+    this.router.navigate(['filmStore/richieste']);
   }
 
   goToRicheisteOnAdminMode() {
-    this.router.navigate(['/richieste']);
+    this.router.navigate(['filmStore/richieste']);
   }
 }

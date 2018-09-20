@@ -1,8 +1,12 @@
-<div align="center">
-    <h1>Richieste degli Utenti</h1>
+<div align="center" *ngIf="adminMode">
+    <h1>Utenti</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 3em;">
+<div align="center" *ngIf="!adminMode">
+        <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
+    </div>
+
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-bottom: 3em;" align="center">
     <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -11,6 +15,9 @@
                 </th>
                 <th *ngFor="let col of columns">
                     {{col.header}}
+                </th>
+                <th style="width: 7em">
+                    Dettaglio Richieste
                 </th>
             </tr>
         </ng-template>
@@ -21,6 +28,9 @@
                 </td>
                 <td *ngFor="let col of columns">
                     {{customer[col.field]}}
+                </td>
+                <td>
+                    <p-button icon="fa fa-search" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
                 </td>
             </tr>
         </ng-template>

@@ -1,3 +1,8 @@
+body.backImage{
+  background-image: url("assets/showcase/images/coverLogin/login_cover.jpg");
+  background-position: center;
+}
+
 [film-input]{
     font-size: 16px;
     height: 32px;
@@ -12,6 +17,51 @@
       border-color: darkgray;
     }
   }
+
+  .ui-widget {
+    font-size: 18px !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-success {
+    color: #ffffff !important;
+    background: green !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image{
+    color: #ffffff !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-warn {
+    background: orange !important;
+    color: black !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image{
+    color: black !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-error {
+    color: #ffffff !important;
+    background: red !important;
+  }
+
+  .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image{
+    color: #ffffff !important;
+  }
+
+  .ui-confirmdialog.ui-dialog .ui-dialog-content {
+    padding: 1em 3.7em;
+  }
+
+  .ui-dialog .ui-dialog-titlebar {
+    background-color: darkblue !important;
+    color: white !important;
+  }
+
+  .ui-card-body {
+    padding: 0em !important;
+    padding-bottom: 1em !important;
+}
 
   [film-table] {
     &[film-loader-table]{
@@ -67,13 +117,17 @@
   
     }
   }
-  
-  [film-table-input]{
-    max-width: 100%;
-    min-width: 100%;
-    min-height: 5em;
-    font-family: "Roboto";
-    color: #00478F;
+
+  .ui-table table {
+    border-collapse: collapse;
+    width: auto !important;
+    table-layout: fixed;
+  }
+
+  .ui-table-summary {
+    border-collapse: collapse;
+    width: max-content !important;
+    table-layout: fixed;
   }
 
   [sdc-multiselect]{
