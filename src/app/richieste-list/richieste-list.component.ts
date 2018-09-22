@@ -28,7 +28,11 @@ export class RichiesteListComponent implements OnInit {
 
   cols: any[];
 
+  filters: any = {};
+
   formats: SelectItem[];
+
+  statiRichiesta: SelectItem[];
 
   msgs: Message[] = [];
 
@@ -37,6 +41,8 @@ export class RichiesteListComponent implements OnInit {
   displayDialog: boolean;
 
   customerOfRichiesta: Customer;
+
+  nomeCustomerLoggato: string;
 
   @ViewChild('rt') rt: Table;
 
@@ -47,11 +53,21 @@ export class RichiesteListComponent implements OnInit {
     private renderer: Renderer2
   ) {
 
+    this.nomeCustomerLoggato = sessionStorage.getItem('customerfirstName');
+
     this.formats = [
       { label: '', value: '' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },
-      { label: 'DVD', value: 'DVD' },
+      { label: 'DVD', value: 'DVD' }
+    ];
+
+    this.statiRichiesta = [
+      { label: '', value: '' },
+      { label: 'IN LAVORAZIONE', value: 'IN LAVORAZIONE' },
+      { label: 'PRESA IN CARICO', value: 'PRESA IN CARICO' },
+      { label: 'ACCETTATA', value: 'ACCETTATA' },
+      { label: 'RIFIUTATA', value: 'RIFIUTATA' }
     ];
   }
 
@@ -78,6 +94,10 @@ export class RichiesteListComponent implements OnInit {
       {
         field: 'dataInserimento',
         header: 'Data'
+      },
+      {
+        field: 'stato',
+        header: 'Stato Richiesta'
       }
     ];
   }
@@ -117,11 +137,11 @@ export class RichiesteListComponent implements OnInit {
     );
   }
 
-  notAdmin() {
+  adminMode() {
     if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -151,7 +171,8 @@ export class RichiesteListComponent implements OnInit {
     this.richiesta = {
       id: null,
       dataInserimento: this.pipe.transform(new Date(), 'fullDate'),
-      nomeCliente: sessionStorage.getItem('customerfirstName')};
+      nomeCliente: sessionStorage.getItem('customerfirstName')
+    };
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(response => {
       this.customerOfRichiesta = response;
     });
@@ -175,6 +196,7 @@ export class RichiesteListComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.richiesta.nomeCliente = this.customerOfRichiesta.firstName;
+          this.richiesta.stato = 'IN LAVORAZIONE';
           this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
             if (response !== null) {
               this.richieste = response as Richiesta[];
@@ -195,20 +217,15 @@ export class RichiesteListComponent implements OnInit {
         header: 'Aggiornamento Richiesta',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-            sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-            this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
-              if (response !== null) {
-                this.richieste = response as Richiesta[];
-                this.richiesta = null;
-                this.displayDialog = false;
-                this.rt.reset();
-                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
-              }
-            });
-          } else {
-            this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Non Puoi Aggiornare le Richieste di altri Utenti' }];
-          }
+          this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
+            if (response !== null) {
+              this.richieste = response as Richiesta[];
+              this.richiesta = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
+            }
+          });
         },
         reject: () => { }
       });
@@ -221,23 +238,18 @@ export class RichiesteListComponent implements OnInit {
       header: 'Eliminazione Richiesta',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-          sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-          this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
-            if (response !== null) {
-              const index = this.richieste.indexOf(this.richiestaSelezionata);
-              this.richieste = this.richieste.filter((val, i) => i !== index);
-              this.richiesta = null;
-              this.displayDialog = false;
-              this.rt.reset();
-              this.customerOfRichiesta.numeroRichieste--;
-              this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
-              this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
-            }
-          });
-        } else {
-          this.msgs = [{ severity: 'error', summary: 'Attenzione', detail: 'Non Puoi Eliminare le Richieste di altri Utenti' }];
-        }
+        this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
+          if (response !== null) {
+            const index = this.richieste.indexOf(this.richiestaSelezionata);
+            this.richieste = this.richieste.filter((val, i) => i !== index);
+            this.richiesta = null;
+            this.displayDialog = false;
+            this.rt.reset();
+            this.customerOfRichiesta.numeroRichieste--;
+            this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
+          }
+        });
       }, reject: () => { }
     });
   }
@@ -246,4 +258,30 @@ export class RichiesteListComponent implements OnInit {
     this.displayDialog = false;
   }
 
+  //  *** Reset Valori selzionati nei Filtri ***
+  reset(stvt: Table) {
+    stvt.reset();
+    this.filters = {};
+  }
+
+  gestisciRichiesta(richiesta: Richiesta, value: string) {
+    switch (value) {
+      case 'Presa_In_Carico':
+        richiesta.stato = 'PRESA IN CARICO';
+        break;
+      case 'Rifiuta':
+        richiesta.stato = 'RIFIUTATA';
+        break;
+      case 'Accetta':
+        richiesta.stato = 'ACCETTATA';
+        break;
+    }
+    this.richiestaService.updateRichiesta(richiesta).subscribe(response => {
+      if (response !== null) {
+        this.richieste = response as Richiesta[];
+        this.rt.reset();
+        this.msgs = [{ severity: 'success', summary: 'Gestione Completata', detail: 'Stato Richiesta: ' + richiesta.stato }];
+      }
+    });
+  }
 }
