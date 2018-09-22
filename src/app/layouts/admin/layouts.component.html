@@ -2,7 +2,7 @@
   <p-menubar *ngIf="showMenuItems && !adminMode" [model]="items">
     <div *ngIf="customerLoggato">
       <img class="cerchio" src="assets/showcase/images/customer/{{customerLoggato.id}}.png" style="display:inline-block;margin: 0 -12px -11px 0">
-      <button pButton label="Profilo" style="background: transparent; color: black; border: transparent;" (click)="operUserProfile()"></button>
+      <button pButton label="Profilo" style="background: transparent; color: black; border: transparent;" (click)="openUserProfile()"></button>
       <button pButton label="Logout" icon="fa fa-sign-out" style="margin-left:.25em" (click)="logOut()"></button>
     </div>
   </p-menubar>

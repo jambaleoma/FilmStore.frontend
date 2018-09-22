@@ -33,7 +33,7 @@ export class HomeComponent {
   }
 
   goToRicheiste() {
-    this.router.navigate(['filmStore/richieste']);
+    this.router.navigate(['filmStore/richieste/view', sessionStorage.getItem('customerfirstName')]);
   }
 
   goToRicheisteOnAdminMode() {

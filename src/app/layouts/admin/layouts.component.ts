@@ -48,7 +48,8 @@ export class LayoutsComponent implements OnInit {
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
       { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
-      { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/filmStore/richieste' },
+      { label: 'Richieste', icon: 'fa fa-clipboard',
+       routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName') },
       { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
     ];
 
@@ -78,7 +79,7 @@ export class LayoutsComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  operUserProfile() {
+  openUserProfile() {
     this.router.navigate(['/filmStore/utenti']);
   }
 }
