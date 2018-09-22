@@ -2,16 +2,35 @@
 
 <div class="ui-grid-col-12">
   <div class="ui-g">
-      <div class="ui-g-12" align="center" style="margin-bottom: -100%">
-          <h1>Gestione Film</h1>
-        </div>
+    <div class="ui-g-12" align="center" style="margin-bottom: -100%">
+      <h1>Gestione Film</h1>
+    </div>
     <div class="ui-g-12" align="right">
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Film" style="margin-top: 1em;"></button>
     </div>
   </div>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em;"  align="center">
+<!-- FILTRI DI RICERCA -->
+<div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
+  <div class="ui-g">
+    <div class="ui-g-4" style="padding-left: 10%;">
+      <div class="label"> Nome Film </div>
+      <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleFilm" (input)="rt.filter($event.target.value, 'nome', 'contains')">
+    </div>
+    <div class="ui-g-4">
+      <div class="label">Formato Film </div>
+      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
+        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="rt.filter($event.value, 'formato', 'in')"></p-multiSelect>
+    </div>
+    <div film-button-third class="ui-g-4 resetButton" align="center" style="padding-right: 5%;">
+      <button pButton type="button" label="Reset Filtri" (click)="reset(rt)" style="margin-top: 14px;"></button>
+    </div>
+  </div>
+</div>
+<!-- / FILTRI DI RICERCA -->
+
+<div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
   <p-table [columns]="cols" #rt [value]="films" selectionMode="single" [(selection)]="filmSelezionato" (onRowSelect)="onRowSelect($event)"
     [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -36,8 +55,8 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-        Sono Presenti {{ this.rt.totalRecords }} Film
-      </ng-template>
+      Film Torvati: {{this.rt.filteredValue ? this.rt.filteredValue.length : this.rt.totalRecords }}
+    </ng-template>
   </p-table>
 </div>
 
@@ -51,6 +70,14 @@
         </div>
         <div class="ui-g-9">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="film.nome" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Formato Film</label>
+        </div>
+        <div class="ui-g-9">
+          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="film.formato"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">
@@ -73,14 +100,6 @@
         </div>
         <div class="ui-g-9">
           <input pInputText id="anno" name="anno" [(ngModel)]="film.anno" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>Formato Film</label>
-        </div>
-        <div class="ui-g-9">
-          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="film.formato"></p-dropdown>
         </div>
       </div>
     </div>

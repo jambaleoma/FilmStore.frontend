@@ -19,6 +19,8 @@ export class GestioneSerieTvComponent implements OnInit {
 
   showSerie = false;
 
+  filters: any = {};
+
   cols: any[];
 
   formats: SelectItem[];
@@ -159,6 +161,12 @@ export class GestioneSerieTvComponent implements OnInit {
       reject: () => { }
     });
   }
+
+    //  *** Reset Valori selzionati nei Filtri ***
+    reset(stvt: Table) {
+      stvt.reset();
+      this.filters = {};
+    }
 
   close() {
     this.displayDialog = false;

@@ -19,6 +19,12 @@ export class GestioneFilmComponent implements OnInit {
 
   showFilm = false;
 
+  filters: any = {};
+
+  yearTimeout: any;
+
+  yearFilter: number;
+
   cols: any[];
 
   formats: SelectItem[];
@@ -162,6 +168,22 @@ export class GestioneFilmComponent implements OnInit {
 
   close() {
     this.displayDialog = false;
+  }
+
+  onYearChange(event, ft) {
+    if (this.yearTimeout) {
+      clearTimeout(this.yearTimeout);
+    }
+
+    this.yearTimeout = setTimeout(() => {
+      ft.filter(event.value - 1, 'anno', 'gt');
+    }, 250);
+  }
+
+  reset(rt: Table) {
+    rt.reset();
+    this.filters = {};
+    this.yearFilter = null;
   }
 
 }
