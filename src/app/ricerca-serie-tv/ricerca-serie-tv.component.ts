@@ -80,10 +80,6 @@ export class RicercaSerieTvComponent implements OnInit {
     return map;
 }
 
-  onFormatsFilterChange(val: ListItem[], table: Table) {
-    table.filter(val, 'formato', 'filterFormats');
-  }
-
   //  *** Reset Valori selzionati nei Filtri ***
   reset(stvt: Table) {
     stvt.reset();
@@ -95,15 +91,5 @@ export class RicercaSerieTvComponent implements OnInit {
   goToSerie(serieId: string) {
     this.router.navigate(['filmStore/SerieTV/view', serieId]);
   }
-
-  onStagioneChange(event, ft) {
-    if (this.stagioneTimeout) {
-        clearTimeout(this.stagioneTimeout);
-    }
-
-    this.stagioneTimeout = setTimeout(() => {
-       ft.filter(event.value, 'numeroStagione', 'equals');
-    }, 250);
-}
 
 }

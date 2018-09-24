@@ -79,19 +79,25 @@
         </div>
       </div>
       <div class="ui-g-12">
-        <div class="ui-g-3">
+        <div class="ui-g-3" *ngIf="!newCustomer">
           <label>N. Richieste:</label>
         </div>
-        <div class="ui-g-3">
-          <p-spinner size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste"
-            [max]="100" [min]="0" [step]="1" style="width: 100%"></p-spinner>
+        <div class="ui-g-3" *ngIf="!newCustomer">
+          <p-spinner size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste" [max]="100" [min]="0"
+            [step]="1" style="width: 100%"></p-spinner>
         </div>
-        <div class="ui-g-2">
+        <div class="ui-g-2" *ngIf="!newCustomer">
           <label></label>
         </div>
-        <div class="ui-g-4">
+        <div class="ui-g-4" *ngIf="!newCustomer">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-eraser" (click)="resetPassword(customer)"
             label="Resetta Password"></button>
+        </div>
+        <div class="ui-g-3" *ngIf="newCustomer">
+          <label>Password:</label>
+        </div>
+        <div class="ui-g-9" *ngIf="newCustomer">
+          <input pInputText id="psw" name="psw" [(ngModel)]="customer.password" style="width: 100%" />
         </div>
       </div>
     </div>

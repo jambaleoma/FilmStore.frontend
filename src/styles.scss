@@ -61,7 +61,12 @@ body.backImage{
   .ui-card-body {
     padding: 0em !important;
     padding-bottom: 1em !important;
-}
+  }
+
+  .ui-dataview .ui-dataview-header {
+    padding: 0em !important;
+    border: none !important;
+  }
 
   [film-table] {
     &[film-loader-table]{
