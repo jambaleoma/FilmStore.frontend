@@ -1,8 +1,15 @@
 <p-growl [(value)]="msgs"></p-growl>
 
-<div align="center">
-  <h1>Richieste degli Utenti</h1>
-</div>
+<div class="ui-grid-col-12">
+    <div class="ui-g">
+      <div class="ui-g-12" align="center" style="margin-bottom: -100%">
+          <h1>Richieste degli Utenti</h1>
+      </div>
+      <div class="ui-g-12" align="right">
+        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta" style="margin-top: 1em;"></button>
+      </div>
+    </div>
+  </div>
 
 <!-- FILTRI DI RICERCA -->
 <div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
@@ -60,9 +67,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <div style="text-align:center" style="padding-top: 2em;">
-    <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
-  </div>
 </div>
 
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"

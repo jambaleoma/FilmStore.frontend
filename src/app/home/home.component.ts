@@ -36,6 +36,10 @@ export class HomeComponent {
     this.router.navigate(['filmStore/richieste/view', sessionStorage.getItem('customerfirstName')]);
   }
 
+  goToUtentiAdminMode() {
+    this.router.navigate(['filmStore/utenti']);
+  }
+
   goToRicheisteOnAdminMode() {
     this.router.navigate(['filmStore/richieste']);
   }

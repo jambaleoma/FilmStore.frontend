@@ -131,6 +131,46 @@ export class CustomerService extends BaseService {
     );
   }
 
+   /**
+     * @param body Customer
+     * @return Added Customer
+     */
+    private addCustomerResponse(body: Customer): Observable<HttpResponse<Customer[]>> {
+      let __params = this.newParams();
+      let __headers = new HttpHeaders();
+      let __body: any = null;
+      __body = body;
+      let req = new HttpRequest<any>(
+          "POST",
+          this.rootUrl + `rest/customers/insertCustomer`,
+          __body,
+          {
+              headers: __headers,
+              params: __params,
+              responseType: 'json'
+          });
+
+      return this.http.request<any>(req).pipe(
+          filter(_r => _r instanceof HttpResponse),
+          map(_r => {
+              let _resp = _r as HttpResponse<any>;
+              let _body: Customer[] = null;
+              _body = _resp.body as Customer[];
+              return _resp.clone({ body: _body }) as HttpResponse<Customer[]>;
+          })
+      );
+  }
+
+  /**
+   * @param body Customer
+   * @return Added Customer
+   */
+  addCustomer(body: Customer): Observable<Customer[]> {
+      return this.addCustomerResponse(body).pipe(
+          map(_r => _r.body)
+      );
+  }
+
   /**
    * @param params The `CustomerService.UpdateCustomerParams` containing the following parameters:
    *
@@ -140,7 +180,7 @@ export class CustomerService extends BaseService {
    *
    * @return Updated Customer
    */
-  private updateCustomerResponse(params: Customer): Observable<HttpResponse<Customer>> {
+  private updateCustomerResponse(params: Customer): Observable<HttpResponse<Customer[]>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -160,9 +200,9 @@ export class CustomerService extends BaseService {
       filter(_r => _r instanceof HttpResponse),
       map(_r => {
         let _resp = _r as HttpResponse<any>;
-        let _body: Customer = null;
-        _body = _resp.body as Customer;
-        return _resp.clone({body: _body}) as HttpResponse<Customer>;
+        let _body: Customer[] = null;
+        _body = _resp.body as Customer[];
+        return _resp.clone({body: _body}) as HttpResponse<Customer[]>;
       })
     );
   }
@@ -176,9 +216,50 @@ export class CustomerService extends BaseService {
    *
    * @return Updated Customer
    */
-   updateCustomer(params: Customer): Observable<Customer> {
+   updateCustomer(params: Customer): Observable<Customer[]> {
     return this.updateCustomerResponse(params).pipe(
       map(_r => _r.body)
     );
   }
+
+  /**
+ * @param id undefined
+ * @return Deleted status
+ */
+private deleteCustomerResponse(id: string): Observable<HttpResponse<boolean>> {
+  let __params = this.newParams();
+  let __headers = new HttpHeaders();
+  let __body: any = null;
+
+  let req = new HttpRequest<any>(
+    "DELETE",
+    this.rootUrl + 'rest/customers/deleteCustomerById/' + id,
+    __body,
+    {
+      headers: __headers,
+      params: __params,
+      responseType: 'text'
+    });
+
+  return this.http.request<any>(req).pipe(
+    filter(_r => _r instanceof HttpResponse),
+    map(_r => {
+      let _resp = _r as HttpResponse<any>;
+      let _body: boolean = null;
+      _body = _resp.body == 'true';
+      return _resp.clone({body: _body}) as HttpResponse<boolean>;
+    })
+  );
+}
+
+/**
+ * @param id undefined
+ * @return Deleted status
+ */
+ deleteCustomer(id: string): Observable<boolean> {
+  return this.deleteCustomerResponse(id).pipe(
+    map(_r => _r.body)
+  );
+}
+
 }

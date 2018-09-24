@@ -46,6 +46,8 @@ import { GrowlModule } from 'primeng/growl';
 import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
 import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DataViewModule } from 'primeng/dataview';
+import { PanelModule } from 'primeng/panel';
 
 registerLocaleData(localeITCA);
 
@@ -66,6 +68,8 @@ registerLocaleData(localeITCA);
     DettaglioSerieTvComponent
   ],
   imports: [
+    PanelModule,
+    DataViewModule,
     InputTextareaModule,
     GrowlModule,
     MessagesModule,

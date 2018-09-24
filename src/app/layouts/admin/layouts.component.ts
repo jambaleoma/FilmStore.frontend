@@ -46,8 +46,8 @@ export class LayoutsComponent implements OnInit {
 
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
-      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
       { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
+      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
       { label: 'Richieste', icon: 'fa fa-clipboard',
        routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName') },
       { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
@@ -56,20 +56,20 @@ export class LayoutsComponent implements OnInit {
     this.adminItems = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
       {
-        label: 'Film', icon: 'fa fa-film', items: [
-          { label: 'Ricerca Film', icon: 'fa fa-search', routerLink: '/filmStore/ricercaFilm' },
-          { label: 'Gestione Film', icon: 'fa fa-wrench', routerLink: '/filmStore/gestioneFilm' }
-        ]
-      },
-      {
         label: 'SerieTV', icon: 'fa fa-television', items: [
           { label: 'Ricerca SerieTV', icon: 'fa fa-search', routerLink: '/filmStore/ricercaSerieTV' },
           { label: 'Gestione SerieTV', icon: 'fa fa-wrench', routerLink: '/filmStore/gestioneSerieTV' }
         ]
       },
+      {
+        label: 'Film', icon: 'fa fa-film', items: [
+          { label: 'Ricerca Film', icon: 'fa fa-search', routerLink: '/filmStore/ricercaFilm' },
+          { label: 'Gestione Film', icon: 'fa fa-wrench', routerLink: '/filmStore/gestioneFilm' }
+        ]
+      },
       { label: 'Richieste', icon: 'fa fa-clipboard', routerLink: '/filmStore/richieste' },
-      { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' },
-      { label: 'Utenti', icon: 'fa fa-users', routerLink: '/filmStore/utenti' }
+      { label: 'Utenti', icon: 'fa fa-users', routerLink: '/filmStore/utenti' },
+      { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
     ];
   }
 

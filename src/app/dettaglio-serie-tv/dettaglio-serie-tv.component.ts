@@ -8,10 +8,13 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './dettaglio-serie-tv.component.html',
   styleUrls: ['./dettaglio-serie-tv.component.scss']
 })
-export class DettaglioSerieTvComponent {
+export class DettaglioSerieTvComponent implements OnInit {
 
+  series: Serie[] = [];
   serie: Serie;
   showSerieDetails = false;
+  selectedSerie: Serie;
+  displayDialog: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +30,30 @@ export class DettaglioSerieTvComponent {
         this.showSerieDetails = false;
       }
     });
+  }
+
+  ngOnInit() {
+    this.subscribeListOfSerieTV();
+  }
+
+  subscribeListOfSerieTV() {
+    this.serieTVService.getSerieTVs().subscribe(notification => {
+      this.series = notification.filter((val) => val.nome === this.serie.nome);
+      this.series.sort(function (a, b) {
+        return (a.numeroStagione - b.numeroStagione);
+      });
+      console.log(this.series);
+    });
+  }
+
+  selectSerie(event: Event, serie: Serie) {
+    this.selectedSerie = serie;
+    this.displayDialog = true;
+    event.preventDefault();
+  }
+
+  onDialogHide() {
+    this.selectedSerie = null;
   }
 
 }

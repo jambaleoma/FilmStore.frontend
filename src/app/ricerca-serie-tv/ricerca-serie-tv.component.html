@@ -29,6 +29,9 @@
   <p-table film-table [columns]="cols" [value]="serieTV" #stvt>
     <ng-template pTemplate="header" let-columns>
       <tr>
+        <th>
+          Locandina
+        </th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
             {{col.header}}
             <p-sortIcon [field]="col.field"></p-sortIcon>
@@ -40,6 +43,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
+        <td style="width: 15em">
+            <img src="assets/showcase/images/serieTV/{{rowData.nome}}/{{rowData.urlLocandina}}.jpg" style="width: 100%">
+        </td>
           <td *ngFor="let col of columns">
               {{rowData[col.field]}}
           </td>
