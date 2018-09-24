@@ -48,6 +48,7 @@ import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
+import {ChipsModule} from 'primeng/chips';
 
 registerLocaleData(localeITCA);
 
@@ -68,6 +69,7 @@ registerLocaleData(localeITCA);
     DettaglioSerieTvComponent
   ],
   imports: [
+    ChipsModule,
     PanelModule,
     DataViewModule,
     InputTextareaModule,

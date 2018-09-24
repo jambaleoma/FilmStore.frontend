@@ -42,7 +42,6 @@ export class DettaglioSerieTvComponent implements OnInit {
       this.series.sort(function (a, b) {
         return (a.numeroStagione - b.numeroStagione);
       });
-      console.log(this.series);
     });
   }
 

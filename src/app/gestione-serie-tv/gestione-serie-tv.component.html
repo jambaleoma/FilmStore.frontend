@@ -62,7 +62,7 @@
 </div>
 
 <p-dialog header="Dettaglio Serie TV" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
-  [width]="900" [height]="550">
+  [width]="1000" [height]="550" [positionTop]="50">
   <form name="form" #fRichieste="ngForm">
     <div class="ui-g ui-fluid" *ngIf="singolaSerie" style="padding-bottom: 2em">
       <div class="ui-g-12">
@@ -81,11 +81,11 @@
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="singolaSerie.formato"></p-dropdown>
         </div>
         <div class="ui-g-3" align="center">
-            <label>Stagioni:</label>
-          </div>
-          <div class="ui-g-3">
-              <input pInputText id="stagioni" name="stagioni" [(ngModel)]="singolaSerie.stagioni" style="width: 100%" />
-          </div>
+          <label>Anno:</label>
+        </div>
+        <div class="ui-g-3">
+          <input pInputText id="anno" name="anno" [(ngModel)]="singolaSerie.anno" style="width: 100%" />
+        </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
@@ -103,13 +103,13 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>Anno:</label>
+          <label>Stagioni:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="anno" name="anno" [(ngModel)]="singolaSerie.anno" style="width: 100%" />
+          <input pInputText id="stagioni" name="stagioni" [(ngModel)]="singolaSerie.stagioni" style="width: 100%" />
         </div>
         <div class="ui-g-3" align="center">
-          <label>Episodi N°:</label>
+          <label>N° Episodi:</label>
         </div>
         <div class="ui-g-3">
           <input pInputText id="numeroEpisodi" name="numeroEpisodi" [(ngModel)]="singolaSerie.numeroEpisodi" style="width: 100%" />
@@ -117,7 +117,7 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>N. Stagione:</label>
+          <label>N° Stagione:</label>
         </div>
         <div class="ui-g-3">
           <p-spinner size="30" id="numeroStagione" name="numeroStagione" [(ngModel)]="singolaSerie.numeroStagione"
@@ -128,6 +128,14 @@
         </div>
         <div class="ui-g-3">
           <input pInputText id="url" name="ulr" [(ngModel)]="singolaSerie.urlLocandina" style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          Puntate:
+        </div>
+        <div class="ui-g-9">
+          <p-chips id="episodi" name="episodi" [(ngModel)]="singolaSerie.episodi"></p-chips>
         </div>
       </div>
     </div>
