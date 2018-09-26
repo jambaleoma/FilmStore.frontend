@@ -13,11 +13,13 @@ export class GestioneSerieTvComponent implements OnInit {
 
   serieSelezionata: Serie;
 
-  serie: Serie[];
+  series: Serie[] = [];
 
   singolaSerie: Serie = { _id: null };
 
   showSerie = false;
+
+  filters: any = {};
 
   cols: any[];
 
@@ -56,19 +58,18 @@ export class GestioneSerieTvComponent implements OnInit {
       { field: 'linguaAudio', header: 'Audio' },
       { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' },
-      { field: 'numeroEpisodi', header: 'Episodi N°' },
-      { field: 'numeroStagione', header: 'Stagione N°' }
+      { field: 'numeroEpisodi', header: 'N° Episodi' },
+      { field: 'numeroStagione', header: 'N° Stagione' },
+      { field: 'stagioni', header: 'Stagioni' }
     ];
   }
 
   subsrcibeToListOfSerie() {
-    this.serieService.getSerieTVs().subscribe(notification => {
-      this.serie = notification;
-      this.showSerie = true;
-    }, error => {
-      this.showSerie = true;
-    }
-    );
+    this.serieService.getSerieTVs().subscribe(seriesNotification => {
+      if (seriesNotification) {
+        this.series = seriesNotification;
+      }
+    });
   }
 
   onRowSelect(event) {
@@ -107,7 +108,7 @@ export class GestioneSerieTvComponent implements OnInit {
         accept: () => {
           this.serieService.addSerie(this.singolaSerie).subscribe(response => {
             if (response !== null) {
-              this.serie = response as Serie[];
+              this.series = response as Serie[];
               this.singolaSerie = null;
               this.displayDialog = false;
               this.rt.reset();
@@ -126,7 +127,7 @@ export class GestioneSerieTvComponent implements OnInit {
         accept: () => {
           this.serieService.updateSerie(this.singolaSerie).subscribe(response => {
             if (response !== null) {
-              this.serie = response as Serie[];
+              this.series = response as Serie[];
               this.singolaSerie = null;
               this.displayDialog = false;
               this.rt.reset();
@@ -147,8 +148,8 @@ export class GestioneSerieTvComponent implements OnInit {
       accept: () => {
         this.serieService.deleteSerie(this.serieSelezionata._id).subscribe(response => {
           if (response !== null) {
-            const index = this.serie.indexOf(this.serieSelezionata);
-            this.serie = this.serie.filter((val, i) => i !== index);
+            const index = this.series.indexOf(this.serieSelezionata);
+            this.series = this.series.filter((val, i) => i !== index);
             this.singolaSerie = null;
             this.displayDialog = false;
             this.rt.reset();
@@ -160,8 +161,10 @@ export class GestioneSerieTvComponent implements OnInit {
     });
   }
 
-  close() {
-    this.displayDialog = false;
+  //  *** Reset Valori selzionati nei Filtri ***
+  reset(stvt: Table) {
+    stvt.reset();
+    this.filters = {};
   }
 
 }

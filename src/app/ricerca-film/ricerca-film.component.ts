@@ -60,10 +60,6 @@ export class RicercaFilmComponent implements OnInit {
     });
   }
 
-  onFormatsFilterChange(val: ListItem[], table: Table) {
-    table.filter(val, 'formato', 'filterFormats');
-  }
-
   //  *** Reset Valori selzionati nei Filtri ***
   reset(tr: Table) {
     tr.reset();

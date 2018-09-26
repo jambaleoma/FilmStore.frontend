@@ -35,12 +35,12 @@
 </div>
 
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
-  [width]="700" [height]="450">
+  [width]="900" [height]="550">
   <form name="form" #fRichieste="ngForm">
     <div class="ui-g ui-fluid" *ngIf="richiesta" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Titolo</label>
+          <label>Titolo:</label>
         </div>
         <div class="ui-g-10">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="richiesta.titoloFilmRichiesto" style="width: 100%" />
@@ -48,31 +48,51 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Formato</label>
+          <label>Formato:</label>
         </div>
-        <div class="ui-g-10">
+        <div class="ui-g-4" *ngIf="richiesta.stato">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
+        </div>
+        <div class="ui-g-10" *ngIf="!richiesta.stato">
+          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
+        </div>
+        <div class="ui-g-2" *ngIf="richiesta.stato">
+          <label>Stato:</label>
+        </div>
+        <div class="ui-g-4" *ngIf="richiesta.stato">
+          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato" [disabled]="!adminMode()"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Data</label>
+          <label>Data:</label>
         </div>
         <div class="ui-g-10">
           <input pInputText id="dataInserimento" name="dataInserimento" #titolo [(ngModel)]="richiesta.dataInserimento"
-            style="width: 100%" [disabled]="notAdmin()" />
+            style="width: 100%" [disabled]="!adminMode()" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <label>Note:</label>
+        </div>
+        <div class="ui-g-10">
+          <textarea rows="3" id="noteRichiesta" name="noteRichiesta" pInputTextarea [(ngModel)]="richiesta.note"></textarea>
         </div>
       </div>
     </div>
     <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-6" *ngIf="!newRichiesta" align="center">
+      <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="richiesta">
+        <div class="ui-g-12" *ngIf="!newRichiesta && (richiesta.stato === 'RIFIUTATA' || richiesta.stato === 'ACCETTATA')" align="center">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
         </div>
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato !== 'RIFIUTATA' && richiesta.stato !== 'ACCETTATA')" align="center">
+            <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
+          </div>
         <div class="ui-g-12" *ngIf="newRichiesta" align="center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newRichiesta" align="center">
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato !== 'RIFIUTATA' && richiesta.stato !== 'ACCETTATA')" align="center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
         </div>
       </div>

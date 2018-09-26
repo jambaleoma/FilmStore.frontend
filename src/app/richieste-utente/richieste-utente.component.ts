@@ -35,6 +35,8 @@ export class RichiesteUtenteComponent implements OnInit {
 
   formats: SelectItem[];
 
+  statiRichiesta: SelectItem[];
+
   msgs: Message[] = [];
 
   newRichiesta: boolean;
@@ -55,6 +57,14 @@ export class RichiesteUtenteComponent implements OnInit {
     this.urlRichiesteCustomer = this.router.url.substring(0, this.router.url.length);
     this.arrayStringUrl = this.urlRichiesteCustomer.split('/');
     this.nomeCustomer = this.arrayStringUrl[this.arrayStringUrl.length - 1];
+
+    this.statiRichiesta = [
+      { label: '', value: '' },
+      { label: 'IN LAVORAZIONE', value: 'IN LAVORAZIONE' },
+      { label: 'PRESA IN CARICO', value: 'PRESA IN CARICO' },
+      { label: 'ACCETTATA', value: 'ACCETTATA' },
+      { label: 'RIFIUTATA', value: 'RIFIUTATA' }
+    ];
 
     this.formats = [
       { label: '', value: '' },
@@ -86,6 +96,10 @@ export class RichiesteUtenteComponent implements OnInit {
       {
         field: 'dataInserimento',
         header: 'Data'
+      },
+      {
+        field: 'stato',
+        header: 'Stato Richiesta'
       }
     ];
   }
@@ -101,11 +115,11 @@ export class RichiesteUtenteComponent implements OnInit {
     );
   }
 
-  notAdmin() {
+  adminMode() {
     if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -135,7 +149,8 @@ export class RichiesteUtenteComponent implements OnInit {
     this.richiesta = {
       id: null,
       dataInserimento: this.pipe.transform(new Date(), 'fullDate'),
-      nomeCliente: sessionStorage.getItem('customerfirstName')};
+      nomeCliente: sessionStorage.getItem('customerfirstName')
+    };
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(response => {
       this.customerOfRichiesta = response;
     });
@@ -159,6 +174,7 @@ export class RichiesteUtenteComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.richiesta.nomeCliente = this.customerOfRichiesta.firstName;
+          this.richiesta.stato = 'IN LAVORAZIONE';
           this.richiestaService.addRichiesta(this.richiesta).subscribe(response => {
             if (response !== null) {
               this.richieste = response as Richiesta[];
@@ -168,6 +184,7 @@ export class RichiesteUtenteComponent implements OnInit {
               this.customerOfRichiesta.numeroRichieste++;
               this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Richiesta Inserita' }];
+              this.subsrcibeToListOfRichieste();
             }
           });
         },
@@ -179,20 +196,17 @@ export class RichiesteUtenteComponent implements OnInit {
         header: 'Aggiornamento Richiesta',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-            sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-            this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
-              if (response !== null) {
-                this.richieste = response as Richiesta[];
-                this.richiesta = null;
-                this.displayDialog = false;
-                this.rt.reset();
-                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
-              }
-            });
-          } else {
-            this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Non Puoi Aggiornare le Richieste di altri Utenti' }];
-          }
+          this.richiesta.stato = 'IN LAVORAZIONE';
+          this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
+            if (response !== null) {
+              this.richieste = response as Richiesta[];
+              this.richiesta = null;
+              this.displayDialog = false;
+              this.rt.reset();
+              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
+              this.subsrcibeToListOfRichieste();
+            }
+          });
         },
         reject: () => { }
       });
@@ -205,23 +219,18 @@ export class RichiesteUtenteComponent implements OnInit {
       header: 'Eliminazione Richiesta',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if (this.richiesta.nomeCliente === sessionStorage.getItem('customerfirstName') ||
-          sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-          this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
-            if (response !== null) {
-              const index = this.richieste.indexOf(this.richiestaSelezionata);
-              this.richieste = this.richieste.filter((val, i) => i !== index);
-              this.richiesta = null;
-              this.displayDialog = false;
-              this.rt.reset();
-              this.customerOfRichiesta.numeroRichieste--;
-              this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
-              this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
-            }
-          });
-        } else {
-          this.msgs = [{ severity: 'error', summary: 'Attenzione', detail: 'Non Puoi Eliminare le Richieste di altri Utenti' }];
-        }
+        this.richiestaService.deleteRichiesta(this.richiestaSelezionata.id).subscribe(response => {
+          if (response !== null) {
+            const index = this.richieste.indexOf(this.richiestaSelezionata);
+            this.richieste = this.richieste.filter((val, i) => i !== index);
+            this.richiesta = null;
+            this.displayDialog = false;
+            this.rt.reset();
+            this.customerOfRichiesta.numeroRichieste--;
+            this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
+          }
+        });
       }, reject: () => { }
     });
   }

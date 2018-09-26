@@ -1,8 +1,34 @@
 <p-growl [(value)]="msgs"></p-growl>
 
-<div align="center">
-  <h1>Richieste degli Utenti</h1>
+<div class="ui-grid-col-12">
+    <div class="ui-g">
+      <div class="ui-g-12" align="center" style="margin-bottom: -100%">
+          <h1>Richieste degli Utenti</h1>
+      </div>
+      <div class="ui-g-12" align="right">
+        <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta" style="margin-top: 1em;"></button>
+      </div>
+    </div>
+  </div>
+
+<!-- FILTRI DI RICERCA -->
+<div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
+  <div class="ui-g">
+      <div class="ui-g-4" style="padding-left: 10%;">
+          <div class="label">Richiedente </div>
+      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="listaRichiedenti"
+        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Utente" (onChange)="rt.filter($event.value, 'nomeCliente', 'in')"></p-multiSelect>
+    </div>
+    <div class="ui-g-4">
+      <div class="label"> Titolo Film Richiesto </div>
+      <input film-input type="text" pInputText placeholder=" &#xF002; Titolo" [(ngModel)]="filters.titleMsg" (input)="rt.filter($event.target.value, 'titoloFilmRichiesto', 'contains')">
+    </div>
+    <div film-button-third class="ui-g-4 resetButton" align="center" style="padding-right: 5%;">
+      <button pButton type="button" label="Reset Filtri" (click)="reset(rt)" style="margin-top: 14px;"></button>
+    </div>
+  </div>
 </div>
+<!-- / FILTRI DI RICERCA -->
 
 <div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
   <p-table [columns]="cols" #rt [value]="richieste" selectionMode="single" [(selection)]="richiestaSelezionata"
@@ -12,6 +38,9 @@
         <th *ngFor="let col of columns">
           {{col.header}}
         </th>
+        <th *ngIf="adminMode()" [attr.colspan]="3">
+          Gestisci Richiesta
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -19,28 +48,34 @@
         <td *ngFor="let col of columns">
           {{rowData[col.field]}}
         </td>
+        <td *ngIf="adminMode()">
+          <p-button icon="fa fa-wrench" styleClass="ui-button-warning" (onClick)="gestisciRichiesta(rowData, 'Presa_In_Carico')"></p-button>
+        </td>
+        <td *ngIf="adminMode()">
+          <p-button icon="fa fa-times" styleClass="ui-button-danger" (onClick)="gestisciRichiesta(rowData, 'Rifiuta')"></p-button>
+        </td>
+        <td *ngIf="adminMode()">
+          <p-button icon="fa fa-check" styleClass="ui-button-success" (onClick)="gestisciRichiesta(rowData, 'Accetta')"></p-button>
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length">
+        <td [attr.colspan]="cols.length + 1">
           Nessuna Richiesta Presente
         </td>
       </tr>
     </ng-template>
   </p-table>
-  <div style="text-align:center" style="padding-top: 2em;">
-    <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
-  </div>
 </div>
 
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
-  [width]="700" [height]="450">
+  [width]="900" [height]="550">
   <form name="form" #fRichieste="ngForm">
     <div class="ui-g ui-fluid" *ngIf="richiesta" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Titolo</label>
+          <label>Titolo:</label>
         </div>
         <div class="ui-g-10">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="richiesta.titoloFilmRichiesto" style="width: 100%" />
@@ -48,28 +83,40 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Formato</label>
+          <label>Formato:</label>
         </div>
-        <div class="ui-g-10">
+        <div class="ui-g-4">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
         </div>
-      </div>
-      <div class="ui-g-12" style="padding-top: 1.5em;">
         <div class="ui-g-2">
-          <label>Richiedente</label>
+          <label>Richiedente:</label>
         </div>
-        <div class="ui-g-10">
+        <div class="ui-g-4">
           <p-dropdown [options]="listaRichiedenti" id="richiedente" name="richiedente" (onChange)="changeCustomer($event)"
-            [(ngModel)]="richiesta.nomeCliente" [disabled]="notAdmin()"></p-dropdown>
+            [(ngModel)]="richiesta.nomeCliente" [disabled]="!adminMode()"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-2">
-          <label>Data</label>
+          <label>Stato Richiesta:</label>
+        </div>
+        <div class="ui-g-4">
+          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato" [disabled]="!adminMode()"></p-dropdown>
+        </div>
+        <div class="ui-g-2">
+          <label>Data:</label>
+        </div>
+        <div class="ui-g-4">
+          <input pInputText id="dataInserimento" name="dataInserimento" #titolo [(ngModel)]="richiesta.dataInserimento"
+            style="width: 100%" [disabled]="!adminMode()" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-2">
+          <label>Note:</label>
         </div>
         <div class="ui-g-10">
-          <input pInputText id="dataInserimento" name="dataInserimento" #titolo [(ngModel)]="richiesta.dataInserimento"
-            style="width: 100%" [disabled]="notAdmin()" />
+          <textarea rows="3" id="noteRichiesta" name="noteRichiesta" pInputTextarea [(ngModel)]="richiesta.note"></textarea>
         </div>
       </div>
     </div>

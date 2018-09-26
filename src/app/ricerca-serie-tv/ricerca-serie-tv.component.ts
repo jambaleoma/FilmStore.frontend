@@ -13,7 +13,7 @@ export class RicercaSerieTvComponent implements OnInit {
 
   filters: any = {};
 
-  serieTV: Serie[];
+  serieTV: Serie[] = [];
 
   cols: any[];
 
@@ -46,23 +46,39 @@ export class RicercaSerieTvComponent implements OnInit {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
       { field: 'formato', header: 'Formato' },
-      { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' },
-      { field: 'numeroEpisodi', header: 'Episodi N°' },
-      { field: 'numeroStagione', header: 'Stagione N°' }
+      { field: 'stagioni', header: 'Stagioni' }
     ];
   }
 
   subsrcibeToListOfSerieTVs() {
     this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.serieTV = notification;
+      if (notification) {
+        const seriesName = this.groupBy(notification, serie => serie.nome);
+        const arrayOfName = Array.from(seriesName.keys());
+        for (const name of arrayOfName) {
+          seriesName.get(name).sort(function (a, b) {
+            return (a.numeroStagione - b.numeroStagione);
+          });
+          this.serieTV.push(seriesName.get(name)[0]);
+        }
+      }
     });
   }
 
-  onFormatsFilterChange(val: ListItem[], table: Table) {
-    table.filter(val, 'formato', 'filterFormats');
-  }
+  groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach((item) => {
+        const key = keyGetter(item);
+        const collection = map.get(key);
+        if (!collection) {
+            map.set(key, [item]);
+        } else {
+            collection.push(item);
+        }
+    });
+    return map;
+}
 
   //  *** Reset Valori selzionati nei Filtri ***
   reset(stvt: Table) {
@@ -75,15 +91,5 @@ export class RicercaSerieTvComponent implements OnInit {
   goToSerie(serieId: string) {
     this.router.navigate(['filmStore/SerieTV/view', serieId]);
   }
-
-  onStagioneChange(event, ft) {
-    if (this.stagioneTimeout) {
-        clearTimeout(this.stagioneTimeout);
-    }
-
-    this.stagioneTimeout = setTimeout(() => {
-       ft.filter(event.value, 'numeroStagione', 'equals');
-    }, 250);
-}
 
 }

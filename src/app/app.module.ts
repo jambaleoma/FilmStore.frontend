@@ -25,26 +25,30 @@ import { CustomersListaComponent } from './customers-lista/customers-lista.compo
 import { RichiesteListComponent } from './richieste-list/richieste-list.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import {ListboxModule} from 'primeng/listbox';
+import { ListboxModule } from 'primeng/listbox';
 import { LoginComponent } from './login/login.component';
 import { registerLocaleData } from '@angular/common';
 import localeITCA from '@angular/common/locales/it';
 import { RicercaSerieTvComponent } from './ricerca-serie-tv/ricerca-serie-tv.component';
 import { SerieService } from './_api/services/serie.service';
 import { SliderModule } from 'primeng/slider';
-import {ChartModule} from 'primeng/chart';
-import {CardModule} from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
-import {SpinnerModule} from 'primeng/spinner';
-import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
-import {MessagesModule} from 'primeng/messages';
-import {GrowlModule} from 'primeng/growl';
+import { SpinnerModule } from 'primeng/spinner';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { GrowlModule } from 'primeng/growl';
 import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
 import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DataViewModule } from 'primeng/dataview';
+import { PanelModule } from 'primeng/panel';
+import {ChipsModule} from 'primeng/chips';
 
 registerLocaleData(localeITCA);
 
@@ -65,6 +69,10 @@ registerLocaleData(localeITCA);
     DettaglioSerieTvComponent
   ],
   imports: [
+    ChipsModule,
+    PanelModule,
+    DataViewModule,
+    InputTextareaModule,
     GrowlModule,
     MessagesModule,
     ConfirmDialogModule,

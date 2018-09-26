@@ -147,7 +147,8 @@ export class StatisticheComponent implements OnInit {
           'Richieste di ' + this.customers[0].firstName,
           'Richieste di ' + this.customers[1].firstName,
           'Richieste di ' + this.customers[2].firstName,
-          'Richieste di ' + this.customers[3].firstName],
+          'Richieste di ' + this.customers[3].firstName
+        ],
         datasets: [
           {
             data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),

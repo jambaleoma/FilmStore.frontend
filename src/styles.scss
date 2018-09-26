@@ -50,7 +50,7 @@ body.backImage{
   }
 
   .ui-confirmdialog.ui-dialog .ui-dialog-content {
-    padding: 1em 3.7em;
+    text-align: center;
   }
 
   .ui-dialog .ui-dialog-titlebar {
@@ -61,7 +61,12 @@ body.backImage{
   .ui-card-body {
     padding: 0em !important;
     padding-bottom: 1em !important;
-}
+  }
+
+  .ui-dataview .ui-dataview-header {
+    padding: 0em !important;
+    border: none !important;
+  }
 
   [film-table] {
     &[film-loader-table]{
@@ -122,6 +127,7 @@ body.backImage{
     border-collapse: collapse;
     width: auto !important;
     table-layout: fixed;
+    text-align: center;
   }
 
   .ui-table-summary {

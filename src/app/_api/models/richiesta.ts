@@ -4,4 +4,6 @@ export interface Richiesta {
     formatoFilmRichiesto?: string;
     dataInserimento?: string;
     nomeCliente?: string;
+    stato?: string;
+    note?: string;
 }
