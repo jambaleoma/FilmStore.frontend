@@ -22,10 +22,9 @@
     </div>
   </div>
 </div>
-<!-- / FILTRI DI RICERCA -->
 
 <div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
-  <p-table film-table [columns]="cols" [value]="serieTV" #stvt>
+  <p-table film-table [columns]="cols" [value]="serieTV"  [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,25,50]" #stvt>
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th>

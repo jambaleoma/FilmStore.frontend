@@ -18,6 +18,10 @@ body.backImage{
     }
   }
 
+  .ui-inputtext {
+    font-size: 18px !important;
+  }
+
   .ui-widget {
     font-size: 18px !important;
   }
@@ -128,6 +132,10 @@ body.backImage{
     width: auto !important;
     table-layout: fixed;
     text-align: center;
+  }
+
+  .ui-paginator {
+    width: max-content;
   }
 
   .ui-table-summary {

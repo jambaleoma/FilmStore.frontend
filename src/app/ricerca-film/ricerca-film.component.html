@@ -24,10 +24,9 @@
     </div>
   </div>
 </div>
-<!-- / FILTRI DI RICERCA -->
 
 <div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
-  <p-table film-table [columns]="cols" [value]="films" #ft>
+  <p-table film-table [columns]="cols" [value]="films" #ft [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,25,50]">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
         <col *ngFor="let col of columns">
@@ -35,6 +34,9 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
+        <th>
+          Locandina
+        </th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
@@ -46,6 +48,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
+        <td style="width: 15em">
+          <img src="assets/showcase/images/film/{{rowData.urlLocandina}}.jpg" style="width: 100%">
+        </td>
         <td *ngFor="let col of columns">
           {{rowData[col.field]}}
         </td>
