@@ -16,8 +16,13 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns">
-          {{rowData[col.field]}}
+        <td *ngFor="let col of columns" [ngClass]="{
+          'inLavorazione':rowData[col.field] === 'IN LAVORAZIONE',
+          'presaInCarico':rowData[col.field] === 'PRESA IN CARICO',
+          'accettata':rowData[col.field] === 'ACCETTATA',
+          'rifiutata':rowData[col.field] === 'RIFIUTATA'
+        }">
+        {{rowData[col.field]}}
         </td>
       </tr>
     </ng-template>
