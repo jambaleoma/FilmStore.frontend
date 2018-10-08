@@ -105,13 +105,16 @@ export class StatisticheComponent implements OnInit {
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      this.customers = notification;
-      if (this.customers.length > 0) {
-        for (let i = 0; i < this.customers.length; i++) {
-          this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+      if (notification) {
+        this.customers = notification;
+        this.customers = this.customers.filter((val) => val.firstName !== 'Vincenzo');
+        if (this.customers.length > 0) {
+          for (let i = 0; i < this.customers.length; i++) {
+            this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+          }
+          this.loadChartRichiestePerMeseLine();
+          this.loadChartCustomerRichiestePie();
         }
-        this.loadChartRichiestePerMeseLine();
-        this.loadChartCustomerRichiestePie();
       }
     });
   }
@@ -146,23 +149,20 @@ export class StatisticheComponent implements OnInit {
         labels: [
           'Richieste di ' + this.customers[0].firstName,
           'Richieste di ' + this.customers[1].firstName,
-          'Richieste di ' + this.customers[2].firstName,
-          'Richieste di ' + this.customers[3].firstName
+          'Richieste di ' + this.customers[2].firstName
         ],
         datasets: [
           {
             data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
-            this.customer2richieste.get(this.customers[2].firstName), this.customer2richieste.get(this.customers[3].firstName)],
+            this.customer2richieste.get(this.customers[2].firstName)],
             backgroundColor: [
               '#f70236',
               '#36A2EB',
-              '#FFCE56',
               '#006400'
             ],
             hoverBackgroundColor: [
               '#f70236',
               '#36A2EB',
-              '#FFCE56',
               '#006400'
             ]
           }]
