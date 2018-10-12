@@ -31,6 +31,16 @@ export class CustomersListaComponent implements OnInit {
 
   adminMode = false;
 
+  showChangePassword = false;
+
+  checked1 = false;
+
+  customerPassword: string;
+
+  newCustomerPassword: string;
+
+  repeatedNewCustomerPassword: string;
+
   @ViewChild('ct') ct: Table;
 
   constructor(
@@ -66,9 +76,13 @@ export class CustomersListaComponent implements OnInit {
   }
 
   showDialogToAdd() {
+    this.customerPassword = undefined;
+    this.newCustomerPassword = undefined;
+    this.repeatedNewCustomerPassword = undefined;
     this.newCustomer = true;
     this.customer = { value: null };
     this.displayDialog = true;
+    this.showChangePassword = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#nome').focus();
     }, 100);
@@ -79,6 +93,10 @@ export class CustomersListaComponent implements OnInit {
   }
 
   manageUser(customer: Customer) {
+    this.customerPassword = undefined;
+    this.newCustomerPassword = undefined;
+    this.repeatedNewCustomerPassword = undefined;
+    this.showChangePassword = false;
     this.newCustomer = false;
     this.customer = this.cloneCustomer(customer);
     this.customerSelezionato = customer;
@@ -97,49 +115,82 @@ export class CustomersListaComponent implements OnInit {
     return ric;
   }
 
-  save() {
+  save(pwsChange?: boolean) {
     if (this.newCustomer) {
-      this.confirmationService.confirm({
-        message: 'Sicuro di voler Inserire questo Utente?',
-        header: 'Inserimento Utente',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.customer.label = this.customer.firstName;
-          this.customer.value = this.customer.firstName;
-          this.customer.password = 'passworDi' + this.customer.firstName;
-          this.customerService.addCustomer(this.customer).subscribe(response => {
-            if (response !== null) {
-              this.customers = response as Customer[];
-              this.customer = null;
-              this.displayDialog = false;
-              this.ct.reset();
-              this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Utente Inserito' }];
-            }
-          });
-        },
-        reject: () => {
-        }
-      });
+      if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
+        this.confirmationService.confirm({
+          message: 'Sicuro di voler Inserire questo Utente?',
+          header: 'Inserimento Utente',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => {
+            this.customer.label = this.customer.firstName;
+            this.customer.value = this.customer.firstName;
+            this.customer.password = this.newCustomerPassword;
+            this.customerService.addCustomer(this.customer).subscribe(response => {
+              if (response !== null) {
+                this.customers = response as Customer[];
+                this.customer = null;
+                this.displayDialog = false;
+                this.ct.reset();
+                this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Utente Inserito' }];
+              }
+            });
+          },
+          reject: () => {
+          }
+        });
+      } else {
+        this.msgs = [{ severity: 'warn', summary: 'Errore Password', detail: 'Attenzione le Password non corrispondono' }];
+      }
     } else {
-      this.confirmationService.confirm({
-        message: 'Sicuro di voler Aggiornare questo Utente?',
-        header: 'Aggiornamento Utente',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.customer.label = this.customer.firstName;
-          this.customer.value = this.customer.firstName;
-          this.customerService.updateCustomer(this.customer).subscribe(response => {
-            if (response !== null) {
-              this.customers = response as Customer[];
-              this.customer = null;
-              this.displayDialog = false;
-              this.ct.reset();
-              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Utente Aggiornato' }];
-            }
-          });
-        },
-        reject: () => { }
-      });
+      if (pwsChange) {
+        if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
+          if (this.customerPassword === this.customer.password) {
+            this.confirmationService.confirm({
+              message: 'Sicuro di voler Cambiare la Password?',
+              header: 'Aggiornamento Password',
+              icon: 'pi pi-exclamation-triangle',
+              accept: () => {
+                this.customer.password = this.newCustomerPassword;
+                this.customerService.updateCustomer(this.customer).subscribe(response => {
+                  if (response !== null) {
+                    this.customers = response as Customer[];
+                    this.customer = null;
+                    this.displayDialog = false;
+                    this.ct.reset();
+                    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
+                  }
+                });
+              },
+              reject: () => { }
+            });
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'La Password Attuale non è Corretta' }];
+          }
+        } else {
+          this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Le Password non Corrispondono' }];
+        }
+      } else {
+        this.confirmationService.confirm({
+          message: 'Sicuro di voler Aggiornare questo Utente?',
+          header: 'Aggiornamento Utente',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => {
+            this.customer.label = this.customer.firstName;
+            this.customer.value = this.customer.firstName;
+            this.customerService.updateCustomer(this.customer).subscribe(response => {
+              if (response !== null) {
+                this.customers = response as Customer[];
+                this.customer = null;
+                this.displayDialog = false;
+                this.ct.reset();
+                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Utente Aggiornato' }];
+              }
+            });
+          },
+          reject: () => { }
+        });
+      }
     }
   }
 
@@ -166,24 +217,39 @@ export class CustomersListaComponent implements OnInit {
   }
 
   resetPassword(customer: Customer) {
-    this.confirmationService.confirm({
-      message: 'Sicuro di voler Resettare la Password di ' + customer.firstName + ' ?',
-      header: 'Reset Password Utente',
-      accept: () => {
-        customer.password = 'password';
-        this.customerService.updateCustomer(customer).subscribe(response => {
-          if (response !== null) {
-            const index = this.customers.indexOf(this.customerSelezionato);
-            this.customers = this.customers.filter((val, i) => i !== index);
-            this.customer = null;
-            this.displayDialog = false;
-            this.ct.reset();
-            this.msgs = [{ severity: 'success', summary: 'Reset Completato', detail: 'Password Resettata' }];
-          }
+    if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
+      if (this.customerPassword === this.customer.password) {
+        this.confirmationService.confirm({
+          message: 'Sicuro di voler Cambiare la Password di ' + customer.firstName + ' ?',
+          header: 'Aggiornamento Password Utente',
+          accept: () => {
+            customer.password = this.newCustomerPassword;
+            this.customerService.updateCustomer(customer).subscribe(response => {
+              if (response !== null) {
+                const index = this.customers.indexOf(this.customerSelezionato);
+                this.customers = this.customers.filter((val, i) => i !== index);
+                this.customer = null;
+                this.displayDialog = false;
+                this.ct.reset();
+                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Password Aggiornata' }];
+              }
+            });
+          },
+          reject: () => { }
         });
-      },
-      reject: () => { }
-    });
+      } else {
+        this.msgs = [{ severity: 'error', summary: 'Errore Password', detail: 'La Password non è Corretta' }];
+      }
+    } else {
+      this.msgs = [{ severity: 'warn', summary: 'Errore Password', detail: 'Attenzione le Password non corrispondono' }];
+    }
+  }
+
+  annul() {
+    this.customerPassword = undefined;
+    this.newCustomerPassword = undefined;
+    this.repeatedNewCustomerPassword = undefined;
+    this.showChangePassword = false;
   }
 
 }

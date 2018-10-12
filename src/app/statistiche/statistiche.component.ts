@@ -149,21 +149,24 @@ export class StatisticheComponent implements OnInit {
         labels: [
           'Richieste di ' + this.customers[0].firstName,
           'Richieste di ' + this.customers[1].firstName,
-          'Richieste di ' + this.customers[2].firstName
+          'Richieste di ' + this.customers[2].firstName,
+          'Richieste di ' + this.customers[3].firstName
         ],
         datasets: [
           {
             data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
-            this.customer2richieste.get(this.customers[2].firstName)],
+            this.customer2richieste.get(this.customers[2].firstName), this.customer2richieste.get(this.customers[3].firstName)],
             backgroundColor: [
               '#f70236',
               '#36A2EB',
-              '#006400'
+              '#006400',
+              '#FFFF00'
             ],
             hoverBackgroundColor: [
               '#f70236',
               '#36A2EB',
-              '#006400'
+              '#006400',
+              '#FFFF00'
             ]
           }]
       };

@@ -2,10 +2,10 @@
 
 <div class="ui-grid-col-12" *ngIf="adminMode">
   <div class="ui-g">
-    <div class="ui-g-12" align="center" style="margin-bottom: -100%">
+    <div class="ui-g-10" align="center" style="padding-left: 20em;">
       <h1>Utenti</h1>
     </div>
-    <div class="ui-g-12" align="right">
+    <div class="ui-g-2">
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Utente" style="margin-top: 1em;"></button>
     </div>
   </div>
@@ -28,7 +28,7 @@
         <th style="width: 7em">
           Dettaglio Richieste
         </th>
-        <th style="width: 7em" *ngIf="adminMode">
+        <th style="width: 7em">
           Gestione Utente
         </th>
       </tr>
@@ -45,7 +45,7 @@
         <td>
           <p-button icon="fa fa-search" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
         </td>
-        <td *ngIf="adminMode">
+        <td>
           <p-button icon="fa fa-wrench" (onClick)="manageUser(customer)"></p-button>
         </td>
       </tr>
@@ -61,7 +61,7 @@
 </div>
 
 <p-dialog header="Dettaglio Utente" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
-  [width]="900" [height]="550">
+  [width]="900" [positionTop]="250">
   <form name="form" #fRichieste="ngForm">
     <div class="ui-g ui-fluid" style="padding-bottom: 2em" *ngIf="customer">
       <div class="ui-g-12">
@@ -69,13 +69,13 @@
           <label>Nome:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="nome" name="nome" [(ngModel)]="customer.firstName" style="width: 100%" />
+          <input pInputText [disabled]="!adminMode" id="nome" name="nome" [(ngModel)]="customer.firstName" style="width: 100%" />
         </div>
         <div class="ui-g-3">
           <label>Cognome:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="cognome" name="cognome" [(ngModel)]="customer.lastName" style="width: 100%" />
+          <input pInputText [disabled]="!adminMode" id="cognome" name="cognome" [(ngModel)]="customer.lastName" style="width: 100%" />
         </div>
       </div>
       <div class="ui-g-12">
@@ -83,34 +83,61 @@
           <label>N. Richieste:</label>
         </div>
         <div class="ui-g-3" *ngIf="!newCustomer">
-          <p-spinner size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste" [max]="100" [min]="0"
-            [step]="1" style="width: 100%"></p-spinner>
+          <p-spinner [disabled]="!adminMode" size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste"
+            [max]="100" [min]="0" [step]="1" style="width: 100%"></p-spinner>
         </div>
         <div class="ui-g-2" *ngIf="!newCustomer">
           <label></label>
         </div>
-        <div class="ui-g-4" *ngIf="!newCustomer">
-          <button type="button" pButton class="ui-button-danger" icon="fa fa-eraser" (click)="resetPassword(customer)"
-            label="Resetta Password"></button>
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword">
+          <button type="button" pButton class="ui-button-info" icon="fa fa-cog" (click)="showChangePassword = true;"
+            label="Modifca Password"></button>
         </div>
-        <div class="ui-g-3" *ngIf="newCustomer">
-          <label>Password:</label>
-        </div>
-        <div class="ui-g-9" *ngIf="newCustomer">
-          <input pInputText id="psw" name="psw" [(ngModel)]="customer.password" style="width: 100%" />
+        <div class="ui-g-12" *ngIf="showChangePassword">
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Password Attuale:</label>
+          </div>
+          <div class="ui-g-9" *ngIf="!newCustomer">
+            <input pInputText id="psw" name="psw" type="password" [(ngModel)]="customerPassword" style="width: 100%" />
+          </div>
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Nuova Password:</label>
+          </div>
+          <div class="ui-g-3" *ngIf="newCustomer">
+            <label>Password:</label>
+          </div>
+          <div class="ui-g-9">
+            <input pInputText id="newPsw" name="newPsw" type="password" [(ngModel)]="newCustomerPassword" style="width: 100%" />
+          </div>
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Conferma Nuova Password:</label>
+          </div>
+          <div class="ui-g-3" *ngIf="newCustomer">
+            <label>Conferma Password:</label>
+          </div>
+          <div class="ui-g-9">
+            <input pInputText id="repeatedNewPsw" name="repeatedNewPsw" type="password" [(ngModel)]="repeatedNewCustomerPassword"
+              style="width: 100%" />
+          </div>
         </div>
       </div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-6" *ngIf="!newCustomer" align="center">
-          <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
+        <div class="ui-g-6" *ngIf="!newCustomer && adminMode && !showChangePassword">
+          <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina Utente"></button>
         </div>
+        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword">
+            <button type="button" pButton class="ui-button-info" icon="fa fa-times" (click)="annul()" label="Annulla Modifica"></button>
+          </div>
         <div class="ui-g-12" *ngIf="newCustomer" align="center">
-          <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva Utente"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newCustomer" align="center">
-          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        <div class="ui-g-6" *ngIf="!newCustomer && !showChangePassword && adminMode" align="right">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna Utente"></button>
+        </div>
+        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword" align="right">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save(true)" label="Cambia Password"></button>
         </div>
       </div>
     </p-footer>

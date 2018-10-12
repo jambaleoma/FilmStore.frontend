@@ -1,203 +1,229 @@
-body.backImage{
+body.backImage {
   background-image: url("assets/showcase/images/coverLogin/login_cover.jpg");
   background-position: center;
 }
 
-[film-input]{
-    font-size: 16px;
-    height: 32px;
-    width: 85%;
-    max-width: 240px;
-    border: 1px solid darkgrey;
-    border-radius: 2px;
-    box-sizing: border-box;
-    color: #000000;
-    font-family: 'Lato', sans-serif, FontAwesome !important;
-    &.ui-inputtext:enabled:hover {
-      border-color: darkgray;
-    }
+[film-input] {
+  font-size: 16px;
+  height: 32px;
+  width: 85%;
+  max-width: 240px;
+  border: 1px solid darkgrey;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #000000;
+  font-family: 'Lato', sans-serif, FontAwesome !important;
+
+  &.ui-inputtext:enabled:hover {
+    border-color: darkgray;
+  }
+}
+
+.ui-inputtext {
+  font-size: 18px !important;
+}
+
+.ui-widget {
+  font-size: 18px !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-success {
+  color: #ffffff !important;
+  background: green !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image {
+  color: #ffffff !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-warn {
+  background: orange !important;
+  color: black !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image {
+  color: black !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-error {
+  color: #ffffff !important;
+  background: red !important;
+}
+
+.ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image {
+  color: #ffffff !important;
+}
+
+.ui-confirmdialog.ui-dialog .ui-dialog-content {
+  text-align: center;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  background-color: darkblue !important;
+  color: white !important;
+}
+
+.ui-card-body {
+  padding: 0em !important;
+  padding-bottom: 1em !important;
+}
+
+.ui-dataview .ui-dataview-header {
+  padding: 0em !important;
+  border: none !important;
+}
+
+[film-fieldset] {
+
+  .ui-fieldset {
+    border-color: transparent;
+    display: contents;
   }
 
-  .ui-inputtext {
-    font-size: 18px !important;
-  }
-
-  .ui-widget {
-    font-size: 18px !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-success {
-    color: #ffffff !important;
-    background: green !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-success .ui-growl-image{
-    color: #ffffff !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-warn {
-    background: orange !important;
-    color: black !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-warn .ui-growl-image{
-    color: black !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-error {
-    color: #ffffff !important;
-    background: red !important;
-  }
-
-  .ui-growl .ui-growl-item-container.ui-growl-message-error .ui-growl-image{
-    color: #ffffff !important;
-  }
-
-  .ui-confirmdialog.ui-dialog .ui-dialog-content {
-    text-align: center;
-  }
-
-  .ui-dialog .ui-dialog-titlebar {
-    background-color: darkblue !important;
+  .ui-fieldset .ui-fieldset-legend-text {
     color: white !important;
   }
 
-  .ui-card-body {
-    padding: 0em !important;
-    padding-bottom: 1em !important;
+  .ui-fieldset-toggleable .ui-fieldset-legend {
+    max-width: 15em;
   }
+}
 
-  .ui-dataview .ui-dataview-header {
-    padding: 0em !important;
-    border: none !important;
-  }
+[film-table] {
+  &[film-loader-table] {
+    .ui-blockui {
+      height: 67% !important;
 
-  [film-table] {
-    &[film-loader-table]{
-      .ui-blockui{
-        height: 67% !important;
-        &.ui-widget-overlay{
-          background: rgba(255,255,255,0.5);
-          opacity:1;
-          text-align: center;
-          margin-top: 10em;
-        }      
+      &.ui-widget-overlay {
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 1;
+        text-align: center;
+        margin-top: 10em;
       }
-    }
-    font-size: 16px;
-    padding-bottom: 2em;
-    .ui-table {
-      .ui-table-thead {
-        tr{
-          th {
-            background: darkblue;
-            color: white;
-          }
-        }
-      }
-      .ui-table-tbody{
-        tr{
-          td{
-            text-align: center;
-            color: black;
-            height: 4em;
-  
-            &.action-column{
-              width: 2.1em;
-              padding-right: 0 !important;
-              padding-left: 0 !important;
-          }
-  
-          div.ui-chkbox {
-            vertical-align: bottom;
-          }
-  
-          }
-        }
-      }
-      .ui-table-tfoot {
-        tr{
-          td {
-            background: darkblue;
-            color: white;
-          }
-        }
-      }
-  
     }
   }
 
-  .ui-table table {
-    border-collapse: collapse;
-    width: auto !important;
-    table-layout: fixed;
-    text-align: center;
-  }
+  font-size: 16px;
+  padding-bottom: 2em;
 
-  .ui-paginator {
-    width: max-content;
-  }
-
-  .ui-table-summary {
-    border-collapse: collapse;
-    width: max-content !important;
-    table-layout: fixed;
-  }
-
-  [sdc-multiselect]{
-    .ui-multiselect {
-      width: 85%;
-      height: 32px;
-      max-width: 240px;
-      width: 100%;
-      border-radius: 2px;
-      border: 1px solid darkgray;
-  
-      .ui-state-highlight{
-        background-color:lightblue;
-      }
-      .ui-multiselect-label {
-        color: #000000;
-        font-family: 'Lato', sans-serif, FontAwesome;
-        text-align: left;
-        font-size: 16px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-  
-      .ui-multiselect-trigger {
-        height: 4px;	width: -22px;
-        border: white;
-        background-color: transparent;
-      }
-
-      .ui-multiselect-trigger-icon {
-        visibility: hidden;
-      }
-  
-      &:hover{
-        background:darkblue;
-        .ui-multiselect-label {
-            background: darkblue;
-            color: white;
-            font-family: 'Lato', sans-serif, FontAwesome;
-            font-size: 16px;
-        }
-        .ui-multiselect-trigger {
+  .ui-table {
+    .ui-table-thead {
+      tr {
+        th {
+          background: darkblue;
           color: white;
         }
       }
+    }
+
+    .ui-table-tbody {
+      tr {
+        td {
+          text-align: center;
+          color: black;
+          height: 4em;
+
+          &.action-column {
+            width: 2.1em;
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+          }
+
+          div.ui-chkbox {
+            vertical-align: bottom;
+          }
+
+        }
       }
     }
 
-    .ui-widget {
-      font-size: 20px;
-  }
+    .ui-table-tfoot {
+      tr {
+        td {
+          background: darkblue;
+          color: white;
+        }
+      }
+    }
 
-    .ui-fluid .ui-dropdown {
-      width: 100% !important;
   }
+}
 
-  .ui-dialog-titlebar {
-    text-align: center;
+.ui-table table {
+  border-collapse: collapse;
+  width: auto !important;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.ui-paginator {
+  width: max-content;
+}
+
+.ui-table-summary {
+  border-collapse: collapse;
+  width: max-content !important;
+  table-layout: fixed;
+}
+
+[sdc-multiselect] {
+  .ui-multiselect {
+    width: 85%;
+    height: 32px;
+    max-width: 240px;
+    width: 100%;
+    border-radius: 2px;
+    border: 1px solid darkgray;
+
+    .ui-state-highlight {
+      background-color: lightblue;
+    }
+
+    .ui-multiselect-label {
+      color: #000000;
+      font-family: 'Lato', sans-serif, FontAwesome;
+      text-align: left;
+      font-size: 16px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .ui-multiselect-trigger {
+      height: 4px;
+      width: -22px;
+      border: white;
+      background-color: transparent;
+    }
+
+    .ui-multiselect-trigger-icon {
+      visibility: hidden;
+    }
+
+    &:hover {
+      background: darkblue;
+
+      .ui-multiselect-label {
+        background: darkblue;
+        color: white;
+        font-family: 'Lato', sans-serif, FontAwesome;
+        font-size: 16px;
+      }
+
+      .ui-multiselect-trigger {
+        color: white;
+      }
+    }
+  }
+}
+
+.ui-widget {
+  font-size: 20px;
+}
+
+.ui-fluid .ui-dropdown {
+  width: 100% !important;
+}
+
+.ui-dialog-titlebar {
+  text-align: center;
 }
