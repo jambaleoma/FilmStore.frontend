@@ -37,8 +37,7 @@ export class LayoutsComponent implements OnInit {
       {
         label: 'Richieste', icon: 'fa fa-clipboard',
         routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName')
-      },
-      { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
+      }
     ];
 
     this.adminItems = [
