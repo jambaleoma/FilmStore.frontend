@@ -116,7 +116,6 @@ export class GestioneFilmComponent implements OnInit {
               this.films = response as Film[];
               this.film = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Film Inserito' }];
             }
           });
@@ -135,7 +134,6 @@ export class GestioneFilmComponent implements OnInit {
               this.films = response as Film[];
               this.film = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Film Aggiornato' }];
             }
           });
@@ -157,7 +155,6 @@ export class GestioneFilmComponent implements OnInit {
             this.films = this.films.filter((val, i) => i !== index);
             this.film = null;
             this.displayDialog = false;
-            this.rt.reset();
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
           }
         });

@@ -11,7 +11,7 @@ import { CustomerService } from '../../_api/services/customer.service';
 })
 export class LayoutsComponent implements OnInit {
 
-  customerLoggato: Customer;
+  loggedCustomer: Customer;
 
   items: MenuItem[];
 
@@ -19,37 +19,25 @@ export class LayoutsComponent implements OnInit {
 
   logOutItems: MenuItem[];
 
-  showMenuItems = false;
-
-  adminMode = false;
-
   constructor(
     private router: Router,
     private customerService: CustomerService,
-  ) { }
+  ) {
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+    });
+  }
 
   ngOnInit() {
-
-    if (sessionStorage.getItem('customerfirstName') !== null) {
-      this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
-        this.customerLoggato = notification;
-      });
-    }
-
-    if (sessionStorage.getItem('customerfirstName') !== null) {
-      this.showMenuItems = true;
-    }
-
-    if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      this.adminMode = true;
-    }
 
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
       { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
       { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
-      { label: 'Richieste', icon: 'fa fa-clipboard',
-       routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName') },
+      {
+        label: 'Richieste', icon: 'fa fa-clipboard',
+        routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName')
+      },
       { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
     ];
 

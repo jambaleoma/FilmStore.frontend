@@ -12,4 +12,5 @@ export interface Customer {
     firstName?: string;
     lastName?: string;
     richieste?: Richiesta[];
+    admin?: boolean;
 }

@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import { CustomerService } from './../_api/services/customer.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Customer } from '../_api/models';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
   showSerieTvAdminDialog = false;
+  loggedCustomer: Customer;
 
   constructor(
-    private router: Router
+    private router: Router,
+    private customerService: CustomerService
   ) { }
 
-  customerfirstName = sessionStorage.getItem('customerfirstName');
+  ngOnInit() {
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+    });
+  }
 
   goToSerieTv() {
     this.router.navigate(['filmStore/ricercaSerieTV']);

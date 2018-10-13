@@ -13,7 +13,7 @@ import { Film } from '../_api/models/film';
   templateUrl: './statistiche.component.html',
   styleUrls: ['./statistiche.component.scss']
 })
-export class StatisticheComponent implements OnInit {
+export class StatisticheComponent {
 
   customers: Customer[] = [];
 
@@ -69,14 +69,12 @@ export class StatisticheComponent implements OnInit {
     private richiestaService: RichiestaService,
     private filmService: FilmService,
     private serieTVService: SerieService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.getRichieste();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
     this.subsrcibeToListOfSerieTVs();
-  }
+   }
 
   getRichieste() {
     const map2017 = new Map();
@@ -107,7 +105,6 @@ export class StatisticheComponent implements OnInit {
     this.customerService.getCustomers().subscribe(notification => {
       if (notification) {
         this.customers = notification;
-        this.customers = this.customers.filter((val) => val.firstName !== 'Vincenzo');
         if (this.customers.length > 0) {
           for (let i = 0; i < this.customers.length; i++) {
             this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
@@ -145,29 +142,21 @@ export class StatisticheComponent implements OnInit {
 
   loadChartCustomerRichiestePie() {
     if (this.customers.length > 0) {
+      const dataPieRichiesteLabels = [];
+      const dataPieRichiesteData = [];
+      const dataPieRichiestebackgroundColor = [];
+      for (const customer of this.customers) {
+        dataPieRichiesteLabels.push('Richieste di ' + customer.firstName);
+        dataPieRichiesteData.push(this.customer2richieste.get(customer.firstName));
+        dataPieRichiestebackgroundColor.push(this.getRandomColor());
+      }
       this.dataPieRichieste = {
-        labels: [
-          'Richieste di ' + this.customers[0].firstName,
-          'Richieste di ' + this.customers[1].firstName,
-          'Richieste di ' + this.customers[2].firstName,
-          'Richieste di ' + this.customers[3].firstName
-        ],
+        labels: dataPieRichiesteLabels,
         datasets: [
           {
-            data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
-            this.customer2richieste.get(this.customers[2].firstName), this.customer2richieste.get(this.customers[3].firstName)],
-            backgroundColor: [
-              '#f70236',
-              '#36A2EB',
-              '#006400',
-              '#FFFF00'
-            ],
-            hoverBackgroundColor: [
-              '#f70236',
-              '#36A2EB',
-              '#006400',
-              '#FFFF00'
-            ]
+            data: dataPieRichiesteData,
+            backgroundColor: dataPieRichiestebackgroundColor,
+            hoverBackgroundColor: dataPieRichiestebackgroundColor
           }]
       };
     }
@@ -204,23 +193,19 @@ export class StatisticheComponent implements OnInit {
 
   loadChartFilmsPerFormatoDoughnut() {
     if (this.films.length > 0) {
+      const dataDoughnutFilmLabels = [];
+      const dataDoughnutFilmbackgroundColor = [];
+      for (const formato of this.formatiFilms) {
+        dataDoughnutFilmLabels.push('Film in Formato ' + formato);
+        dataDoughnutFilmbackgroundColor.push(this.getRandomColor());
+      }
       this.dataDoughnutFilm = {
-        labels: ['Film in Formato ' + this.formatiFilms[0],
-        'Film in Formato ' + this.formatiFilms[1],
-        'Film in Formato ' + this.formatiFilms[2]],
+        labels: dataDoughnutFilmLabels,
         datasets: [
           {
             data: this.filmsFormati,
-            backgroundColor: [
-              '#006000',
-              '#E10000',
-              '#0020C2'
-            ],
-            hoverBackgroundColor: [
-              '#006000',
-              '#E10000',
-              '#0020C2'
-            ]
+            backgroundColor: dataDoughnutFilmbackgroundColor,
+            hoverBackgroundColor: dataDoughnutFilmbackgroundColor
           }]
       };
     }
@@ -235,8 +220,8 @@ export class StatisticheComponent implements OnInit {
             label: 'Film per Anno',
             data: this.filmsAnni,
             fill: false,
-            borderColor: '#36A2EB',
-            backgroundColor: '#36A2EB'
+            borderColor: this.getRandomColor(),
+            backgroundColor: this.getRandomColor()
           }
         ]
       };
@@ -279,6 +264,15 @@ export class StatisticheComponent implements OnInit {
         ]
       };
     }
+  }
+
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
 }

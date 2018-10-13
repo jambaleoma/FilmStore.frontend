@@ -29,7 +29,7 @@
   </div>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
+<div class="ui-grid-col-12" style="padding-top: 1em;" align="center" *ngIf="loggedCustomer">
   <p-table [columns]="cols" #rt [value]="richieste" selectionMode="single" [(selection)]="richiestaSelezionata"
     (onRowSelect)="onRowSelect($event)" [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -37,7 +37,7 @@
         <th *ngFor="let col of columns">
           {{col.header}}
         </th>
-        <th *ngIf="adminMode()" [attr.colspan]="3">
+        <th *ngIf="loggedCustomer.admin" [attr.colspan]="3">
           Gestisci Richiesta
         </th>
       </tr>
@@ -47,19 +47,19 @@
         <td *ngFor="let col of columns" [ngClass]="{
           'inLavorazione':rowData[col.field] === 'IN LAVORAZIONE',
           'presaInCarico':rowData[col.field] === 'PRESA IN CARICO',
-          'accettata':rowData[col.field] === 'ACCETTATA',
+          'completata':rowData[col.field] === 'COMPLETATA',
           'rifiutata':rowData[col.field] === 'RIFIUTATA'
         }">
           {{rowData[col.field]}}
         </td>
-        <td *ngIf="adminMode()">
-          <p-button icon="fa fa-wrench" styleClass="ui-button-warning" (onClick)="gestisciRichiesta(rowData, 'Presa_In_Carico')"></p-button>
+        <td *ngIf="loggedCustomer.admin">
+          <p-button icon="fa fa-wrench" styleClass="ui-button-warning" title="Prendi in carico" (onClick)="gestisciRichiesta(rowData, 'Presa_In_Carico')"></p-button>
         </td>
-        <td *ngIf="adminMode()">
-          <p-button icon="fa fa-times" styleClass="ui-button-danger" (onClick)="gestisciRichiesta(rowData, 'Rifiuta')"></p-button>
+        <td *ngIf="loggedCustomer.admin">
+          <p-button icon="fa fa-times" styleClass="ui-button-danger" title="Rifiuta" (onClick)="gestisciRichiesta(rowData, 'Rifiuta')"></p-button>
         </td>
-        <td *ngIf="adminMode()">
-          <p-button icon="fa fa-check" styleClass="ui-button-success" (onClick)="gestisciRichiesta(rowData, 'Accetta')"></p-button>
+        <td *ngIf="loggedCustomer.admin">
+          <p-button icon="fa fa-check" styleClass="ui-button-success" title="Completa" (onClick)="gestisciRichiesta(rowData, 'Completa')"></p-button>
         </td>
       </tr>
     </ng-template>
@@ -76,7 +76,7 @@
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
   [width]="900" [height]="550" [positionTop]="150">
   <form name="form" #fRichieste="ngForm">
-    <div class="ui-g ui-fluid" *ngIf="richiesta" style="padding-bottom: 2em">
+    <div class="ui-g ui-fluid" *ngIf="loggedCustomer && richiesta" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-2">
           <label>Titolo:</label>
@@ -96,8 +96,8 @@
           <label>Richiedente:</label>
         </div>
         <div class="ui-g-4">
-          <p-dropdown [options]="listaRichiedenti" id="richiedente" name="richiedente" (onChange)="changeCustomer($event)"
-            [(ngModel)]="richiesta.nomeCliente" [disabled]="!adminMode()"></p-dropdown>
+          <p-dropdown [options]="listaRichiedenti" id="richiedente" name="richiedente" [(ngModel)]="richiesta.nomeCliente"
+            [disabled]="!loggedCustomer.admin"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">
@@ -105,14 +105,14 @@
           <label>Stato Richiesta:</label>
         </div>
         <div class="ui-g-4">
-          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato" [disabled]="!adminMode()"></p-dropdown>
+          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato" [disabled]="!loggedCustomer.admin"></p-dropdown>
         </div>
         <div class="ui-g-2">
           <label>Data:</label>
         </div>
         <div class="ui-g-4">
           <input pInputText id="dataInserimento" name="dataInserimento" #titolo [(ngModel)]="richiesta.dataInserimento"
-            style="width: 100%" [disabled]="!adminMode()" />
+            style="width: 100%" [disabled]="!loggedCustomer.admin" />
         </div>
       </div>
       <div class="ui-g-12">

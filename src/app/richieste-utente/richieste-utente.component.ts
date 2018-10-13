@@ -45,6 +45,8 @@ export class RichiesteUtenteComponent implements OnInit {
 
   customerOfRichiesta: Customer;
 
+  loggedCustomer: Customer;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -54,6 +56,9 @@ export class RichiesteUtenteComponent implements OnInit {
     private renderer: Renderer2,
     private router: Router
   ) {
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+    });
     this.urlRichiesteCustomer = this.router.url.substring(0, this.router.url.length);
     this.arrayStringUrl = this.urlRichiesteCustomer.split('/');
     this.nomeCustomer = this.arrayStringUrl[this.arrayStringUrl.length - 1];
@@ -62,7 +67,7 @@ export class RichiesteUtenteComponent implements OnInit {
       { label: '', value: '' },
       { label: 'IN LAVORAZIONE', value: 'IN LAVORAZIONE' },
       { label: 'PRESA IN CARICO', value: 'PRESA IN CARICO' },
-      { label: 'ACCETTATA', value: 'ACCETTATA' },
+      { label: 'COMPLETATA', value: 'COMPLETATA' },
       { label: 'RIFIUTATA', value: 'RIFIUTATA' }
     ];
 
@@ -113,14 +118,6 @@ export class RichiesteUtenteComponent implements OnInit {
       this.showRichieste = true;
     }
     );
-  }
-
-  adminMode() {
-    if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   onRowSelect(event) {
@@ -180,7 +177,6 @@ export class RichiesteUtenteComponent implements OnInit {
               this.richieste = response as Richiesta[];
               this.richiesta = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.customerOfRichiesta.numeroRichieste++;
               this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Richiesta Inserita' }];
@@ -202,7 +198,6 @@ export class RichiesteUtenteComponent implements OnInit {
               this.richieste = response as Richiesta[];
               this.richiesta = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
               this.subsrcibeToListOfRichieste();
             }
@@ -225,7 +220,6 @@ export class RichiesteUtenteComponent implements OnInit {
             this.richieste = this.richieste.filter((val, i) => i !== index);
             this.richiesta = null;
             this.displayDialog = false;
-            this.rt.reset();
             this.customerOfRichiesta.numeroRichieste--;
             this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];

@@ -21,6 +21,8 @@ export class CustomersListaComponent implements OnInit {
 
   newCustomer: boolean;
 
+  showYDSTMW = false;
+
   msgs: Message[] = [];
 
   richiestePerNomeUtente: Richiesta[];
@@ -28,8 +30,6 @@ export class CustomersListaComponent implements OnInit {
   cols: any[];
 
   displayDialog: boolean;
-
-  adminMode = false;
 
   showChangePassword = false;
 
@@ -41,6 +41,8 @@ export class CustomersListaComponent implements OnInit {
 
   repeatedNewCustomerPassword: string;
 
+  loggedCustomer: Customer;
+
   @ViewChild('ct') ct: Table;
 
   constructor(
@@ -48,7 +50,11 @@ export class CustomersListaComponent implements OnInit {
     private customerService: CustomerService,
     private router: Router,
     private renderer: Renderer2
-  ) { }
+  ) {
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+    });
+  }
 
   ngOnInit() {
     this.subsrcibeToListOfCustomers();
@@ -65,12 +71,10 @@ export class CustomersListaComponent implements OnInit {
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      if (sessionStorage.getItem('customerfirstName') !== 'Vincenzo') {
-        this.customers[0] = notification.find(customer => customer.firstName === sessionStorage.getItem('customerfirstName'));
-        this.adminMode = false;
+      if (this.loggedCustomer && !this.loggedCustomer.admin) {
+        this.customers[0] = notification.find(customer => customer.firstName === this.loggedCustomer.firstName);
       } else {
         this.customers = notification;
-        this.adminMode = true;
       }
     });
   }
@@ -131,7 +135,6 @@ export class CustomersListaComponent implements OnInit {
                 this.customers = response as Customer[];
                 this.customer = null;
                 this.displayDialog = false;
-                this.ct.reset();
                 this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Utente Inserito' }];
               }
             });
@@ -157,7 +160,6 @@ export class CustomersListaComponent implements OnInit {
                     this.customers = response as Customer[];
                     this.customer = null;
                     this.displayDialog = false;
-                    this.ct.reset();
                     this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
                   }
                 });
@@ -183,7 +185,6 @@ export class CustomersListaComponent implements OnInit {
                 this.customers = response as Customer[];
                 this.customer = null;
                 this.displayDialog = false;
-                this.ct.reset();
                 this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Utente Aggiornato' }];
               }
             });
@@ -200,48 +201,72 @@ export class CustomersListaComponent implements OnInit {
       header: 'Eliminazione Utente',
       icon: 'fa fa-trash',
       accept: () => {
-        this.customerService.deleteCustomer(this.customerSelezionato.id).subscribe(response => {
-          if (response !== null) {
-            const index = this.customers.indexOf(this.customerSelezionato);
-            this.customers = this.customers.filter((val, i) => i !== index);
-            this.customerSelezionato = null;
-            this.customer = null;
-            this.displayDialog = false;
-            this.ct.reset();
-            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Utente Eliminato' }];
-          }
-        });
+        if (this.customerSelezionato.firstName === 'Vincenzo') {
+          this.showYDSTMW = true;
+        } else {
+          this.customerService.deleteCustomer(this.customerSelezionato.id).subscribe(response => {
+            if (response !== null) {
+              const index = this.customers.indexOf(this.customerSelezionato);
+              this.customers = this.customers.filter((val, i) => i !== index);
+              this.customerSelezionato = null;
+              this.customer = null;
+              this.displayDialog = false;
+              this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Utente Eliminato' }];
+            }
+          });
+        }
       },
       reject: () => { }
     });
   }
 
-  resetPassword(customer: Customer) {
-    if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
-      if (this.customerPassword === this.customer.password) {
-        this.confirmationService.confirm({
-          message: 'Sicuro di voler Cambiare la Password di ' + customer.firstName + ' ?',
-          header: 'Aggiornamento Password Utente',
-          accept: () => {
-            customer.password = this.newCustomerPassword;
-            this.customerService.updateCustomer(customer).subscribe(response => {
+  changeCustomerRole(customerToChange: Customer, role: boolean) {
+    if (role) {
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Assegnare il Ruolo di Admin a ' + customerToChange.firstName + ' ?',
+        header: 'Assegnazione Ruolo Admin',
+        accept: () => {
+          customerToChange.admin = role;
+          this.customerService.updateCustomer(customerToChange).subscribe(response => {
+            if (response !== null) {
+              this.customers = response as Customer[];
+              this.customer = null;
+              this.displayDialog = false;
+              this.msgs = [{
+                severity: 'success', summary: 'Aggiornamento Completato',
+                detail: 'Ora l\'utente ' + customerToChange.firstName + ' ' + customerToChange.lastName +
+                  ' gode dei privilegi di Admin'
+              }];
+            }
+          });
+        },
+        reject: () => { }
+      });
+    } else {
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Rimuovere il Ruolo di Admin a ' + customerToChange.firstName + ' ?',
+        header: 'Rimozione Ruolo Admin',
+        accept: () => {
+          if (customerToChange.firstName === 'Vincenzo') {
+            this.showYDSTMW = true;
+          } else {
+            customerToChange.admin = role;
+            this.customerService.updateCustomer(customerToChange).subscribe(response => {
               if (response !== null) {
-                const index = this.customers.indexOf(this.customerSelezionato);
-                this.customers = this.customers.filter((val, i) => i !== index);
+                this.customers = response as Customer[];
                 this.customer = null;
                 this.displayDialog = false;
-                this.ct.reset();
-                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Password Aggiornata' }];
+                this.msgs = [{
+                  severity: 'success', summary: 'Aggiornamento Completato',
+                  detail: 'Ora l\'utente ' + customerToChange.firstName + ' ' + customerToChange.lastName +
+                    ' non gode più dei privilegi di Admin'
+                }];
               }
             });
-          },
-          reject: () => { }
-        });
-      } else {
-        this.msgs = [{ severity: 'error', summary: 'Errore Password', detail: 'La Password non è Corretta' }];
-      }
-    } else {
-      this.msgs = [{ severity: 'warn', summary: 'Errore Password', detail: 'Attenzione le Password non corrispondono' }];
+          }
+        },
+        reject: () => { }
+      });
     }
   }
 

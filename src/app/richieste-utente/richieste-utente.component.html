@@ -4,7 +4,7 @@
   <h1>Richieste di {{nomeCustomer}} </h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
+<div class="ui-grid-col-12" style="padding-top: 1em;" align="center" *ngIf="loggedCustomer">
   <p-table [columns]="cols" #rt [value]="richieste" selectionMode="single" [(selection)]="richiestaSelezionata"
     (onRowSelect)="onRowSelect($event)" [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -19,10 +19,10 @@
         <td *ngFor="let col of columns" [ngClass]="{
           'inLavorazione':rowData[col.field] === 'IN LAVORAZIONE',
           'presaInCarico':rowData[col.field] === 'PRESA IN CARICO',
-          'accettata':rowData[col.field] === 'ACCETTATA',
+          'completata':rowData[col.field] === 'COMPLETATA',
           'rifiutata':rowData[col.field] === 'RIFIUTATA'
         }">
-        {{rowData[col.field]}}
+          {{rowData[col.field]}}
         </td>
       </tr>
     </ng-template>
@@ -42,30 +42,33 @@
 <p-dialog header="Dettaglio Richiesta" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
   [width]="900" [height]="550" [positionTop]="150">
   <form name="form" #fRichieste="ngForm">
-    <div class="ui-g ui-fluid" *ngIf="richiesta" style="padding-bottom: 2em">
+    <div class="ui-g ui-fluid" *ngIf="loggedCustomer && richiesta" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-2">
           <label>Titolo:</label>
         </div>
         <div class="ui-g-10">
-          <input pInputText id="titolo" name="titolo" [(ngModel)]="richiesta.titoloFilmRichiesto" style="width: 100%" />
+          <input pInputText id="titolo" name="titolo" [(ngModel)]="richiesta.titoloFilmRichiesto" style="width: 100%"
+            [disabled]="!newRichiesta && richiesta.stato !== 'IN LAVORAZIONE'" />
         </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-2">
           <label>Formato:</label>
         </div>
-        <div class="ui-g-4" *ngIf="richiesta.stato">
+        <div class="ui-g-4" *ngIf="!newRichiesta">
+          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"
+          [disabled]="!newRichiesta && richiesta.stato !== 'IN LAVORAZIONE'"></p-dropdown>
+        </div>
+        <div class="ui-g-10" *ngIf="newRichiesta">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
         </div>
-        <div class="ui-g-10" *ngIf="!richiesta.stato">
-          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="richiesta.formatoFilmRichiesto"></p-dropdown>
-        </div>
-        <div class="ui-g-2" *ngIf="richiesta.stato">
+        <div class="ui-g-2" *ngIf="!newRichiesta">
           <label>Stato:</label>
         </div>
-        <div class="ui-g-4" *ngIf="richiesta.stato">
-          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato" [disabled]="!adminMode()"></p-dropdown>
+        <div class="ui-g-4" *ngIf="!newRichiesta">
+          <p-dropdown [options]="statiRichiesta" id="stato" name="stato" [(ngModel)]="richiesta.stato"
+          [disabled]="!loggedCustomer.admin"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12">
@@ -74,7 +77,7 @@
         </div>
         <div class="ui-g-10">
           <input pInputText id="dataInserimento" name="dataInserimento" #titolo [(ngModel)]="richiesta.dataInserimento"
-            style="width: 100%" [disabled]="!adminMode()" />
+            style="width: 100%" [disabled]="true"/>
         </div>
       </div>
       <div class="ui-g-12">
@@ -82,23 +85,23 @@
           <label>Note:</label>
         </div>
         <div class="ui-g-10">
-          <textarea rows="3" id="noteRichiesta" name="noteRichiesta" pInputTextarea [(ngModel)]="richiesta.note"></textarea>
+          <textarea rows="3" id="noteRichiesta" name="noteRichiesta" pInputTextarea [(ngModel)]="richiesta.note"
+          [disabled]="!newRichiesta && richiesta.stato !== 'IN LAVORAZIONE'"></textarea>
         </div>
       </div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="richiesta">
-        <div class="ui-g-12" *ngIf="!newRichiesta && (richiesta.stato === 'RIFIUTATA' || richiesta.stato === 'ACCETTATA')" align="center">
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')"
+          align="center">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato !== 'RIFIUTATA' && richiesta.stato !== 'ACCETTATA')" align="center">
-            <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
-          </div>
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')"
+          align="center">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        </div>
         <div class="ui-g-12" *ngIf="newRichiesta" align="center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
-        </div>
-        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato !== 'RIFIUTATA' && richiesta.stato !== 'ACCETTATA')" align="center">
-          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
         </div>
       </div>
     </p-footer>

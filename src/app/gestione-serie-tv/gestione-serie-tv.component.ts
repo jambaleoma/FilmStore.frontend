@@ -111,7 +111,6 @@ export class GestioneSerieTvComponent implements OnInit {
               this.series = response as Serie[];
               this.singolaSerie = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Serie TV Inserita' }];
             }
           });
@@ -130,7 +129,6 @@ export class GestioneSerieTvComponent implements OnInit {
               this.series = response as Serie[];
               this.singolaSerie = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Serie TV Aggiornata' }];
             }
           });
@@ -152,7 +150,6 @@ export class GestioneSerieTvComponent implements OnInit {
             this.series = this.series.filter((val, i) => i !== index);
             this.singolaSerie = null;
             this.displayDialog = false;
-            this.rt.reset();
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
           }
         });
