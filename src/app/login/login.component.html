@@ -14,8 +14,11 @@
   </p-listbox>
 </div>
 
-<p-dialog header="Login Utente" [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
+<p-dialog [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
   [height]="450">
+  <p-header>
+    Login Utente: {{selectedCustomer}}
+  </p-header>
   <p-toast [style]="{marginTop: '80px'}" styleClass="error-toast" key="KO"></p-toast>
   <form name="form" #flogin="ngForm">
     <div class="ui-g ui-fluid" *ngIf="selectedCustomer" style="padding-bottom: 5em; padding-top: 3em">

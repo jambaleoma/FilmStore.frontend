@@ -29,13 +29,18 @@ export class LayoutsComponent implements OnInit {
       this.loggedCustomer = notification;
       this.itemsProfile = [
         {
-          label: this.loggedCustomer.firstName + ' ' + this.loggedCustomer.lastName , icon: 'fa fa-user', command: () => {
+          label: 'Profilo Personale' , icon: 'fa fa-user', command: () => {
             this.openUserProfile();
           }
         },
         {
           label: 'Impostazioni', icon: 'fa fa-cog', command: () => {
             this.goToManageCustomer(this.loggedCustomer.firstName);
+          }
+        },
+        {
+          label: 'Logout', icon: 'fa fa-sign-out', command: () => {
+            this.logOut();
           }
         }
       ];

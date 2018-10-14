@@ -8,6 +8,7 @@ export interface Serie {
     numeroEpisodi?: number;
     linguaAudio?: string;
     linguaSottotitoli?: string;
+    trama?: string;
     urlLocandina?: string;
     episodi?: string[];
 }
