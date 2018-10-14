@@ -17,6 +17,8 @@ export class LayoutsComponent implements OnInit {
 
   adminItems: MenuItem[];
 
+  itemsProfile: MenuItem[];
+
   logOutItems: MenuItem[];
 
   constructor(
@@ -29,6 +31,13 @@ export class LayoutsComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.itemsProfile = [
+      { label: 'Update', icon: 'fa fa-refresh' },
+      { label: 'Delete', icon: 'fa fa-close' },
+      { label: 'Angular.io', icon: 'fa fa-link' },
+      { label: 'Theming', icon: 'fa fa-paint-brush' }
+  ];
 
     this.items = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
