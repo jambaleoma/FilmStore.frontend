@@ -227,3 +227,10 @@ body.backImage {
 .ui-dialog-titlebar {
   text-align: center;
 }
+
+.ui-splitbutton {
+  .ui-button {
+    background-color: transparent !important;
+    color: black !important;
+  }
+}

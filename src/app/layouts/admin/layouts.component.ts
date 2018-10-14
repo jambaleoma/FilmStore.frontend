@@ -27,27 +27,36 @@ export class LayoutsComponent implements OnInit {
   ) {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
+      this.itemsProfile = [
+        {
+          label: this.loggedCustomer.firstName + ' ' + this.loggedCustomer.lastName , icon: 'fa fa-user', command: () => {
+            this.openUserProfile();
+          }
+        },
+        {
+          label: 'Impostazioni', icon: 'fa fa-cog', command: () => {
+            this.goToManageCustomer();
+          }
+        }
+      ];
+
+      this.items = [
+        { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
+        { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
+        { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
+        {
+          label: 'Richieste', icon: 'fa fa-clipboard',
+          routerLink: '/filmStore/richieste/view/' + this.loggedCustomer.firstName
+        }
+      ];
     });
   }
 
   ngOnInit() {
+    this.loadAdminMenuItems();
+  }
 
-    this.itemsProfile = [
-      { label: 'Update', icon: 'fa fa-refresh' },
-      { label: 'Delete', icon: 'fa fa-close' },
-      { label: 'Angular.io', icon: 'fa fa-link' },
-      { label: 'Theming', icon: 'fa fa-paint-brush' }
-  ];
-
-    this.items = [
-      { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
-      { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
-      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
-      {
-        label: 'Richieste', icon: 'fa fa-clipboard',
-        routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName')
-      }
-    ];
+  loadAdminMenuItems() {
 
     this.adminItems = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
@@ -78,4 +87,9 @@ export class LayoutsComponent implements OnInit {
   openUserProfile() {
     this.router.navigate(['/filmStore/utenti']);
   }
+
+  goToManageCustomer() {
+    this.router.navigate(['/filmStore/gestioneUtente/view/' + this.loggedCustomer.firstName]);
+  }
+
 }

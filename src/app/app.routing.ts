@@ -1,3 +1,4 @@
+import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
@@ -37,6 +38,8 @@ const appRoutes: Routes = [
         { path: 'statistiche', component: StatisticheComponent, data: { pageTitle: 'Statistiche' } },
         /** Utenti */
         { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' } },
+        /** Gestione Utente */
+        { path: 'gestioneUtente/view/:firstName', component: CustomerSettingComponent, data: { pageTitle: 'Gestione Utente' } },
         /** Richieste */
         { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' } },
         /** Richieste Utente*/

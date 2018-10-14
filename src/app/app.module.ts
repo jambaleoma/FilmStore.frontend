@@ -49,6 +49,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
 import {ChipsModule} from 'primeng/chips';
+import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 
 registerLocaleData(localeITCA);
 
@@ -66,7 +67,8 @@ registerLocaleData(localeITCA);
     GestioneFilmComponent,
     GestioneSerieTvComponent,
     RichiesteUtenteComponent,
-    DettaglioSerieTvComponent
+    DettaglioSerieTvComponent,
+    CustomerSettingComponent
   ],
   imports: [
     ChipsModule,
