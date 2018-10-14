@@ -5,5 +5,6 @@ export interface Film {
     linguaAudio?: string;
     linguaSottotitoli?: string;
     anno?: number;
+    trama?: string;
     urlLocandina?: string;
 }

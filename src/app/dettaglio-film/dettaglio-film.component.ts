@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class DettaglioFilmComponent {
 
-  film: Film;
+  films: Film[] = [];
   showFilmDetails = false;
 
   constructor(
@@ -20,7 +20,7 @@ export class DettaglioFilmComponent {
     this.route.params.subscribe(params => {
       if (params.id) {
         this.filmService.getFilm(params.id).subscribe(notificationFilm => {
-          this.film = notificationFilm;
+          this.films.push(notificationFilm);
           this.showFilmDetails = true;
         });
       } else {

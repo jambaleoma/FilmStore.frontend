@@ -107,6 +107,14 @@
           <input pInputText id="url" name="ulr" [(ngModel)]="film.urlLocandina" style="width: 100%" />
         </div>
       </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Trama:</label>
+        </div>
+        <div class="ui-g-9">
+          <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="film.trama"></textarea>
+        </div>
+      </div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
