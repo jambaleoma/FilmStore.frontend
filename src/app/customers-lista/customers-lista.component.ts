@@ -261,6 +261,7 @@ export class CustomersListaComponent implements OnInit {
                   detail: 'Ora l\'utente ' + customerToChange.firstName + ' ' + customerToChange.lastName +
                     ' non gode più dei privilegi di Admin'
                 }];
+                location.reload();
               }
             });
           }
