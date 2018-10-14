@@ -35,7 +35,7 @@ export class LayoutsComponent implements OnInit {
         },
         {
           label: 'Impostazioni', icon: 'fa fa-cog', command: () => {
-            this.goToManageCustomer();
+            this.goToManageCustomer(this.loggedCustomer.firstName);
           }
         }
       ];
@@ -88,8 +88,8 @@ export class LayoutsComponent implements OnInit {
     this.router.navigate(['/filmStore/utenti']);
   }
 
-  goToManageCustomer() {
-    this.router.navigate(['/filmStore/gestioneUtente/view/' + this.loggedCustomer.firstName]);
+  goToManageCustomer(nomeCustomer: string) {
+    this.router.navigate(['/filmStore/gestioneUtente/view/' + nomeCustomer]);
   }
 
 }

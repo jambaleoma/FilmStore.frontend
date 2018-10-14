@@ -28,7 +28,7 @@
         <th style="width: 7em">
           Dettaglio Richieste
         </th>
-        <th style="width: 7em">
+        <th style="width: 7em" *ngIf="loggedCustomer.admin">
           Gestione Utente
         </th>
       </tr>
@@ -45,7 +45,7 @@
         <td>
           <p-button icon="fa fa-search" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
         </td>
-        <td>
+        <td *ngIf="loggedCustomer.admin">
           <p-button icon="fa fa-cog" (onClick)="manageUser(customer)"></p-button>
         </td>
       </tr>
