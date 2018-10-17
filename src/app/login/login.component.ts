@@ -17,11 +17,9 @@ export class LoginComponent implements OnInit {
 
   selectedCustomer: string;
 
-  customer: Customer;
+  loggingCustomer: Customer;
 
   showDialog = false;
-
-  customerAutenticate: boolean;
 
   constructor(
     private router: Router,
@@ -42,7 +40,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  showLoginDilog() {
+  showLoginDilog(selectedCustomer: string) {
+    this.customerService.getCustomerByName(selectedCustomer).subscribe(notification => {
+      this.loggingCustomer = notification;
+    });
     this.showDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#loginPassword').focus();
@@ -50,21 +51,17 @@ export class LoginComponent implements OnInit {
   }
 
   loginCustomer(password: string) {
-    for (let i = 0; i < this.customersItems.length; i++) {
-      if (this.customersItems[i].password === password) {
-        this.customerAutenticate = true;
-        sessionStorage.setItem('customerfirstName', this.customersItems[i].value);
-        sessionStorage.setItem('customerId', this.customersItems[i].id);
-        break;
-      } else {
-        this.customerAutenticate = false;
-      }
-    }
-    if (this.customerAutenticate) {
-      this.router.navigate(['filmStore']);
-      location.reload();
-    } else {
-      this.messageService.add({key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
+    if (password) {
+      this.customerService.logingCustomer(this.loggingCustomer, password).subscribe(login => {
+        if (login) {
+          sessionStorage.setItem('customerfirstName', this.loggingCustomer.value);
+          sessionStorage.setItem('customerId', this.loggingCustomer.id);
+          this.router.navigate(['filmStore']);
+          location.reload();
+        } else {
+          this.messageService.add({ key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
+        }
+      });
     }
   }
 
