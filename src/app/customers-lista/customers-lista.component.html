@@ -15,7 +15,7 @@
   <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em;" align="center">
+<div class="ui-grid-col-12" style="padding-top: 2em;" align="center" *ngIf="loggedCustomer">
   <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
     <ng-template pTemplate="header" let-columns>
       <tr>
