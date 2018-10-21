@@ -29,7 +29,12 @@ export class LayoutsComponent implements OnInit {
       this.loggedCustomer = notification;
       this.itemsProfile = [
         {
-          label: 'Profilo Personale' , icon: 'fa fa-user', command: () => {
+          label: 'Profilo Personale' , icon: 'fa fa-user', visible: !this.loggedCustomer.admin, command: () => {
+            this.openUserProfile();
+          }
+        },
+        {
+          label: 'Profili Utenti' , icon: 'fa fa-users', visible: this.loggedCustomer.admin, command: () => {
             this.openUserProfile();
           }
         },
