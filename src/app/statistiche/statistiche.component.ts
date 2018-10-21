@@ -33,14 +33,10 @@ export class StatisticheComponent {
 
   dataBarSerieTV: any;
 
-  richiestaMese2017: number[] = [];
-
-  richiestaMese2018: number[] = [];
+  anniRichieste: string[] = [];
 
   mesiAnno: string[] = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
     'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
-
-  anni: string[] = ['2017', '2018'];
 
   formatiFilms: string[] = [];
 
@@ -54,7 +50,9 @@ export class StatisticheComponent {
 
   serieTVFormati: number[] = [];
 
-  anno2_mese2richieste: Map<string, Map<string, number>> = new Map;
+  mese2richieste: Map<string, number> = new Map;
+
+  anno2_mese2richieste: Map<string, number[]> = new Map;
 
   customer2richieste: Map<string, number> = new Map;
 
@@ -74,30 +72,21 @@ export class StatisticheComponent {
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
     this.subsrcibeToListOfSerieTVs();
-   }
+  }
 
   getRichieste() {
-    const map2017 = new Map();
-    const map2018 = new Map();
-    for (const meseAnno of this.mesiAnno) {
-      this.anno2_mese2richieste.set(this.anni[0], map2017.set(meseAnno, 0));
-      this.anno2_mese2richieste.set(this.anni[1], map2018.set(meseAnno, 0));
-    }
-    this.richiestaService.getRichieste().subscribe(notification => {
-      this.richieste = notification;
-      for (const richiesta of this.richieste) {
-        const dataRichiesta = richiesta.dataInserimento.split(' ');
-        const anno = dataRichiesta[3];
-        const mese = dataRichiesta[2];
-        if (anno === this.anni[0]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2017.get(mese) + 1));
-        }
-        if (anno === this.anni[1]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2018.get(mese) + 1));
+    this.richiestaService.getRichiesteYearForStatistics().subscribe(notificationYear => {
+      if (notificationYear) {
+        this.anniRichieste = notificationYear;
+        for (const anno of this.anniRichieste) {
+          this.richiestaService.getRichiesteForStatistics(anno).subscribe(notification => {
+            if (notification) {
+              this.anno2_mese2richieste.set(anno, notification);
+            }
+            this.loadChartRichiestePerMeseLine();
+          });
         }
       }
-      this.richiestaMese2017 = Array.from(this.anno2_mese2richieste.get(this.anni[0]).values());
-      this.richiestaMese2018 = Array.from(this.anno2_mese2richieste.get(this.anni[1]).values());
     });
   }
 
@@ -109,7 +98,6 @@ export class StatisticheComponent {
           for (let i = 0; i < this.customers.length; i++) {
             this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
           }
-          this.loadChartRichiestePerMeseLine();
           this.loadChartCustomerRichiestePie();
         }
       }
@@ -117,24 +105,32 @@ export class StatisticheComponent {
   }
 
   loadChartRichiestePerMeseLine() {
-    if (this.customers.length > 0) {
+    if (this.anniRichieste.length > 0) {
+      const dataLineRichiesteLabel = [];
+      const dataLineRichiesteData = [];
+      const dataLineRichiestebackgroundColor = [];
+      for (const anno of this.anniRichieste) {
+        dataLineRichiesteLabel.push('Richieste nel ' + anno);
+        dataLineRichiesteData.push(this.anno2_mese2richieste.get(anno));
+        dataLineRichiestebackgroundColor.push(this.getRandomColor());
+      }
       this.dataLineRichieste = {
         labels: this.mesiAnno,
         datasets: [
           {
-            label: 'Richieste nel 2018',
-            data: this.richiestaMese2018,
+            label: dataLineRichiesteLabel[0],
+            data: dataLineRichiesteData[0],
             fill: false,
-            borderColor: '#008000',
-            backgroundColor: '#008000'
+            borderColor: dataLineRichiestebackgroundColor[0],
+            backgroundColor: dataLineRichiestebackgroundColor[0]
           },
           {
-            label: 'Richieste nel 2017',
-            data: this.richiestaMese2017,
+            label: dataLineRichiesteLabel[1],
+            data: dataLineRichiesteData[1],
             fill: false,
-            borderColor: '#0020C2',
-            backgroundColor: '#0020C2'
-          },
+            borderColor: dataLineRichiestebackgroundColor[1],
+            backgroundColor: dataLineRichiestebackgroundColor[1]
+          }
         ]
       };
     }
@@ -213,6 +209,7 @@ export class StatisticheComponent {
 
   loadChartFilmsPerAnnoLine() {
     if (this.films.length > 0) {
+      const dataLineRichiestebackgroundColor = this.getRandomColor();
       this.dataLineFilm = {
         labels: this.anniFilms,
         datasets: [
@@ -220,8 +217,8 @@ export class StatisticheComponent {
             label: 'Film per Anno',
             data: this.filmsAnni,
             fill: false,
-            borderColor: this.getRandomColor(),
-            backgroundColor: this.getRandomColor()
+            backgroundColor: dataLineRichiestebackgroundColor,
+            borderColor: dataLineRichiestebackgroundColor
           }
         ]
       };
@@ -246,19 +243,23 @@ export class StatisticheComponent {
 
   loadChartFormatiSerieTVBar() {
     if (this.serieTV.length > 0) {
+      const dataBarRichiestebackgroundColor = [];
+      for (const formato of this.formatiSerieTV) {
+        dataBarRichiestebackgroundColor.push(this.getRandomColor());
+      }
       this.dataBarSerieTV = {
         labels: ['Formati Serie TV'],
         datasets: [
           {
             label: this.formatiSerieTV[0],
-            backgroundColor: '#006000',
-            borderColor: '#006000',
+            backgroundColor: dataBarRichiestebackgroundColor[0],
+            borderColor: dataBarRichiestebackgroundColor[0],
             data: [this.serieTVFormati[0], 0]
           },
           {
             label: this.formatiSerieTV[1],
-            backgroundColor: '#E10000',
-            borderColor: '#E10000',
+            backgroundColor: dataBarRichiestebackgroundColor[1],
+            borderColor: dataBarRichiestebackgroundColor[1],
             data: [this.serieTVFormati[1], 0]
           }
         ]

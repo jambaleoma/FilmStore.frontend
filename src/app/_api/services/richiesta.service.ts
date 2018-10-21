@@ -263,4 +263,79 @@ export class RichiestaService extends BaseService {
       map(_r => _r.body)
     );
   }
+
+  /**
+   * @return List of Richiste for Statistics  
+   */
+  private getRichiesteForStatisticsResponse(anno: string): Observable<HttpResponse<number[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      "GET",
+      this.rootUrl + `rest/richieste/statistics/richieste2Years/`+anno,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: number[] = null;
+        _body = _resp.body as number[];
+        return _resp.clone({body: _body}) as HttpResponse<number[]>;
+      })
+    );
+  }
+
+  /**
+   * @return List of Richiste for Statistics
+   */
+   getRichiesteForStatistics(anno: string): Observable<number[]> {
+    return this.getRichiesteForStatisticsResponse(anno).pipe(
+      map(_r => _r.body)
+    );
+  }
+
+  /**
+   * @return List of Richiste for Statistics  
+   */
+  private getRichiesteYearForStatisticsResponse(): Observable<HttpResponse<string[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      "GET",
+      this.rootUrl + `rest/richieste/statistics/years`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: string[] = null;
+        _body = _resp.body as string[];
+        return _resp.clone({body: _body}) as HttpResponse<string[]>;
+      })
+    );
+  }
+
+  /**
+   * @return List of Richiste for Statistics
+   */
+  getRichiesteYearForStatistics(): Observable<string[]> {
+    return this.getRichiesteYearForStatisticsResponse().pipe(
+      map(_r => _r.body)
+    );
+  }
+  
 }
