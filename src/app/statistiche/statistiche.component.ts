@@ -17,8 +17,6 @@ export class StatisticheComponent {
 
   customers: Customer[] = [];
 
-  richieste: Richiesta[];
-
   films: Film[] = [];
 
   serieTV: Serie[] = [];
@@ -49,8 +47,6 @@ export class StatisticheComponent {
   formatiSerieTV: string[] = [];
 
   serieTVFormati: number[] = [];
-
-  mese2richieste: Map<string, number> = new Map;
 
   anno2_mese2richieste: Map<string, number[]> = new Map;
 
