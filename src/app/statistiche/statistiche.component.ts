@@ -1,7 +1,7 @@
 import { Serie } from '../_api/models/serie';
 import { SerieService } from '../_api/services/serie.service';
 import { FilmService } from './../_api/services/film.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Customer } from '../_api/models/customer';
 import { Richiesta } from '../_api/models/richiesta';
 import { CustomerService } from '../_api/services/customer.service';
@@ -17,6 +17,8 @@ export class StatisticheComponent {
 
   customers: Customer[] = [];
 
+  richieste: Richiesta[] = [];
+
   films: Film[] = [];
 
   serieTV: Serie[] = [];
@@ -25,11 +27,15 @@ export class StatisticheComponent {
 
   dataLineRichieste: any;
 
+  dataPolarRichieste: any;
+
   dataLineFilm: any;
 
   dataDoughnutFilm: any;
 
   dataBarSerieTV: any;
+
+  statiRichiesta: string[] = ['COMPLETATA', 'IN LAVORAZIONE', 'PRESA IN CARICO', 'RIFIUTATA'];
 
   anniRichieste: string[] = [];
 
@@ -48,6 +54,8 @@ export class StatisticheComponent {
 
   serieTVFormati: number[] = [];
 
+  stato2richieste: Map<string, number> = new Map;
+
   anno2_mese2richieste: Map<string, number[]> = new Map;
 
   customer2richieste: Map<string, number> = new Map;
@@ -64,13 +72,14 @@ export class StatisticheComponent {
     private filmService: FilmService,
     private serieTVService: SerieService
   ) {
-    this.getRichieste();
+    this.getRichiesteForStatistics();
+    this.subsrcibeToListOfRichieste();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
     this.subsrcibeToListOfSerieTVs();
   }
 
-  getRichieste() {
+  getRichiesteForStatistics() {
     this.richiestaService.getRichiesteYearForStatistics().subscribe(notificationYear => {
       if (notificationYear) {
         this.anniRichieste = notificationYear;
@@ -81,6 +90,24 @@ export class StatisticheComponent {
             }
             this.loadChartRichiestePerMeseLine();
           });
+        }
+      }
+    });
+  }
+
+  subsrcibeToListOfRichieste() {
+    this.richiestaService.getRichieste().subscribe(notification => {
+      if (notification) {
+        this.richieste = notification;
+        if (this.richieste.length > 0) {
+          for (const richiesta of this.richieste) {
+            if (this.stato2richieste.has(richiesta.stato)) {
+              this.stato2richieste.set(richiesta.stato, this.stato2richieste.get(richiesta.stato) + 1);
+            } else {
+              this.stato2richieste.set(richiesta.stato, 1);
+            }
+          }
+          this.loadChartStatoRichiestePolar();
         }
       }
     });
@@ -138,9 +165,11 @@ export class StatisticheComponent {
       const dataPieRichiesteData = [];
       const dataPieRichiestebackgroundColor = [];
       for (const customer of this.customers) {
-        dataPieRichiesteLabels.push('Richieste di ' + customer.firstName);
-        dataPieRichiesteData.push(this.customer2richieste.get(customer.firstName));
-        dataPieRichiestebackgroundColor.push(this.getRandomColor());
+        if (this.customer2richieste.get(customer.firstName) !== 0) {
+          dataPieRichiesteLabels.push('Richieste di ' + customer.firstName);
+          dataPieRichiesteData.push(this.customer2richieste.get(customer.firstName));
+          dataPieRichiestebackgroundColor.push(this.getRandomColor());
+        }
       }
       this.dataPieRichieste = {
         labels: dataPieRichiesteLabels,
@@ -149,7 +178,30 @@ export class StatisticheComponent {
             data: dataPieRichiesteData,
             backgroundColor: dataPieRichiestebackgroundColor,
             hoverBackgroundColor: dataPieRichiestebackgroundColor
-          }]
+          }
+        ]
+      };
+    }
+  }
+
+  loadChartStatoRichiestePolar() {
+    if (this.richieste.length > 0) {
+      const dataPolarRichiesteLabel = [];
+      const dataPolarRichiesteData = [];
+      const dataPolarRichiestebackgroundColor = [];
+      for (const stato of this.statiRichiesta) {
+          dataPolarRichiesteLabel.push('STATO ' + stato);
+          dataPolarRichiesteData.push(this.stato2richieste.get(stato) ? this.stato2richieste.get(stato) : 0);
+          dataPolarRichiestebackgroundColor.push(this.getRandomColor());
+      }
+      this.dataPolarRichieste = {
+        labels: dataPolarRichiesteLabel,
+        datasets: [
+          {
+            data: dataPolarRichiesteData,
+            backgroundColor: dataPolarRichiestebackgroundColor
+          }
+        ]
       };
     }
   }
