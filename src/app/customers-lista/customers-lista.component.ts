@@ -201,7 +201,9 @@ export class CustomersListaComponent implements OnInit {
       header: 'Eliminazione Utente',
       icon: 'fa fa-trash',
       accept: () => {
-        if (this.customerSelezionato.firstName === 'Vincenzo') {
+        if (this.customerSelezionato.admin) {
+          this.msgs = [{ severity: 'error', summary: 'Attenzione', detail: 'Non è possibile eliminare un Admin' }];
+        } else if (this.customerSelezionato.firstName === 'Vincenzo') {
           this.showYDSTMW = true;
         } else {
           this.customerService.deleteCustomer(this.customerSelezionato.id).subscribe(response => {
