@@ -1,3 +1,4 @@
+import { ApplicationService } from './../_service/application.service';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private customerService: CustomerService,
     private renderer: Renderer2,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private applicationService: ApplicationService
   ) {
     this.renderer.addClass(document.body, 'backImage');
   }
@@ -54,10 +56,10 @@ export class LoginComponent implements OnInit {
     if (password) {
       this.customerService.logingCustomer(this.loggingCustomer, password).subscribe(login => {
         if (login) {
+          this.applicationService.firstLogin();
           sessionStorage.setItem('customerfirstName', this.loggingCustomer.value);
           sessionStorage.setItem('customerId', this.loggingCustomer.id);
           this.router.navigate(['filmStore']);
-          location.reload();
         } else {
           this.messageService.add({ key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
         }

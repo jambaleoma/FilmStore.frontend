@@ -1,3 +1,4 @@
+import { ApplicationService } from './_service/application.service';
 import { RichiestaService } from './_api/services/richiesta.service';
 import { CustomerService } from './_api/services/customer.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -50,6 +51,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
 import {ChipsModule} from 'primeng/chips';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
+import {CarouselModule} from 'primeng/carousel';
 
 registerLocaleData(localeITCA);
 
@@ -71,6 +73,7 @@ registerLocaleData(localeITCA);
     CustomerSettingComponent
   ],
   imports: [
+    CarouselModule,
     ChipsModule,
     PanelModule,
     DataViewModule,
@@ -102,6 +105,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    ApplicationService,
     ConfirmationService,
     MessageService,
     RichiestaService,

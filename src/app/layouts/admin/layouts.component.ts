@@ -90,7 +90,6 @@ export class LayoutsComponent implements OnInit {
 
   logOut() {
     sessionStorage.clear();
-    location.reload();
     this.router.navigate(['/login']);
   }
 

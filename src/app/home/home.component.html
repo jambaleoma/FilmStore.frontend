@@ -1,47 +1,97 @@
-<div align="center" *ngIf="loggedCustomer">
-  <h1>HOME</h1>
+<p-toast [style]="{marginTop: '80px'}" styleClass="error-toast" key="homeTost"></p-toast>
 
-  <h2>CIAO {{loggedCustomer.firstName}} !</h2>
+<div class="ui-grid-col-12">
+  <div align="center" *ngIf="loggedCustomer" style="height: 30em;">
+    <h1>HOME</h1>
 
-  <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Ricerca Serie TV" subtitle="Trova la Serie che ami!" [style]="{width: '385px'}" styleClass="ui-card-shadow">
-      <p-header>
-        <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaSerieTV.jpg">
-      </p-header>
-      <div>Qui troverai un elenco di moltissime serie TV, dove potrai ricercare le tue preferite e avere tutte le
-        informazioni che cerchi.</div>
-      <p-footer>
-          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Serie TV" icon="fa fa-cog" (click)="goToSerieTvOnAdminMode()" class="ui-button-danger"></button>
-        <button pButton type="button" label="Cerca Serie TV" icon="fa fa-video-camera" (click)="goToSerieTv()"></button>
-      </p-footer>
-    </p-card>
-  </div>
-  <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Ricerca Film" subtitle="Trova il Film che ti piace!" [style]="{width: '385px'}" styleClass="ui-card-shadow">
-      <p-header>
-        <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaFilm.jpg">
-      </p-header>
-      <div>Qui troverai un elenco di moltissimi film, dove potrai ricercare i tuoi preferiti e avere tutte le
-        informazioni che cerchi.</div>
-      <p-footer>
-          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Film" icon="fa fa-cog" (click)="goToFilmsOnAdminMode()" class="ui-button-danger"></button>
-        <button pButton type="button" label="Cerca Film" icon="fa fa-film" (click)="goToFilms()"></button>
-      </p-footer>
-    </p-card>
-  </div>
-  <div class="ui-grid-col-4" style="padding-top: 3em;">
-    <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo!" [style]="{width: '385px'}" styleClass="ui-card-shadow">
-      <p-header>
-        <img src="Card" src="assets\showcase\images\HomePage\Card\CardRichieste.jpg">
-      </p-header>
-      <div style="padding-bottom: 24px;">Qui potrai chiedere tu stesso un film o una Serie TV che non sono presenti in
-        lista.</div>
-      <p-footer>
-          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Richieste" icon="fa fa-cog" (click)="goToRicheisteOnAdminMode()" class="ui-button-danger"></button>
-          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Cerca Utenti" icon="fa fa-users" (click)="goToUtentiAdminMode()"></button>
-          <button pButton type="button" *ngIf="!loggedCustomer.admin" label="Fai una Richiesta" icon="pi pi-plus" (click)="goToRicheiste()"></button>        
-      </p-footer>
-    </p-card>
+    <div class="ui-grid-col-4" style="padding-top: 3em;">
+      <p-card title="Ricerca Serie TV" subtitle="Trova la Serie che ami!" [style]="{width: '385px'}" styleClass="ui-card-shadow">
+        <p-header>
+          <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaSerieTV.jpg">
+        </p-header>
+        <div>Qui troverai un elenco di moltissime serie TV, dove potrai ricercare le tue preferite e avere tutte le
+          informazioni che cerchi.</div>
+        <p-footer>
+          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Serie TV"
+            icon="fa fa-cog" (click)="goToSerieTvOnAdminMode()" class="ui-button-danger"></button>
+          <button pButton type="button" label="Cerca Serie TV" icon="fa fa-video-camera" (click)="goToSerieTv()"></button>
+        </p-footer>
+      </p-card>
+    </div>
+    <div class="ui-grid-col-4" style="padding-top: 3em;">
+      <p-card title="Ricerca Film" subtitle="Trova il Film che ti piace!" [style]="{width: '385px'}" styleClass="ui-card-shadow">
+        <p-header>
+          <img src="Card" src="assets\showcase\images\HomePage\Card\CardRicercaFilm.jpg">
+        </p-header>
+        <div>Qui troverai un elenco di moltissimi film, dove potrai ricercare i tuoi preferiti e avere tutte le
+          informazioni che cerchi.</div>
+        <p-footer>
+          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Film"
+            icon="fa fa-cog" (click)="goToFilmsOnAdminMode()" class="ui-button-danger"></button>
+          <button pButton type="button" label="Cerca Film" icon="fa fa-film" (click)="goToFilms()"></button>
+        </p-footer>
+      </p-card>
+    </div>
+    <div class="ui-grid-col-4" style="padding-top: 3em;">
+      <p-card title="Fai una Richiesta" subtitle="Chiedi di aggiungere un Titolo!" [style]="{width: '385px'}"
+        styleClass="ui-card-shadow">
+        <p-header>
+          <img src="Card" src="assets\showcase\images\HomePage\Card\CardRichieste.jpg">
+        </p-header>
+        <div style="padding-bottom: 24px;">Qui potrai chiedere tu stesso un film o una Serie TV che non sono presenti
+          in
+          lista.</div>
+        <p-footer>
+          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Gestisci Richieste"
+            icon="fa fa-cog" (click)="goToRicheisteOnAdminMode()" class="ui-button-danger"></button>
+          <button style="margin-top: 10px;" *ngIf="loggedCustomer.admin" pButton type="button" label="Cerca Utenti"
+            icon="fa fa-users" (click)="goToUtentiAdminMode()"></button>
+          <button pButton type="button" *ngIf="!loggedCustomer.admin" label="Fai una Richiesta" icon="pi pi-plus"
+            (click)="goToRicheiste()"></button>
+        </p-footer>
+      </p-card>
+    </div>
   </div>
 
+  <div *ngIf="newFilms" style="text-align: center; padding-top: 4em;">
+    <h1>Film Aggiunti di Recente</h1>
+    <p-carousel [value]="newFilms" autoplayInterval="5000">
+      <ng-template let-film pTemplate="item">
+        <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em;">
+          <div class="ui-grid-row">
+            <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg" style="height: 20em;"></div>
+          </div>
+          <div class="ui-grid-row" style="padding-top: 2em">
+            <div class="ui-grid-col-12"><b>{{film.nome}}</b></div>
+          </div>
+          <div class="ui-grid-row" style="padding-top: 2em">
+            <div class="ui-grid-col-12">
+              <button type="button" pButton icon="pi pi-search" (click)="showDetailsFilm(film._id)"></button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+
+  <div *ngIf="newSeries" style="text-align: center; padding-top: 4em;">
+      <h1>Nuove Serie TV</h1>
+      <p-carousel [value]="newSeries" autoplayInterval="5000">
+        <ng-template let-serie pTemplate="item">
+          <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em;">
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-12"><img src="../../assets/showcase/images/serieTV/{{serie.nome}}/{{serie.urlLocandina}}.jpg" style="height: 20em;"></div>
+            </div>
+            <div class="ui-grid-row" style="padding-top: 2em">
+              <div class="ui-grid-col-12"><b>{{serie.nome}} Stagione {{serie.numeroStagione}}</b></div>
+            </div>
+            <div class="ui-grid-row" style="padding-top: 2em">
+              <div class="ui-grid-col-12">
+                <button type="button" pButton icon="pi pi-search" (click)="showDetailsSerie(serie._id)"></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
 </div>
