@@ -6,6 +6,7 @@ import { Richiesta } from '../_api/models/richiesta';
 import { CustomerService } from '../_api/services/customer.service';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Film } from '../_api/models/film';
+import { StagioneService } from '../_api/services/stagione.service';
 
 @Component({
   selector: 'app-statistiche',
@@ -69,13 +70,13 @@ export class StatisticheComponent {
     private customerService: CustomerService,
     private richiestaService: RichiestaService,
     private filmService: FilmService,
-    // private stagioneService: StagioneService
+    private stagioneService: StagioneService
   ) {
     this.getRichiesteForStatistics();
     this.subsrcibeToListOfRichieste();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
-    // this.subsrcibeToListOfStagioni();
+    this.subsrcibeToListOfStagioni();
   }
 
   getRichiesteForStatistics() {
@@ -272,47 +273,47 @@ export class StatisticheComponent {
     }
   }
 
-  // subsrcibeToListOfStagioni() {
-  //   this.stagioneService.getStagioni().subscribe(notification => {
-  //     this.stagioni = notification;
-  //     for (const stagione of this.stagioni) {
-  //       if (this.formato2serieTV.has(stagione.formato)) {
-  //         this.formato2serieTV.set(stagione.formato, this.formato2serieTV.get(stagione.formato) + 1);
-  //       } else {
-  //         this.formato2serieTV.set(stagione.formato, 1);
-  //       }
-  //     }
-  //     this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
-  //     this.serieTVFormati = Array.from(this.formato2serieTV.values());
-  //     this.loadChartFormatiSerieTVBar();
-  //   });
-  // }
+  subsrcibeToListOfStagioni() {
+    this.stagioneService.getStagioni().subscribe(notification => {
+      this.stagioni = notification;
+      for (const stagione of this.stagioni) {
+        if (this.formato2serieTV.has(stagione.formato)) {
+          this.formato2serieTV.set(stagione.formato, this.formato2serieTV.get(stagione.formato) + 1);
+        } else {
+          this.formato2serieTV.set(stagione.formato, 1);
+        }
+      }
+      this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
+      this.serieTVFormati = Array.from(this.formato2serieTV.values());
+      this.loadChartFormatiSerieTVBar();
+    });
+  }
 
-  // loadChartFormatiSerieTVBar() {
-  //   if (this.stagioni.length > 0) {
-  //     const dataBarRichiestebackgroundColor = [];
-  //     for (const formato of this.formatiSerieTV) {
-  //       dataBarRichiestebackgroundColor.push(this.getRandomColor());
-  //     }
-  //     this.dataBarSerieTV = {
-  //       labels: ['Formati Serie TV'],
-  //       datasets: [
-  //         {
-  //           label: this.formatiSerieTV[0],
-  //           backgroundColor: dataBarRichiestebackgroundColor[0],
-  //           borderColor: dataBarRichiestebackgroundColor[0],
-  //           data: [this.serieTVFormati[0], 0]
-  //         },
-  //         {
-  //           label: this.formatiSerieTV[1],
-  //           backgroundColor: dataBarRichiestebackgroundColor[1],
-  //           borderColor: dataBarRichiestebackgroundColor[1],
-  //           data: [this.serieTVFormati[1], 0]
-  //         }
-  //       ]
-  //     };
-  //   }
-  // }
+  loadChartFormatiSerieTVBar() {
+    if (this.stagioni.length > 0) {
+      const dataBarRichiestebackgroundColor = [];
+      for (const formato of this.formatiSerieTV) {
+        dataBarRichiestebackgroundColor.push(this.getRandomColor());
+      }
+      this.dataBarSerieTV = {
+        labels: ['Formati Serie TV'],
+        datasets: [
+          {
+            label: this.formatiSerieTV[0],
+            backgroundColor: dataBarRichiestebackgroundColor[0],
+            borderColor: dataBarRichiestebackgroundColor[0],
+            data: [this.serieTVFormati[0], 0]
+          },
+          {
+            label: this.formatiSerieTV[1],
+            backgroundColor: dataBarRichiestebackgroundColor[1],
+            borderColor: dataBarRichiestebackgroundColor[1],
+            data: [this.serieTVFormati[1], 0]
+          }
+        ]
+      };
+    }
+  }
 
   getRandomColor() {
     const letters = '0123456789ABCDEF';
