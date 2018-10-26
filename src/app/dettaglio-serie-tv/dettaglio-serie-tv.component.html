@@ -2,7 +2,7 @@
   Titolo Serie TV: {{serie.nome}}
 </h1>
 
-<p-dataView #dv [value]="series" [rows]="20">
+<!-- <p-dataView #dv [value]="series" [rows]="20">
   <ng-template let-serie pTemplate="listItem">
     <div class="ui-g" [ngClass]="{'separation': series[1] }" style="padding: 2em;">
       <div class="ui-g-12 ui-md-3" style="text-align:center">
@@ -41,9 +41,9 @@
       </div>
     </div>
   </ng-template>
-</p-dataView>
+</p-dataView> -->
 
-<p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+<!-- <p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
   [width]="600" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
   <div class="ui-g" *ngIf="selectedSerie">
     <div class="ui-g-3">
@@ -86,4 +86,4 @@
     </div>
 
   </div>
-</p-dialog>
+</p-dialog> -->

@@ -2,6 +2,8 @@ import { SerieService } from './../_api/services/serie.service';
 import { Serie } from './../_api/models/serie';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { StagioneService } from '../_api/services/stagione.service';
+import { Stagione } from '../_api/models/stagione';
 
 @Component({
   selector: 'app-dettaglio-serie-tv',
@@ -10,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DettaglioSerieTvComponent implements OnInit {
 
-  series: Serie[] = [];
+  stagioni: Stagione[] = [];
   serie: Serie;
   showSerieDetails = false;
   selectedSerie: Serie;
@@ -18,7 +20,8 @@ export class DettaglioSerieTvComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private serieTVService: SerieService
+    private serieTVService: SerieService,
+    private stagioneService: StagioneService
   ) {
     this.route.params.subscribe(params => {
       if (params.id) {
@@ -33,17 +36,17 @@ export class DettaglioSerieTvComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribeListOfSerieTV();
+    // this.subscribeListOfSerieTV();
   }
 
-  subscribeListOfSerieTV() {
-    this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.series = notification.filter((val) => val.nome === this.serie.nome);
-      this.series.sort(function (a, b) {
-        return (a.numeroStagione - b.numeroStagione);
-      });
-    });
-  }
+  // subscribeListOfSerieTV() {
+  //   this.stagioneService.getStagioni().subscribe(notification => {
+  //     this.stagioni = notification.filter((val) => val.s === this.serie.nome);
+  //     this.stagioni.sort(function (a, b) {
+  //       return (a.numeroStagione - b.numeroStagione);
+  //     });
+  //   });
+  // }
 
   selectSerie(event: Event, serie: Serie) {
     this.selectedSerie = serie;

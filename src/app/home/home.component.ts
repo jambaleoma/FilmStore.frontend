@@ -4,7 +4,7 @@ import { ApplicationService } from './../_service/application.service';
 import { CustomerService } from './../_api/services/customer.service';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Customer, Film } from '../_api/models';
+import { Customer, Film, Serie } from '../_api/models';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   newFilmsToPut: Film[] = [];
   newfilmNumber = 9;
   newSeries: Film[] = [];
-  newSeriesToPut: Film[] = [];
+  newSeriesToPut: Serie[] = [];
   newSeriesNumber = 9;
 
   constructor(
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       }
     });
     this.getNewFilm();
-    this.getNewSerie();
+    // this.getNewSerie();
   }
 
   getNewFilm() {
@@ -64,19 +64,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getNewSerie() {
-    this.serieService.getSerieTVs().subscribe(notification => {
-      for (let i = 0; i < this.newSeriesNumber; i++) {
-        const serie = notification[Math.floor(Math.random() * notification.length)];
-        if (!this.newSeriesToPut.find(s => s._id === serie._id)) {
-          this.newSeriesToPut.push(serie);
-        } else {
-          i--;
-        }
-      }
-      this.newSeries = this.newSeriesToPut;
-    });
-  }
+  // getNewSerie() {
+  //   this.serieService.getSerieTVs().subscribe(notification => {
+  //     for (let i = 0; i < this.newSeriesNumber; i++) {
+  //       const serie = notification[Math.floor(Math.random() * notification.length)];
+  //       if (!this.newSeriesToPut.find(s => s.serie_id === serie.serie_id)) {
+  //         this.newSeriesToPut.push(serie);
+  //       } else {
+  //         i--;
+  //       }
+  //     }
+  //     this.newSeries = this.newSeriesToPut;
+  //   });
+  // }
 
   showDetailsFilm(filmId: string) {
     this.router.navigate(['filmStore/Film/view', filmId]);

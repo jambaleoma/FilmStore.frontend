@@ -15,7 +15,7 @@ export class GestioneSerieTvComponent implements OnInit {
 
   series: Serie[] = [];
 
-  singolaSerie: Serie = { _id: null };
+  singolaSerie: Serie = { serie_id: null };
 
   showSerie = false;
 
@@ -82,7 +82,7 @@ export class GestioneSerieTvComponent implements OnInit {
   }
 
   cloneSerie(r: Serie): Serie {
-    const ric = { _id: null };
+    const ric = { serie_id: null };
     // tslint:disable-next-line:forin
     for (const prop in r) {
       ric[prop] = r[prop];
@@ -92,7 +92,7 @@ export class GestioneSerieTvComponent implements OnInit {
 
   showDialogToAdd() {
     this.newSerie = true;
-    this.singolaSerie = { _id: null };
+    this.singolaSerie = { serie_id: null };
     this.displayDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
@@ -144,7 +144,7 @@ export class GestioneSerieTvComponent implements OnInit {
       header: 'Eliminazione Serie TV',
       icon: 'fa fa-trash',
       accept: () => {
-        this.serieService.deleteSerie(this.serieSelezionata._id).subscribe(response => {
+        this.serieService.deleteSerie(this.serieSelezionata.serie_id).subscribe(response => {
           if (response !== null) {
             const index = this.series.indexOf(this.serieSelezionata);
             this.series = this.series.filter((val, i) => i !== index);

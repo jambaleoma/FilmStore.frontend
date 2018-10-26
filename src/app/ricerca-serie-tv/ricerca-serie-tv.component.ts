@@ -44,41 +44,18 @@ export class RicercaSerieTvComponent implements OnInit {
 
   getColumns() {
     this.cols = [
-      { field: 'nome', header: 'Titolo' },
-      { field: 'formato', header: 'Formato' },
-      { field: 'anno', header: 'Anno' },
-      { field: 'stagioni', header: 'Stagioni' }
+      { field: 'stagioni.length()', header: 'Stagioni' },
+      { field: 'nome', header: 'Titolo' }
     ];
   }
 
   subsrcibeToListOfSerieTVs() {
     this.serieTVService.getSerieTVs().subscribe(notification => {
       if (notification) {
-        const seriesName = this.groupBy(notification, serie => serie.nome);
-        const arrayOfName = Array.from(seriesName.keys());
-        for (const name of arrayOfName) {
-          seriesName.get(name).sort(function (a, b) {
-            return (a.numeroStagione - b.numeroStagione);
-          });
-          this.serieTV.push(seriesName.get(name)[0]);
-        }
+        this.serieTV = notification;
       }
     });
   }
-
-  groupBy(list, keyGetter) {
-    const map = new Map();
-    list.forEach((item) => {
-        const key = keyGetter(item);
-        const collection = map.get(key);
-        if (!collection) {
-            map.set(key, [item]);
-        } else {
-            collection.push(item);
-        }
-    });
-    return map;
-}
 
   //  *** Reset Valori selzionati nei Filtri ***
   reset(stvt: Table) {
