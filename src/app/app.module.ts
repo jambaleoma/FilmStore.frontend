@@ -52,6 +52,7 @@ import { PanelModule } from 'primeng/panel';
 import {ChipsModule} from 'primeng/chips';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import {CarouselModule} from 'primeng/carousel';
+import { StagioneService } from './_api/services/stagione.service';
 
 registerLocaleData(localeITCA);
 
@@ -105,6 +106,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    StagioneService,
     ApplicationService,
     ConfirmationService,
     MessageService,

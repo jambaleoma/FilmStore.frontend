@@ -15,7 +15,7 @@ export class DettaglioSerieTvComponent implements OnInit {
   stagioni: Stagione[] = [];
   serie: Serie;
   showSerieDetails = false;
-  selectedSerie: Serie;
+  selectedStagione: Stagione;
   displayDialog: boolean;
 
   constructor(
@@ -28,6 +28,12 @@ export class DettaglioSerieTvComponent implements OnInit {
         this.serieTVService.getSerie(params.id).subscribe(notificationFilm => {
           this.serie = notificationFilm;
           this.showSerieDetails = true;
+          this.stagioneService.getStagioniByIdSerie(this.serie.serie_id).subscribe(notification => {
+            this.stagioni = notification;
+            this.stagioni.sort(function (a, b) {
+              return (a.numeroStagione - b.numeroStagione);
+            });
+          });
         });
       } else {
         this.showSerieDetails = false;
@@ -36,26 +42,16 @@ export class DettaglioSerieTvComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.subscribeListOfSerieTV();
   }
 
-  // subscribeListOfSerieTV() {
-  //   this.stagioneService.getStagioni().subscribe(notification => {
-  //     this.stagioni = notification.filter((val) => val.s === this.serie.nome);
-  //     this.stagioni.sort(function (a, b) {
-  //       return (a.numeroStagione - b.numeroStagione);
-  //     });
-  //   });
-  // }
-
-  selectSerie(event: Event, serie: Serie) {
-    this.selectedSerie = serie;
+  selectSerie(event: Event, stagione: Stagione) {
+    this.selectedStagione = stagione;
     this.displayDialog = true;
     event.preventDefault();
   }
 
   onDialogHide() {
-    this.selectedSerie = null;
+    this.selectedStagione = null;
   }
 
 }
