@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   }
 
   showLoginDilog(selectedCustomer: string) {
+    this.psw = undefined;
     this.customerService.getCustomerByName(selectedCustomer).subscribe(notification => {
       this.loggingCustomer = notification;
     });

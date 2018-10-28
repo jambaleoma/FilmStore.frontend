@@ -1,3 +1,5 @@
+import { StagioneService } from './../_api/services/stagione.service';
+import { Stagione } from './../_api/models/stagione';
 import { SerieService } from './../_api/services/serie.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Serie } from '../_api/models';
@@ -15,15 +17,27 @@ export class GestioneSerieTvComponent implements OnInit {
 
   series: Serie[] = [];
 
+  stagioni: Stagione[] = [];
+
+  stagioneSelezionata: Stagione;
+
   singolaSerie: Serie = { serie_id: null };
+
+  singolaStagione: Stagione = { stagione_id: null };
 
   showSerie = false;
 
   filters: any = {};
 
-  cols: any[];
+  serieCols: any[];
+
+  stagioneCols: any[];
 
   formats: SelectItem[];
+
+  nStagione: number;
+
+  nStagioni: SelectItem[];
 
   msgs: Message[] = [];
 
@@ -31,11 +45,14 @@ export class GestioneSerieTvComponent implements OnInit {
 
   displayDialog: boolean;
 
+  showStagioneDetails = false;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
     private confirmationService: ConfirmationService,
     private serieService: SerieService,
+    private stagioneService: StagioneService,
     private renderer: Renderer2
   ) {
 
@@ -48,19 +65,24 @@ export class GestioneSerieTvComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfSerie();
-    this.getCols();
+    this.getSerieCols();
+    this.getStagioneCols();
   }
 
-  getCols() {
-    this.cols = [
-      { field: 'nome', header: 'Nome Serie TV' },
+  getSerieCols() {
+    this.serieCols = [
+      { field: 'nome', header: 'Nome Serie TV' }
+    ];
+  }
+
+  getStagioneCols() {
+    this.stagioneCols = [
+      { field: 'numeroStagione', header: 'N° Stagione' },
+      { field: 'numeroEpisodi', header: 'N° Episodi' },
       { field: 'formato', header: 'Formato' },
       { field: 'linguaAudio', header: 'Audio' },
       { field: 'linguaSottotitoli', header: 'Sottotitoli' },
-      { field: 'anno', header: 'Anno' },
-      { field: 'numeroEpisodi', header: 'N° Episodi' },
-      { field: 'numeroStagione', header: 'N° Stagione' },
-      { field: 'stagioni', header: 'Stagioni' }
+      { field: 'anno', header: 'Anno' }
     ];
   }
 
@@ -72,13 +94,20 @@ export class GestioneSerieTvComponent implements OnInit {
     });
   }
 
-  onRowSelect(event) {
+  onRowSerieSelect(event) {
+    this.showStagioneDetails = false;
     this.newSerie = false;
     this.singolaSerie = this.cloneSerie(event.data);
+    this.stagioni = this.singolaSerie.stagioni;
     this.displayDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
+  }
+
+  onRowStagioneSelect(event) {
+    this.showStagioneDetails = false;
+    this.newSerie = false;
   }
 
   cloneSerie(r: Serie): Serie {
@@ -91,8 +120,10 @@ export class GestioneSerieTvComponent implements OnInit {
   }
 
   showDialogToAdd() {
+    this.showStagioneDetails = false;
     this.newSerie = true;
     this.singolaSerie = { serie_id: null };
+    this.singolaStagione = { stagione_id: null };
     this.displayDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
@@ -162,6 +193,11 @@ export class GestioneSerieTvComponent implements OnInit {
   reset(stvt: Table) {
     stvt.reset();
     this.filters = {};
+  }
+
+  addStagione(serie_id: string) {
+    this.singolaStagione.serie_id = serie_id;
+    this.showStagioneDetails = true;
   }
 
 }

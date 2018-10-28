@@ -10,8 +10,8 @@
       <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleSerie" (input)="stvt.filter($event.target.value, 'nome', 'contains')">
     </div>
     <div class="ui-g-4">
-      <div class="label">N° Stagione SerieTV {{stagioneFilter}} </div>
-      <input film-input type="text" pInputText placeholder=" &#xF002; Stagioni" [(ngModel)]="filters.stagioni" (input)="stvt.filter($event.target.value, 'stagioni', 'contains')">
+      <div class="label">N° Stagione SerieTV</div>
+      <input film-input type="text" pInputText placeholder=" &#xF002; Stagioni" [(ngModel)]="filters.stagioni" (input)="stvt.filter($event.target.value, 'stagioni.length', 'contains')">
     </div>
     <div film-button-third class="ui-g-4 resetButton" align="center">
       <button pButton type="button" label="Reset Filtri" (click)="reset(stvt)" style="margin-top: 14px;"></button>
@@ -57,7 +57,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length+2">
+        <td [attr.colspan]="cols.length+3">
           Nessuna SerieTV Trovata
         </td>
       </tr>

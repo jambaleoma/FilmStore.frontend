@@ -156,6 +156,12 @@ body.backImage {
   text-align: center;
 }
 
+.ui-table-caption {
+  border-collapse: collapse;
+  width: max-content !important;
+  table-layout: fixed;
+}
+
 .ui-paginator {
   width: max-content;
 }

@@ -19,9 +19,8 @@
       <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleMsg" (input)="rt.filter($event.target.value, 'nome', 'contains')">
     </div>
     <div class="ui-g-4">
-      <div class="label">Formato SerieTV </div>
-      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
-        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="rt.filter($event.value, 'formato', 'in')"></p-multiSelect>
+      <div class="label">N° Stagione SerieTV</div>
+      <input film-input type="text" pInputText placeholder=" &#xF002; Stagioni" [(ngModel)]="filters.stagioni" (input)="rt.filter($event.target.value, 'stagioni.length', 'contains')">
     </div>
     <div film-button-third class="ui-g-4 resetButton" align="center" style="padding-right: 5%;">
       <button pButton type="button" label="Reset Filtri" (click)="reset(rt)" style="margin-top: 14px;"></button>
@@ -30,12 +29,15 @@
 </div>
 
 <div class="ui-grid-col-12" style="padding-top: 1em;" align="center">
-  <p-table [columns]="cols" #rt [value]="series" selectionMode="single" [(selection)]="serieSelezionata" (onRowSelect)="onRowSelect($event)"
-    [rows]="50">
+  <p-table [columns]="serieCols" #rt [value]="series" selectionMode="single" [(selection)]="serieSelezionata"
+    (onRowSelect)="onRowSerieSelect($event)" [rows]="50">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns">
           {{col.header}}
+        </th>
+        <th>
+          Stagioni
         </th>
       </tr>
     </ng-template>
@@ -44,19 +46,21 @@
         <td *ngFor="let col of columns">
           {{rowData[col.field]}}
         </td>
+        <td>
+          {{rowData.stagioni ? rowData.stagioni.length : '-'}}
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length">
-          Nessuna Serie Presente
+        <td [attr.colspan]="serieCols.length + 1">
+          Nessuna Serie Trovata
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
       Serie TV Torvate: {{this.rt.filteredValue ? this.rt.filteredValue.length : this.rt.totalRecords }}
     </ng-template>
-
   </p-table>
 </div>
 
@@ -72,78 +76,116 @@
           <input pInputText id="titolo" name="titolo" [(ngModel)]="singolaSerie.nome" style="width: 100%" />
         </div>
       </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>Formato:</label>
+
+      <!-- TABELLA DELLE STAGIONI -->
+
+      <div class="ui-grid-col-12" style="padding-top: 1em;" align="center" *ngIf="!newSerie">
+        <p-table [columns]="stagioneCols" sortField="numeroStagione" #rt [value]="stagioni" selectionMode="single"
+          [(selection)]="stagioneSelezionata" (onRowSelect)="onRowStagioneSelect($event)" [rows]="50">
+          <ng-template pTemplate="caption">
+            <div [attr.colspan]="stagioneCols.length">
+              N° Stagioni: {{this.rt.filteredValue ? this.rt.filteredValue.length : this.rt.totalRecords }}
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns">
+                {{col.header}}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td [attr.colspan]="stagioneCols.length">
+                Nessuna Stagione Presente
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+
+
+      <div *ngIf="showStagioneDetails" style="border: 1px solid #c8c8c8;">
+        <div class="ui-g-12">
+          <h1 style="text-align: center">Stagione N. {{singolaStagione.numeroStagione}}</h1>
+          <div class="ui-g-3">
+            <label>Formato:</label>
+          </div>
+          <div class="ui-g-3">
+            <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="singolaStagione.formato"></p-dropdown>
+          </div>
+          <div class="ui-g-3" align="center">
+            <label>Anno:</label>
+          </div>
+          <div class="ui-g-3">
+            <input pInputText id="anno" name="anno" [(ngModel)]="singolaStagione.anno" style="width: 100%" />
+          </div>
         </div>
-        <div class="ui-g-3">
-          <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="singolaSerie.formato"></p-dropdown>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <label>Lingua Audio:</label>
+          </div>
+          <div class="ui-g-3">
+            <input pInputText id="audio" name="audio" [(ngModel)]="singolaStagione.linguaAudio" style="width: 100%" />
+          </div>
+          <div class="ui-g-3" align="center">
+            <label>Lingua Sottotitoli:</label>
+          </div>
+          <div class="ui-g-3">
+            <input pInputText id="subtitle" name="subtitle" [(ngModel)]="singolaStagione.linguaSottotitoli" style="width: 100%" />
+          </div>
         </div>
-        <div class="ui-g-3" align="center">
-          <label>Anno:</label>
+        <div class="ui-g-12">
+          <div class="ui-g-3" align="center">
+            <label>N° Episodi:</label>
+          </div>
+          <div class="ui-g-9">
+            <input pInputText id="numeroEpisodi" name="numeroEpisodi" [(ngModel)]="singolaStagione.numeroEpisodi" style="width: 100%" />
+          </div>
         </div>
-        <div class="ui-g-3">
-          <input pInputText id="anno" name="anno" [(ngModel)]="singolaSerie.anno" style="width: 100%" />
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <label>N° Stagione:</label>
+          </div>
+          <div class="ui-g-3">
+            <p-spinner size="30" id="numeroStagione" name="numeroStagione" [(ngModel)]="singolaStagione.numeroStagione"
+              [max]="100" [min]="1" [step]="1" style="width: 100%"></p-spinner>
+          </div>
+          <div class="ui-g-3" align="center">
+            <label>Url Locandina:</label>
+          </div>
+          <div class="ui-g-3">
+            <input pInputText id="url" name="ulr" [(ngModel)]="singolaStagione.urlLocandina" style="width: 100%" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            Puntate:
+          </div>
+          <div class="ui-g-9">
+            <p-chips id="episodi" name="episodi" [(ngModel)]="singolaStagione.episodi"></p-chips>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            Trama:
+          </div>
+          <div class="ui-g-9">
+            <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="singolaStagione.trama"></textarea>
+          </div>
         </div>
       </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>Lingua Audio:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="audio" name="audio" [(ngModel)]="singolaSerie.linguaAudio" style="width: 100%" />
-        </div>
-        <div class="ui-g-3" align="center">
-          <label>Lingua Sottotitoli:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="subtitle" name="subtitle" [(ngModel)]="singolaSerie.linguaSottotitoli" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>Stagioni:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="stagioni" name="stagioni" [(ngModel)]="singolaSerie.stagioni" style="width: 100%" />
-        </div>
-        <div class="ui-g-3" align="center">
-          <label>N° Episodi:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="numeroEpisodi" name="numeroEpisodi" [(ngModel)]="singolaSerie.numeroEpisodi" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>N° Stagione:</label>
-        </div>
-        <div class="ui-g-3">
-          <p-spinner size="30" id="numeroStagione" name="numeroStagione" [(ngModel)]="singolaSerie.numeroStagione"
-            [max]="100" [min]="1" [step]="1" style="width: 100%"></p-spinner>
-        </div>
-        <div class="ui-g-3" align="center">
-          <label>Url Locandina:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="url" name="ulr" [(ngModel)]="singolaSerie.urlLocandina" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          Puntate:
-        </div>
-        <div class="ui-g-9">
-          <p-chips id="episodi" name="episodi" [(ngModel)]="singolaSerie.episodi"></p-chips>
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          Trama:
-        </div>
-        <div class="ui-g-9">
-          <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="singolaSerie.trama"></textarea>
-        </div>
+      <div class="ui-g-12" style="text-align: center">
+        <button type="button" style="width: 25%" pButton icon="fa fa-plus" (click)="addStagione(singolaSerie.serie_id)"
+          label="Aggiungi Stagione"></button>
       </div>
     </div>
     <p-footer>
