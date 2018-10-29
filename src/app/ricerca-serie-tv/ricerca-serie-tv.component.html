@@ -48,7 +48,7 @@
           {{rowData[col.field]}}
         </td>
         <td>
-          {{rowData.stagioni.length}}
+          {{rowData.stagioni ? rowData.stagioni.length : '-'}}
         </td>
         <td>
           <p-button icon="fa fa-file-video-o" (onClick)="goToSerie(rowData.serie_id)"></p-button>
