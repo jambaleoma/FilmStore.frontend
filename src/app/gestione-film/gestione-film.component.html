@@ -98,7 +98,7 @@
           <label>Anno Film</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="anno" name="anno" [(ngModel)]="film.anno" style="width: 100%" />
+          <p-inputMask id="anno" name="anno" mask="9999" [(ngModel)]="film.anno" slotChar="AAAA"></p-inputMask>
         </div>
         <div class="ui-g-3" align="center">
           <label>Url Locandina:</label>
