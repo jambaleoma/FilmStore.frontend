@@ -53,6 +53,7 @@ import {ChipsModule} from 'primeng/chips';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import {CarouselModule} from 'primeng/carousel';
 import { StagioneService } from './_api/services/stagione.service';
+import {InputMaskModule} from 'primeng/inputmask';
 
 registerLocaleData(localeITCA);
 
@@ -74,6 +75,7 @@ registerLocaleData(localeITCA);
     CustomerSettingComponent
   ],
   imports: [
+    InputMaskModule,
     CarouselModule,
     ChipsModule,
     PanelModule,
