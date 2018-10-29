@@ -2,42 +2,43 @@
   Titolo Serie TV: {{serie.nome}}
 </h1>
 
-<p-dataView #dv [value]="series" [rows]="20">
-  <ng-template let-serie pTemplate="listItem">
-    <div class="ui-g" [ngClass]="{'separation': series[1] }" style="padding: 2em;">
+<p-dataView #dv [value]="stagioni" [rows]="20">
+  <ng-template let-stagione pTemplate="listItem">
+    <div class="ui-g" [ngClass]="{'separation': stagioni[1] }" style="padding: 2em;">
       <div class="ui-g-12 ui-md-3" style="text-align:center">
-        <img src="assets/showcase/images/serieTV/{{serie.nome}}/{{serie.urlLocandina}}.jpg" style="width: 70%;">
+        <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{stagione.urlLocandina}}.jpg" style="width: 70%;">
       </div>
       <div class="ui-g-12 ui-md-8">
         <div class="ui-g">
-          <div class="ui-g-2 ui-sm-6">Stagione: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.numeroStagione}}</b></div>
+          <div class="ui-g-12" style="text-align: center">
+            <h1>{{stagione.numeroStagione}}° Stagione</h1>
+          </div>
 
           <div class="ui-g-2 ui-sm-6">Anno: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.anno}}</b></div>
+          <div class="ui-g-10 ui-sm-6"><b>{{stagione.anno}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Formato: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.formato}}</b></div>
+          <div class="ui-g-10 ui-sm-6"><b>{{stagione.formato}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">N. Episodi: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.numeroEpisodi}}</b></div>
+          <div class="ui-g-10 ui-sm-6"><b>{{stagione.numeroEpisodi}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.linguaAudio}}</b></div>
+          <div class="ui-g-10 ui-sm-6"><b>{{stagione.linguaAudio}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{serie.linguaSottotitoli ? serie.linguaSottotitoli : '-'}}</b></div>
+          <div class="ui-g-10 ui-sm-6"><b>{{stagione.linguaSottotitoli ? stagione.linguaSottotitoli : '-'}}</b></div>
 
           <div class="ui-g-2 ui-sm-6"></div>
           <div class="ui-g-10 ui-sm-6"><b></b></div>
 
           <div class="ui-g-12 ui-sm-12">Trama: </div>
-          <div class="ui-g-12 ui-sm-12">{{serie.trama}}</div>
+          <div class="ui-g-12 ui-sm-12">{{stagione.trama}}</div>
 
         </div>
       </div>
-      <div class="ui-g-12 ui-md-1 search-icon">
-        <button pButton type="button" icon="pi pi-search" (click)="selectSerie($event, serie)"></button>
+      <div class="ui-g-12 ui-md-1 search-icon" style="text-align: center; padding-top: 3%">
+        <button pButton type="button" icon="pi pi-search" (click)="selectSerie($event, stagione)"></button>
       </div>
     </div>
   </ng-template>
@@ -45,23 +46,23 @@
 
 <p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
   [width]="600" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
-  <div class="ui-g" *ngIf="selectedSerie">
+  <div class="ui-g" *ngIf="selectedStagione">
     <div class="ui-g-3">
-      <img src="assets/showcase/images/serieTV/{{serie.nome}}/{{selectedSerie.urlLocandina}}.jpg" style="width: 100%;">
+      <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{selectedStagione.urlLocandina}}.jpg" style="width: 100%;">
     </div>
     <div class="ui-g-9" align="center">
       <div class="ui-g-4">Titolo: </div>
-      <div class="ui-g-8">{{selectedSerie.nome}}</div>
+      <div class="ui-g-8">{{serie.nome}}</div>
 
       <div class="ui-g-4">Stagione: </div>
-      <div class="ui-g-8">{{selectedSerie.numeroStagione}}</div>
+      <div class="ui-g-8">{{selectedStagione.numeroStagione}}</div>
 
       <div class="ui-g-4">Anno: </div>
-      <div class="ui-g-8">{{selectedSerie.anno}}</div>
+      <div class="ui-g-8">{{selectedStagione.anno}}</div>
     </div>
 
     <div class="ui-g-12" align="center">
-      <p-table film-table [value]="selectedSerie.episodi" #ft>
+      <p-table film-table [value]="selectedStagione.episodi" #ft>
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th style="width: 10px">
@@ -75,7 +76,7 @@
         <ng-template pTemplate="body" let-rowData>
           <tr>
             <td style="height: 15px;">
-              {{selectedSerie.episodi.indexOf(rowData) + 1}}
+              {{selectedStagione.episodi.indexOf(rowData) + 1}}
             </td>
             <td style="height: 15px;">
               {{rowData}}

@@ -74,20 +74,20 @@
     </p-carousel>
   </div>
 
-  <div *ngIf="newSeries" style="text-align: center; padding-top: 4em;">
+  <div *ngIf="newSerie" style="text-align: center; padding-top: 4em;">
       <h1>Nuove Serie TV</h1>
-      <p-carousel [value]="newSeries" autoplayInterval="5000">
+      <p-carousel [value]="newSerie" autoplayInterval="5000">
         <ng-template let-serie pTemplate="item">
           <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em;">
             <div class="ui-grid-row">
-              <div class="ui-grid-col-12"><img src="../../assets/showcase/images/serieTV/{{serie.nome}}/{{serie.urlLocandina}}.jpg" style="height: 20em;"></div>
+              <div class="ui-grid-col-12"><img src="../../assets/showcase/images/serieTV/{{serie.nome}}.jpg" style="height: 20em;"></div>
             </div>
             <div class="ui-grid-row" style="padding-top: 2em">
               <div class="ui-grid-col-12"><b>{{serie.nome}} Stagione {{serie.numeroStagione}}</b></div>
             </div>
             <div class="ui-grid-row" style="padding-top: 2em">
               <div class="ui-grid-col-12">
-                <button type="button" pButton icon="pi pi-search" (click)="showDetailsSerie(serie._id)"></button>
+                <button type="button" pButton icon="pi pi-search" (click)="showDetailsSerie(serie.serie_id)"></button>
               </div>
             </div>
           </div>

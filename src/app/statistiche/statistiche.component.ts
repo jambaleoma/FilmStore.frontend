@@ -1,5 +1,4 @@
-import { Serie } from '../_api/models/serie';
-import { SerieService } from '../_api/services/serie.service';
+import { Stagione } from './../_api/models/stagione';
 import { FilmService } from './../_api/services/film.service';
 import { Component } from '@angular/core';
 import { Customer } from '../_api/models/customer';
@@ -7,6 +6,7 @@ import { Richiesta } from '../_api/models/richiesta';
 import { CustomerService } from '../_api/services/customer.service';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Film } from '../_api/models/film';
+import { StagioneService } from '../_api/services/stagione.service';
 
 @Component({
   selector: 'app-statistiche',
@@ -21,7 +21,7 @@ export class StatisticheComponent {
 
   films: Film[] = [];
 
-  serieTV: Serie[] = [];
+  stagioni: Stagione[] = [];
 
   dataPieRichieste: any;
 
@@ -70,13 +70,13 @@ export class StatisticheComponent {
     private customerService: CustomerService,
     private richiestaService: RichiestaService,
     private filmService: FilmService,
-    private serieTVService: SerieService
+    private stagioneService: StagioneService
   ) {
     this.getRichiesteForStatistics();
     this.subsrcibeToListOfRichieste();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
-    this.subsrcibeToListOfSerieTVs();
+    this.subsrcibeToListOfStagioni();
   }
 
   getRichiesteForStatistics() {
@@ -273,14 +273,14 @@ export class StatisticheComponent {
     }
   }
 
-  subsrcibeToListOfSerieTVs() {
-    this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.serieTV = notification;
-      for (const serietv of this.serieTV) {
-        if (this.formato2serieTV.has(serietv.formato)) {
-          this.formato2serieTV.set(serietv.formato, this.formato2serieTV.get(serietv.formato) + 1);
+  subsrcibeToListOfStagioni() {
+    this.stagioneService.getStagioni().subscribe(notification => {
+      this.stagioni = notification;
+      for (const stagione of this.stagioni) {
+        if (this.formato2serieTV.has(stagione.formato)) {
+          this.formato2serieTV.set(stagione.formato, this.formato2serieTV.get(stagione.formato) + 1);
         } else {
-          this.formato2serieTV.set(serietv.formato, 1);
+          this.formato2serieTV.set(stagione.formato, 1);
         }
       }
       this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
@@ -290,7 +290,7 @@ export class StatisticheComponent {
   }
 
   loadChartFormatiSerieTVBar() {
-    if (this.serieTV.length > 0) {
+    if (this.stagioni.length > 0) {
       const dataBarRichiestebackgroundColor = [];
       for (const formato of this.formatiSerieTV) {
         dataBarRichiestebackgroundColor.push(this.getRandomColor());

@@ -1,11 +1,12 @@
-import { SerieService } from './../_api/services/serie.service';
+import { StagioneService } from './../_api/services/stagione.service';
 import { FilmService } from './../_api/services/film.service';
 import { ApplicationService } from './../_service/application.service';
 import { CustomerService } from './../_api/services/customer.service';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Customer, Film } from '../_api/models';
+import { Customer, Film, Serie } from '../_api/models';
 import { MessageService } from 'primeng/api';
+import { SerieService } from '../_api/services/serie.service';
 
 @Component({
   selector: 'app-home',
@@ -19,9 +20,9 @@ export class HomeComponent implements OnInit {
   newFilms: Film[] = [];
   newFilmsToPut: Film[] = [];
   newfilmNumber = 9;
-  newSeries: Film[] = [];
-  newSeriesToPut: Film[] = [];
-  newSeriesNumber = 9;
+  newSerie: Serie[] = [];
+  newSerieToPut: Serie[] = [];
+  newSerieNumber = 3;
 
   constructor(
     private filmSerive: FilmService,
@@ -66,15 +67,15 @@ export class HomeComponent implements OnInit {
 
   getNewSerie() {
     this.serieService.getSerieTVs().subscribe(notification => {
-      for (let i = 0; i < this.newSeriesNumber; i++) {
+      for (let i = 0; i < this.newSerieNumber; i++) {
         const serie = notification[Math.floor(Math.random() * notification.length)];
-        if (!this.newSeriesToPut.find(s => s._id === serie._id)) {
-          this.newSeriesToPut.push(serie);
+        if (!this.newSerieToPut.find(s => s.serie_id === serie.serie_id)) {
+          this.newSerieToPut.push(serie);
         } else {
           i--;
         }
       }
-      this.newSeries = this.newSeriesToPut;
+      this.newSerie = this.newSerieToPut;
     });
   }
 

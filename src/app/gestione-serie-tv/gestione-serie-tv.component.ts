@@ -1,3 +1,5 @@
+import { StagioneService } from './../_api/services/stagione.service';
+import { Stagione } from './../_api/models/stagione';
 import { SerieService } from './../_api/services/serie.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { Serie } from '../_api/models';
@@ -15,27 +17,46 @@ export class GestioneSerieTvComponent implements OnInit {
 
   series: Serie[] = [];
 
-  singolaSerie: Serie = { _id: null };
+  stagioni: Stagione[] = [];
+
+  stagioneSelezionata: Stagione;
+
+  singolaSerie: Serie = { serie_id: null };
+
+  singolaStagione: Stagione = { stagione_id: null };
 
   showSerie = false;
 
   filters: any = {};
 
-  cols: any[];
+  serieCols: any[];
+
+  stagioneCols: any[];
 
   formats: SelectItem[];
 
+  anniStagione: any[] = [];
+
+  nStagione: number;
+
+  nStagioni: SelectItem[];
+
   msgs: Message[] = [];
 
-  newSerie: boolean;
+  newSerie = false;
 
-  displayDialog: boolean;
+  newStagione = false;
+
+  displayDialogSerie: boolean;
+
+  displayDialogStagione: boolean;
 
   @ViewChild('rt') rt: Table;
 
   constructor(
     private confirmationService: ConfirmationService,
     private serieService: SerieService,
+    private stagioneService: StagioneService,
     private renderer: Renderer2
   ) {
 
@@ -48,19 +69,24 @@ export class GestioneSerieTvComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfSerie();
-    this.getCols();
+    this.getSerieCols();
+    this.getStagioneCols();
   }
 
-  getCols() {
-    this.cols = [
-      { field: 'nome', header: 'Nome Serie TV' },
+  getSerieCols() {
+    this.serieCols = [
+      { field: 'nome', header: 'Nome Serie TV' }
+    ];
+  }
+
+  getStagioneCols() {
+    this.stagioneCols = [
+      { field: 'numeroStagione', header: 'N° Stagione' },
+      { field: 'numeroEpisodi', header: 'N° Episodi' },
       { field: 'formato', header: 'Formato' },
       { field: 'linguaAudio', header: 'Audio' },
       { field: 'linguaSottotitoli', header: 'Sottotitoli' },
-      { field: 'anno', header: 'Anno' },
-      { field: 'numeroEpisodi', header: 'N° Episodi' },
-      { field: 'numeroStagione', header: 'N° Stagione' },
-      { field: 'stagioni', header: 'Stagioni' }
+      { field: 'anno', header: 'Anno' }
     ];
   }
 
@@ -72,34 +98,65 @@ export class GestioneSerieTvComponent implements OnInit {
     });
   }
 
-  onRowSelect(event) {
+  onRowSerieSelect(event) {
+    this.stagioni = undefined;
     this.newSerie = false;
     this.singolaSerie = this.cloneSerie(event.data);
-    this.displayDialog = true;
+    this.stagioneService.getStagioniByIdSerie(this.singolaSerie.serie_id).subscribe(notification => {
+      this.stagioni = notification;
+    });
+    this.displayDialogSerie = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
   }
 
-  cloneSerie(r: Serie): Serie {
-    const ric = { _id: null };
+  onRowStagioneSelect(event) {
+    this.newStagione = false;
+    this.singolaStagione = this.cloneStagione(event.data);
+    this.displayDialogStagione = true;
+    // setTimeout(() => {
+    //   this.renderer.selectRootElement('#anno').focus();
+    // }, 100);
+  }
+
+  cloneSerie(s: Serie): Serie {
+    const ser = { serie_id: null };
     // tslint:disable-next-line:forin
-    for (const prop in r) {
-      ric[prop] = r[prop];
+    for (const prop in s) {
+      ser[prop] = s[prop];
     }
-    return ric;
+    return ser;
   }
 
-  showDialogToAdd() {
+  cloneStagione(s: Stagione): Stagione {
+    const sta = { stagione_id: null };
+    // tslint:disable-next-line:forin
+    for (const prop in s) {
+      sta[prop] = s[prop];
+    }
+    return sta;
+  }
+
+  addSerie() {
     this.newSerie = true;
-    this.singolaSerie = { _id: null };
-    this.displayDialog = true;
+    this.singolaSerie = { serie_id: null };
+    this.displayDialogSerie = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
   }
 
-  save() {
+  addStagione() {
+    this.newStagione = true;
+    this.singolaStagione = { stagione_id: null };
+    this.displayDialogStagione = true;
+    // setTimeout(() => {
+    //   this.renderer.selectRootElement('#anno').focus();
+    // }, 100);
+  }
+
+  saveSerie() {
     if (this.newSerie) {
       this.confirmationService.confirm({
         message: 'Sicuro di voler Inserire questa Serie TV?',
@@ -110,7 +167,7 @@ export class GestioneSerieTvComponent implements OnInit {
             if (response !== null) {
               this.series = response as Serie[];
               this.singolaSerie = null;
-              this.displayDialog = false;
+              this.displayDialogSerie = false;
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Serie TV Inserita' }];
             }
           });
@@ -128,7 +185,7 @@ export class GestioneSerieTvComponent implements OnInit {
             if (response !== null) {
               this.series = response as Serie[];
               this.singolaSerie = null;
-              this.displayDialog = false;
+              this.displayDialogSerie = false;
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Serie TV Aggiornata' }];
             }
           });
@@ -138,19 +195,99 @@ export class GestioneSerieTvComponent implements OnInit {
     }
   }
 
-  delete() {
+  saveStagione() {
+    if (this.newStagione) {
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Inserire questa Stagione?',
+        header: 'Inserimento Stagione',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.singolaStagione.serie_id = this.singolaSerie.serie_id;
+          this.stagioneService.addStagione(this.singolaStagione).subscribe(responseStagione => {
+            if (responseStagione !== null) {
+              this.stagioni = responseStagione as Stagione[];
+              this.singolaStagione = null;
+              this.serieService.updateSerie(this.singolaSerie).subscribe(responseSerie => {
+                if (responseSerie !== null) {
+                  this.series = responseSerie as Serie[];
+                }
+              });
+              this.displayDialogStagione = false;
+              this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Stagione Inserita' }];
+            }
+          });
+        },
+        reject: () => {
+        }
+      });
+    } else {
+      this.confirmationService.confirm({
+        message: 'Sicuro di voler Aggiornare questa Stagione?',
+        header: 'Aggiornamento Stagione',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.stagioneService.updateStagione(this.singolaStagione).subscribe(response => {
+            if (response !== null) {
+              this.stagioni = response as Stagione[];
+              this.singolaStagione = null;
+              this.serieService.updateSerie(this.singolaSerie).subscribe(responseSerie => {
+                if (responseSerie !== null) {
+                  this.series = responseSerie as Serie[];
+                }
+              });
+              this.displayDialogStagione = false;
+              this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Stagione Aggiornata' }];
+            }
+          });
+        },
+        reject: () => { }
+      });
+    }
+  }
+
+
+  deleteSerie() {
     this.confirmationService.confirm({
-      message: 'Sicuro di voler Eliminare questa Serie TV?',
+      message: 'Sicuro di voler Eliminare questa Serie TV e tutte le Stagioni in essa contenute?',
       header: 'Eliminazione Serie TV',
       icon: 'fa fa-trash',
       accept: () => {
-        this.serieService.deleteSerie(this.serieSelezionata._id).subscribe(response => {
+        this.stagioneService.deleteStagioniBySerieId(this.serieSelezionata.serie_id).subscribe(responseStagione => {
+          if (responseStagione !== null) {
+            this.serieService.deleteSerie(this.serieSelezionata.serie_id).subscribe(response => {
+              if (response !== null) {
+                const index = this.series.indexOf(this.serieSelezionata);
+                this.series = this.series.filter((val, i) => i !== index);
+                this.singolaSerie = null;
+                this.displayDialogSerie = false;
+                this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
+              }
+            });
+          }
+        });
+      },
+      reject: () => { }
+    });
+  }
+
+  deleteStagione() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare questa Stagione?',
+      header: 'Eliminazione Stagione TV',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.stagioneService.deleteStagione(this.stagioneSelezionata.stagione_id).subscribe(response => {
           if (response !== null) {
-            const index = this.series.indexOf(this.serieSelezionata);
-            this.series = this.series.filter((val, i) => i !== index);
-            this.singolaSerie = null;
-            this.displayDialog = false;
-            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Serie TV Eliminata' }];
+            const index = this.stagioni.indexOf(this.stagioneSelezionata);
+            this.stagioni = this.stagioni.filter((val, i) => i !== index);
+            this.singolaStagione = null;
+            this.serieService.updateSerie(this.singolaSerie).subscribe(responseSerie => {
+              if (responseSerie !== null) {
+                this.series = responseSerie as Serie[];
+              }
+            });
+            this.displayDialogStagione = false;
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Stagione Eliminata' }];
           }
         });
       },

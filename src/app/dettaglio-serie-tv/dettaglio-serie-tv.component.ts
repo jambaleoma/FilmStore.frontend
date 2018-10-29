@@ -2,6 +2,8 @@ import { SerieService } from './../_api/services/serie.service';
 import { Serie } from './../_api/models/serie';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { StagioneService } from '../_api/services/stagione.service';
+import { Stagione } from '../_api/models/stagione';
 
 @Component({
   selector: 'app-dettaglio-serie-tv',
@@ -10,21 +12,28 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DettaglioSerieTvComponent implements OnInit {
 
-  series: Serie[] = [];
+  stagioni: Stagione[] = [];
   serie: Serie;
   showSerieDetails = false;
-  selectedSerie: Serie;
+  selectedStagione: Stagione;
   displayDialog: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    private serieTVService: SerieService
+    private serieTVService: SerieService,
+    private stagioneService: StagioneService
   ) {
     this.route.params.subscribe(params => {
       if (params.id) {
         this.serieTVService.getSerie(params.id).subscribe(notificationFilm => {
           this.serie = notificationFilm;
           this.showSerieDetails = true;
+          this.stagioneService.getStagioniByIdSerie(this.serie.serie_id).subscribe(notification => {
+            this.stagioni = notification;
+            this.stagioni.sort(function (a, b) {
+              return (a.numeroStagione - b.numeroStagione);
+            });
+          });
         });
       } else {
         this.showSerieDetails = false;
@@ -33,26 +42,16 @@ export class DettaglioSerieTvComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subscribeListOfSerieTV();
   }
 
-  subscribeListOfSerieTV() {
-    this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.series = notification.filter((val) => val.nome === this.serie.nome);
-      this.series.sort(function (a, b) {
-        return (a.numeroStagione - b.numeroStagione);
-      });
-    });
-  }
-
-  selectSerie(event: Event, serie: Serie) {
-    this.selectedSerie = serie;
+  selectSerie(event: Event, stagione: Stagione) {
+    this.selectedStagione = stagione;
     this.displayDialog = true;
     event.preventDefault();
   }
 
   onDialogHide() {
-    this.selectedSerie = null;
+    this.selectedStagione = null;
   }
 
 }
