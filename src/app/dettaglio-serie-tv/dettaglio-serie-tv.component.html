@@ -45,23 +45,22 @@
 </p-dataView>
 
 <p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="600" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
+  [width]="800" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
   <div class="ui-g" *ngIf="selectedStagione">
-    <div class="ui-g-3">
-      <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{selectedStagione.urlLocandina}}.jpg" style="width: 100%;">
-    </div>
-    <div class="ui-g-9" align="center">
+    <div class="ui-g-12" align="center">
       <div class="ui-g-4">Titolo: </div>
-      <div class="ui-g-8">{{serie.nome}}</div>
+      <div class="ui-g-8"><b>{{serie.nome}}</b></div>
 
       <div class="ui-g-4">Stagione: </div>
-      <div class="ui-g-8">{{selectedStagione.numeroStagione}}</div>
+      <div class="ui-g-8"><b>{{selectedStagione.numeroStagione}}</b></div>
 
       <div class="ui-g-4">Anno: </div>
-      <div class="ui-g-8">{{selectedStagione.anno}}</div>
+      <div class="ui-g-8"><b>{{selectedStagione.anno}}</b></div>
     </div>
-
-    <div class="ui-g-12" align="center">
+    <div class="ui-g-4">
+      <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{selectedStagione.urlLocandina}}.jpg" style="width: 100%;">
+    </div>
+    <div class="ui-g-8" align="center">
       <p-table film-table [value]="selectedStagione.episodi" #ft>
         <ng-template pTemplate="header" let-columns>
           <tr>
