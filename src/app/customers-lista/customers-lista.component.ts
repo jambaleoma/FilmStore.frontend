@@ -204,7 +204,7 @@ export class CustomersListaComponent implements OnInit {
         if (this.customerSelezionato.admin) {
           this.msgs = [{ severity: 'error', summary: 'Attenzione', detail: 'Non è possibile eliminare un Admin' }];
         } else if (this.customerSelezionato.firstName === 'Vincenzo') {
-          this.showYDSTMW = true;
+          this.loadMagicWord();
         } else {
           this.customerService.deleteCustomer(this.customerSelezionato.id).subscribe(response => {
             if (response !== null) {
@@ -250,7 +250,7 @@ export class CustomersListaComponent implements OnInit {
         header: 'Rimozione Ruolo Admin',
         accept: () => {
           if (customerToChange.firstName === 'Vincenzo') {
-            this.showYDSTMW = true;
+            this.loadMagicWord();
           } else {
             customerToChange.admin = role;
             this.customerService.updateCustomer(customerToChange).subscribe(response => {
@@ -278,6 +278,16 @@ export class CustomersListaComponent implements OnInit {
     this.newCustomerPassword = undefined;
     this.repeatedNewCustomerPassword = undefined;
     this.showChangePassword = false;
+  }
+
+  loadMagicWord() {
+    this.showYDSTMW = true;
+    const audio = new Audio('../../assets/showcase/audio/AH Ah Ah you didnt say the magic word.flv.mp3');
+    audio.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+  }, false);
+    audio.play();
   }
 
 }
