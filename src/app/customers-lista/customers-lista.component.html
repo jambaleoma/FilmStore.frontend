@@ -43,10 +43,10 @@
           {{customer[col.field]}}
         </td>
         <td>
-          <p-button icon="fa fa-search" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
+          <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
         </td>
         <td *ngIf="loggedCustomer.admin">
-          <p-button icon="fa fa-cog" (onClick)="manageUser(customer)"></p-button>
+          <p-button icon="fa fa-cog" title="Opzioni Utente" (onClick)="manageUser(customer)"></p-button>
         </td>
       </tr>
     </ng-template>
