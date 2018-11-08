@@ -1,3 +1,4 @@
+import { ListItem } from './../_api/models/list-items';
 import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
@@ -43,6 +44,8 @@ export class CustomersListaComponent implements OnInit {
 
   loggedCustomer: Customer;
 
+  sessi: ListItem[];
+
   @ViewChild('ct') ct: Table;
 
   constructor(
@@ -62,9 +65,18 @@ export class CustomersListaComponent implements OnInit {
   }
 
   getColumns() {
+
+    this.sessi = [
+      { _id: '0', label: '', value: '' },
+      { _id: 'M', label: 'Maschio', value: 'Maschio' },
+      { _id: 'F', label: 'Femmina', value: 'Femmina' }
+    ];
+
     this.cols = [
       { field: 'firstName', header: 'Nome' },
       { field: 'lastName', header: 'Cognome' },
+      { field: 'sesso', header: 'Sesso' },
+      { field: 'dataDiNascita', header: 'Data di Nascita' },
       { field: 'numeroRichieste', header: 'Richieste' }
     ];
   }

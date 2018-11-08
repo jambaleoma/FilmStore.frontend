@@ -83,6 +83,21 @@
         </div>
       </div>
       <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Sesso:</label>
+        </div>
+        <div class="ui-g-3">
+          <p-dropdown id="sesso" name="sesso" [options]="sessi" [(ngModel)]="customer.sesso"></p-dropdown>
+        </div>
+        <div class="ui-g-3">
+          <label>Data di Nascita:</label>
+        </div>
+        <div class="ui-g-3">
+          <p-inputMask id="dataDiNascita" name="dataDiNascita" mask="99/99/9999" [(ngModel)]="customer.dataDiNascita"
+            slotChar="gg/mm/aaaa"></p-inputMask>
+        </div>
+      </div>
+      <div class="ui-g-12">
         <div class="ui-g-3" *ngIf="!newCustomer">
           <label>N. Richieste:</label>
         </div>
@@ -157,7 +172,8 @@
   </form>
 </p-dialog>
 
-<p-dialog [(visible)]="showYDSTMW" [responsive]="true" [modal]="true" [width]="600" [height]="900" [positionTop]="250" [closable]="false">
+<p-dialog [(visible)]="showYDSTMW" [responsive]="true" [modal]="true" [width]="600" [height]="900" [positionTop]="250"
+  [closable]="false">
   <p-header>
     AH Ah Ah! you didn't say the magic word...
   </p-header>

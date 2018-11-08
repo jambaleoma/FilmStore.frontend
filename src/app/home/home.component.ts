@@ -40,11 +40,19 @@ export class HomeComponent implements OnInit {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
       if (this.applicationService.getShowWelcome()) {
-        this.messageService.add({
-          key: 'homeTost', severity: 'success',
-          summary: 'Accesso Eseguito', detail: 'Bentornato ' + this.loggedCustomer.firstName
-        });
-        this.applicationService.setFalseShowWelcome();
+        if (this.loggedCustomer.sesso === 'Maschio') {
+          this.messageService.add({
+            key: 'homeTost', severity: 'success',
+            summary: 'Accesso Eseguito', detail: 'Bentornato ' + this.loggedCustomer.firstName
+          });
+          this.applicationService.setFalseShowWelcome();
+        } else {
+          this.messageService.add({
+            key: 'homeTost', severity: 'success',
+            summary: 'Accesso Eseguito', detail: 'Bentornata ' + this.loggedCustomer.firstName
+          });
+          this.applicationService.setFalseShowWelcome();
+        }
       }
     });
     this.getNewFilm();
