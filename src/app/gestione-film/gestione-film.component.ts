@@ -45,6 +45,7 @@ export class GestioneFilmComponent implements OnInit {
 
     this.formats = [
       { label: '', value: '' },
+      { label: '4K', value: '4K' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },
       { label: 'DVD', value: 'DVD' }

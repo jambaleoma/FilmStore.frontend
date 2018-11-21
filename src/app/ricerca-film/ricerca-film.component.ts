@@ -32,6 +32,7 @@ export class RicercaFilmComponent implements OnInit {
   ) {
 
     this.formats = [
+      { _id: '0', label: '4K', value: '4K' },
       { _id: '1', label: 'FULL-HD', value: 'FULL-HD' },
       { _id: '2', label: 'HD', value: 'HD' },
       { _id: '3', label: 'DVD', value: 'DVD' }
