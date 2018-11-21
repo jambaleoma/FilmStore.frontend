@@ -296,7 +296,7 @@ export class StatisticheComponent {
         dataBarRichiestebackgroundColor.push(this.getRandomColor());
       }
       this.dataBarSerieTV = {
-        labels: ['Formati Serie TV'],
+        labels: ['Formato Stagione'],
         datasets: [
           {
             label: this.formatiSerieTV[0],
