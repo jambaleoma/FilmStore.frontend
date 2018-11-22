@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { SelectItem, Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { FilmService } from '../_api/services/film.service';
+import { ListItem } from '../_api/models';
 
 @Component({
   selector: 'app-gestione-film',
@@ -35,6 +36,8 @@ export class GestioneFilmComponent implements OnInit {
 
   displayDialog: boolean;
 
+  audios: ListItem[] = [];
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -43,6 +46,74 @@ export class GestioneFilmComponent implements OnInit {
     private renderer: Renderer2
   ) {
 
+    this.audios = [
+      {
+        _id: 'CHN',
+        label: 'Cinese',
+        value: 'CHN'
+      },
+      {
+        _id: 'KOR',
+        label: 'Coreano',
+        value: 'KOR'
+      },
+      {
+        _id: 'ENG',
+        label: 'Inglese',
+        value: 'ENG'
+      },
+      {
+        _id: 'ESP',
+        label: 'Spagnolo',
+        value: 'ESP'
+      },
+      {
+        _id: 'FIN',
+        label: 'Finlandese',
+        value: 'FIN'
+      },
+      {
+        _id: 'FRA',
+        label: 'Francese',
+        value: 'FRA'
+      },
+      {
+        _id: 'ITA',
+        label: 'Italiano',
+        value: 'ITA'
+      },
+      {
+        _id: 'NLD',
+        label: 'Olandese',
+        value: 'NLD'
+      },
+      {
+        _id: 'JPN',
+        label: 'Giapponese',
+        value: 'JPN'
+      },
+      {
+        _id: 'NOR',
+        label: 'Norvegiese',
+        value: 'NOR'
+      },
+      {
+        _id: 'POL',
+        label: 'Polacco',
+        value: 'POL'
+      },
+      {
+        _id: 'PRT',
+        label: 'Portoghese',
+        value: 'PRT'
+      },
+      {
+        _id: 'SWE',
+        label: 'Svedese',
+        value: 'SWE'
+      }
+    ];
+
     this.formats = [
       { label: '', value: '' },
       { label: '4K', value: '4K' },
@@ -50,6 +121,12 @@ export class GestioneFilmComponent implements OnInit {
       { label: 'HD', value: 'HD' },
       { label: 'DVD', value: 'DVD' }
     ];
+  }
+
+  private checkCountries() {
+    if (this.film && (!this.film.linguaAudio)) {
+      this.film.linguaAudio = this.audios.map((va: ListItem) => va.value);
+    }
   }
 
   ngOnInit() {
@@ -70,6 +147,11 @@ export class GestioneFilmComponent implements OnInit {
   subsrcibeToListOfFilm() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
+      // TODO: modify BE model of film.linguaAudio & film.linguaSottotitoli
+      // for (let film of this.films) {
+      //   film.linguaAudio.
+      // }
+      this.checkCountries();
       this.showFilm = true;
     }, error => {
       this.showFilm = true;

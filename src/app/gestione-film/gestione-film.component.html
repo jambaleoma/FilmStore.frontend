@@ -84,13 +84,25 @@
           <label>Audio</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="audio" name="audio" [(ngModel)]="film.linguaAudio" style="width: 100%" />
+          <!-- <input pInputText id="audio" name="audio" [(ngModel)]="film.linguaAudio" style="width: 100%" /> -->
+          <p-multiSelect name="audio" [options]="audios" [(ngModel)]="film.linguaAudio" [panelStyle]="{minWidth:'12em'}" defaultLabel="">
+            <ng-template let-audio>
+                <img src="assets/showcase/images/flags/{{audio.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
+                <div style="font-size:14px;float:right;margin-top:4px">{{audio.label}}</div>
+            </ng-template>
+        </p-multiSelect>
         </div>
         <div class="ui-g-3">
           <label>Sottotitoli</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="subtitle" name="subtitle" [(ngModel)]="film.linguaSottotitoli" style="width: 100%" />
+          <!-- <input pInputText id="subtitle" name="subtitle" [(ngModel)]="film.linguaSottotitoli" style="width: 100%" /> -->
+          <p-multiSelect name="subtitle" [options]="audios" [(ngModel)]="film.linguaSottotitoli" [panelStyle]="{minWidth:'12em'}" defaultLabel="">
+            <ng-template let-subtitle>
+                <img src="assets/showcase/images/flags/{{subtitle.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
+                <div style="font-size:14px;float:right;margin-top:4px">{{subtitle.label}}</div>
+            </ng-template>
+        </p-multiSelect>
         </div>
       </div>
       <div class="ui-g-12">
