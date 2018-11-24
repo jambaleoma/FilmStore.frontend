@@ -29,12 +29,7 @@ export class LayoutsComponent implements OnInit {
       this.loggedCustomer = notification;
       this.itemsProfile = [
         {
-          label: 'Profilo Personale' , icon: 'fa fa-user', visible: !this.loggedCustomer.admin, command: () => {
-            this.openUserProfile();
-          }
-        },
-        {
-          label: 'Profili Utenti' , icon: 'fa fa-users', visible: this.loggedCustomer.admin, command: () => {
+          label: 'Profilo Personale' , icon: 'fa fa-user', command: () => {
             this.openUserProfile();
           }
         },
@@ -93,8 +88,12 @@ export class LayoutsComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  openUserProfile() {
+  openUsersProfile() {
     this.router.navigate(['/filmStore/utenti']);
+  }
+
+  openUserProfile() {
+    this.router.navigate(['/filmStore/profiloUtente']);
   }
 
   goToManageCustomer(nomeCustomer: string) {

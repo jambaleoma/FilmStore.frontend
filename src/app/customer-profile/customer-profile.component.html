@@ -1,0 +1,44 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<div align="center" *ngIf="loggedCustomer">
+  <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
+</div>
+
+<div class="ui-grid-col-12" style="padding-top: 2em;" align="center" *ngIf="loggedCustomer">
+  <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 250px;">
+          Foto
+        </th>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+        <th style="width: 7em">
+          Dettaglio Richieste
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-customer let-columns="columns">
+      <tr>
+        <td style="width: 250px;">
+          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="display:inline-block;margin:5px 0 0 5px"
+            width="200">
+        </td>
+        <td *ngFor="let col of columns">
+          {{customer[col.field]}}
+        </td>
+        <td>
+          <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length+2">
+          Nessun Utente Trovato
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -54,6 +54,7 @@ import { CustomerSettingComponent } from './customer-setting/customer-setting.co
 import {CarouselModule} from 'primeng/carousel';
 import { StagioneService } from './_api/services/stagione.service';
 import {InputMaskModule} from 'primeng/inputmask';
+import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
 
 registerLocaleData(localeITCA);
 
@@ -72,7 +73,8 @@ registerLocaleData(localeITCA);
     GestioneSerieTvComponent,
     RichiesteUtenteComponent,
     DettaglioSerieTvComponent,
-    CustomerSettingComponent
+    CustomerSettingComponent,
+    CustomerProfileComponent
   ],
   imports: [
     InputMaskModule,
