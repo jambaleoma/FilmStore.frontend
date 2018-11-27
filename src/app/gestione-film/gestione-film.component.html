@@ -85,8 +85,8 @@
         </div>
         <div class="ui-g-3">
           <!-- <input pInputText id="audio" name="audio" [(ngModel)]="film.linguaAudio" style="width: 100%" /> -->
-          <p-multiSelect name="audio" [options]="audios" [(ngModel)]="film.linguaAudio" [panelStyle]="{minWidth:'12em'}" defaultLabel="">
-            <ng-template let-audio>
+          <p-multiSelect name="audio" [options]="audios" [(ngModel)]="film.linguaAudio" [panelStyle]="{minWidth:'12em'}">
+            <ng-template let-audio pTemplate="item">
                 <img src="assets/showcase/images/flags/{{audio.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
                 <div style="font-size:14px;float:right;margin-top:4px">{{audio.label}}</div>
             </ng-template>
@@ -97,8 +97,8 @@
         </div>
         <div class="ui-g-3">
           <!-- <input pInputText id="subtitle" name="subtitle" [(ngModel)]="film.linguaSottotitoli" style="width: 100%" /> -->
-          <p-multiSelect name="subtitle" [options]="audios" [(ngModel)]="film.linguaSottotitoli" [panelStyle]="{minWidth:'12em'}" defaultLabel="">
-            <ng-template let-subtitle>
+          <p-multiSelect name="subtitle" [options]="audios" [(ngModel)]="film.linguaSottotitoli" [panelStyle]="{minWidth:'12em'}" defaultLabel="-">
+            <ng-template let-subtitle pTemplate="item">
                 <img src="assets/showcase/images/flags/{{subtitle.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
                 <div style="font-size:14px;float:right;margin-top:4px">{{subtitle.label}}</div>
             </ng-template>
@@ -127,6 +127,7 @@
           <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="film.trama"></textarea>
         </div>
       </div>
+      <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="deleteAudio(film)" label="Elimina Audio"></button>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">

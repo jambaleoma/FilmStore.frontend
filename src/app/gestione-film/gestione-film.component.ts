@@ -49,67 +49,67 @@ export class GestioneFilmComponent implements OnInit {
     this.audios = [
       {
         _id: 'CHN',
-        label: 'Cinese',
+        label: 'CHN',
         value: 'CHN'
       },
       {
         _id: 'KOR',
-        label: 'Coreano',
+        label: 'KOR',
         value: 'KOR'
       },
       {
         _id: 'ENG',
-        label: 'Inglese',
+        label: 'ENG',
         value: 'ENG'
       },
       {
         _id: 'ESP',
-        label: 'Spagnolo',
+        label: 'ESP',
         value: 'ESP'
       },
       {
         _id: 'FIN',
-        label: 'Finlandese',
+        label: 'FIN',
         value: 'FIN'
       },
       {
         _id: 'FRA',
-        label: 'Francese',
+        label: 'FRA',
         value: 'FRA'
       },
       {
         _id: 'ITA',
-        label: 'Italiano',
+        label: 'ITA',
         value: 'ITA'
       },
       {
         _id: 'NLD',
-        label: 'Olandese',
+        label: 'NLD',
         value: 'NLD'
       },
       {
         _id: 'JPN',
-        label: 'Giapponese',
+        label: 'JPN',
         value: 'JPN'
       },
       {
         _id: 'NOR',
-        label: 'Norvegiese',
+        label: 'NOR',
         value: 'NOR'
       },
       {
         _id: 'POL',
-        label: 'Polacco',
+        label: 'POL',
         value: 'POL'
       },
       {
         _id: 'PRT',
-        label: 'Portoghese',
+        label: 'PRT',
         value: 'PRT'
       },
       {
         _id: 'SWE',
-        label: 'Svedese',
+        label: 'SWE',
         value: 'SWE'
       }
     ];
@@ -137,10 +137,10 @@ export class GestioneFilmComponent implements OnInit {
   getCols() {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
-      { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' },
-      { field: 'formato', header: 'Formato' }
+      { field: 'formato', header: 'Formato' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' }
     ];
   }
 
@@ -264,6 +264,25 @@ export class GestioneFilmComponent implements OnInit {
     rt.reset();
     this.filters = {};
     this.yearFilter = null;
+  }
+
+  deleteAudio(film: Film) {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare l\'Audio di questo Film?',
+      header: 'Eliminazione Film',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.filmService.deleteAudioFilm(film._id).subscribe(response => {
+          if (response !== null) {
+            this.films = response as Film[];
+            this.film = null;
+            this.displayDialog = false;
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Audio Film Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
 }

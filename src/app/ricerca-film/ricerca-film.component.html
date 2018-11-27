@@ -41,6 +41,12 @@
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
+        <th>
+          Audio
+        </th>
+        <th>
+          Sottotitoli
+        </th>
         <th style="width: 7em">
           Dettagli
         </th>
@@ -53,6 +59,13 @@
         </td>
         <td *ngFor="let col of columns">
           {{rowData[col.field] ? rowData[col.field] : '-'}}
+        </td>
+        <td>
+          <img *ngFor="let lingua of rowData.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png">
+        </td>
+        <td>
+          <img *ngFor="let linguaSub of rowData.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png">
+          <span *ngIf="!rowData.linguaSottotitoli"> - </span>
         </td>
         <td>
           <p-button icon="fa fa-file-video-o" title="Visualizza Dettagli" (onClick)="goToFilm(rowData._id)"></p-button>
