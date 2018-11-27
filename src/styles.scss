@@ -240,3 +240,35 @@ body.backImage {
     color: black !important;
   }
 }
+
+.ui-progressbar .ui-progressbar-label {
+  color: white !important;
+}
+
+.underProcessing {
+  .ui-progressbar .ui-progressbar-value {
+    background: orange !important;
+  }
+
+  .ui-progressbar .ui-progressbar-label {
+    color: black !important;
+  }
+}
+
+.inCharge {
+  .ui-progressbar .ui-progressbar-value {
+    background: blue !important;
+  }
+}
+
+.complete {
+  .ui-progressbar .ui-progressbar-value {
+    background: rgb(0, 196, 0) !important;
+  }
+}
+
+.rejected {
+  .ui-progressbar .ui-progressbar-value {
+    background: red !important;
+  }
+}

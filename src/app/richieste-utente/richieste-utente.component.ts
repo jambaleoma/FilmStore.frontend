@@ -47,6 +47,8 @@ export class RichiesteUtenteComponent implements OnInit {
 
   loggedCustomer: Customer;
 
+  percenutaleAvanzamento: number;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -122,6 +124,7 @@ export class RichiesteUtenteComponent implements OnInit {
   }
 
   onRowSelect(event) {
+    this.percenutaleAvanzamento = 0;
     this.newRichiesta = false;
     this.richiesta = this.cloneRichiesta(event.data);
     this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe(response => {
@@ -131,6 +134,27 @@ export class RichiesteUtenteComponent implements OnInit {
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
+    switch (this.richiesta.stato) {
+      case 'IN LAVORAZIONE':
+      this.richiesta.avanzamento = 33;
+        break;
+      case 'PRESA IN CARICO':
+        this.richiesta.avanzamento = 66;
+        break;
+      case 'RIFIUTATA':
+        this.richiesta.avanzamento = 100;
+        break;
+      case 'COMPLETATA':
+        this.richiesta.avanzamento = 100;
+        break;
+    }
+      const interval = setInterval(() => {
+        this.percenutaleAvanzamento = this.percenutaleAvanzamento + Math.floor(Math.random() * 10) + 1;
+        if (this.percenutaleAvanzamento >= this.richiesta.avanzamento) {
+          this.percenutaleAvanzamento = this.richiesta.avanzamento;
+          clearInterval(interval);
+        }
+      }, 1);
   }
 
   cloneRichiesta(r: Richiesta): Richiesta {

@@ -55,6 +55,7 @@ import {CarouselModule} from 'primeng/carousel';
 import { StagioneService } from './_api/services/stagione.service';
 import {InputMaskModule} from 'primeng/inputmask';
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 registerLocaleData(localeITCA);
 
@@ -77,6 +78,7 @@ registerLocaleData(localeITCA);
     CustomerProfileComponent
   ],
   imports: [
+    ProgressBarModule,
     InputMaskModule,
     CarouselModule,
     ChipsModule,
