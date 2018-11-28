@@ -1,3 +1,4 @@
+import { ApplicationService } from './../_service/application.service';
 import { Film } from './../_api/models/film';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { SelectItem, Message, ConfirmationService } from 'primeng/api';
@@ -41,79 +42,11 @@ export class GestioneFilmComponent implements OnInit {
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private applicationService: ApplicationService,
     private confirmationService: ConfirmationService,
     private filmService: FilmService,
     private renderer: Renderer2
   ) {
-
-    this.audios = [
-      {
-        _id: 'CHN',
-        label: 'CHN',
-        value: 'CHN'
-      },
-      {
-        _id: 'KOR',
-        label: 'KOR',
-        value: 'KOR'
-      },
-      {
-        _id: 'ENG',
-        label: 'ENG',
-        value: 'ENG'
-      },
-      {
-        _id: 'ESP',
-        label: 'ESP',
-        value: 'ESP'
-      },
-      {
-        _id: 'FIN',
-        label: 'FIN',
-        value: 'FIN'
-      },
-      {
-        _id: 'FRA',
-        label: 'FRA',
-        value: 'FRA'
-      },
-      {
-        _id: 'ITA',
-        label: 'ITA',
-        value: 'ITA'
-      },
-      {
-        _id: 'NLD',
-        label: 'NLD',
-        value: 'NLD'
-      },
-      {
-        _id: 'JPN',
-        label: 'JPN',
-        value: 'JPN'
-      },
-      {
-        _id: 'NOR',
-        label: 'NOR',
-        value: 'NOR'
-      },
-      {
-        _id: 'POL',
-        label: 'POL',
-        value: 'POL'
-      },
-      {
-        _id: 'PRT',
-        label: 'PRT',
-        value: 'PRT'
-      },
-      {
-        _id: 'SWE',
-        label: 'SWE',
-        value: 'SWE'
-      }
-    ];
-
     this.formats = [
       { label: '', value: '' },
       { label: '4K', value: '4K' },
@@ -123,15 +56,16 @@ export class GestioneFilmComponent implements OnInit {
     ];
   }
 
-  private checkCountries() {
-    if (this.film && (!this.film.linguaAudio)) {
-      this.film.linguaAudio = this.audios.map((va: ListItem) => va.value);
-    }
-  }
-
   ngOnInit() {
+    this.subscribeToListOfCountry();
     this.subsrcibeToListOfFilm();
     this.getCols();
+  }
+
+  subscribeToListOfCountry() {
+    this.applicationService.countriesObservable.subscribe(notification => {
+      this.audios = notification;
+    });
   }
 
   getCols() {
@@ -147,11 +81,6 @@ export class GestioneFilmComponent implements OnInit {
   subsrcibeToListOfFilm() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
-      // TODO: modify BE model of film.linguaAudio & film.linguaSottotitoli
-      // for (let film of this.films) {
-      //   film.linguaAudio.
-      // }
-      this.checkCountries();
       this.showFilm = true;
     }, error => {
       this.showFilm = true;

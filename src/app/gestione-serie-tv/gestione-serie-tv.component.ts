@@ -1,3 +1,5 @@
+import { ListItem } from './../_api/models/list-items';
+import { ApplicationService } from './../_service/application.service';
 import { StagioneService } from './../_api/services/stagione.service';
 import { Stagione } from './../_api/models/stagione';
 import { SerieService } from './../_api/services/serie.service';
@@ -51,9 +53,12 @@ export class GestioneSerieTvComponent implements OnInit {
 
   displayDialogStagione: boolean;
 
+  audios: ListItem[] = [];
+
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private applicationService: ApplicationService,
     private confirmationService: ConfirmationService,
     private serieService: SerieService,
     private stagioneService: StagioneService,
@@ -68,9 +73,16 @@ export class GestioneSerieTvComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscribeToListOfCountry();
     this.subsrcibeToListOfSerie();
     this.getSerieCols();
     this.getStagioneCols();
+  }
+
+  subscribeToListOfCountry() {
+    this.applicationService.countriesObservable.subscribe(notification => {
+      this.audios = notification;
+    });
   }
 
   getSerieCols() {

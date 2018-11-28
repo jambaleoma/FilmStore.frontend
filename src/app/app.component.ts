@@ -1,10 +1,20 @@
+import { ApplicationService } from './_service/application.service';
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/components/common/menuitem';
-import { Router } from '@angular/router';
+import { ListItem } from './_api/models';
+
+const audioFileJson: ListItem[] = require('./audio&subtitle.json');
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+
+  constructor(private applicationService: ApplicationService) {
+  }
+
+  ngOnInit() {
+    this.applicationService.setCountriesItems(audioFileJson);
+  }
+}

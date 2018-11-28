@@ -41,7 +41,7 @@
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
-        <th>
+        <th style="width: 7em">
           Audio
         </th>
         <th>
@@ -61,10 +61,10 @@
           {{rowData[col.field] ? rowData[col.field] : '-'}}
         </td>
         <td>
-          <img *ngFor="let lingua of rowData.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png">
+          <img *ngFor="let lingua of rowData.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
         </td>
         <td>
-          <img *ngFor="let linguaSub of rowData.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png">
+          <img *ngFor="let linguaSub of rowData.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png" title="{{linguaSub}}">
           <span *ngIf="!rowData.linguaSottotitoli"> - </span>
         </td>
         <td>
@@ -74,7 +74,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length + 2">
+        <td [attr.colspan]="cols.length + 4">
           Nessun Film Trovato
         </td>
       </tr>

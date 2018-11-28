@@ -49,9 +49,7 @@ export class RicercaFilmComponent implements OnInit {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
       { field: 'anno', header: 'Anno' },
-      { field: 'formato', header: 'Formato' },
-      { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' }
+      { field: 'formato', header: 'Formato' }
     ];
   }
 
