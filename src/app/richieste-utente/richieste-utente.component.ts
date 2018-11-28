@@ -167,6 +167,7 @@ export class RichiesteUtenteComponent implements OnInit {
   }
 
   showDialogToAdd() {
+    this.percenutaleAvanzamento = 0;
     this.newRichiesta = true;
     this.richiesta = {
       id: null,
