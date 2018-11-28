@@ -1,6 +1,8 @@
-<h1 *ngIf="showSerieDetails">
-  Titolo Serie TV: {{serie.nome}}
-</h1>
+<div style="text-align:center">
+  <h1 *ngIf="showSerieDetails">
+    {{serie.nome}}
+  </h1>
+</div>
 
 <p-dataView #dv [value]="stagioni" [rows]="20">
   <ng-template let-stagione pTemplate="listItem">
@@ -24,10 +26,16 @@
           <div class="ui-g-10 ui-sm-6"><b>{{stagione.numeroEpisodi}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{stagione.linguaAudio}}</b></div>
+          <div class="ui-g-10 ui-sm-6">
+            <img *ngFor="let lingua of stagione.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+          </div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{stagione.linguaSottotitoli ? stagione.linguaSottotitoli : '-'}}</b></div>
+          <div class="ui-g-10 ui-sm-6">
+            <img *ngFor="let linguaSub of stagione.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
+              title="{{linguaSub}}">
+            <span *ngIf="!stagione.linguaSottotitoli"> - </span>
+          </div>
 
           <div class="ui-g-2 ui-sm-6"></div>
           <div class="ui-g-10 ui-sm-6"><b></b></div>

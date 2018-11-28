@@ -1,6 +1,8 @@
-<h1 *ngIf="showFilmDetails">
-  Titolo film: {{films[0].nome}}
-</h1>
+<div style="text-align:center">
+  <h1 *ngIf="showFilmDetails">
+    {{films[0].nome}}
+  </h1>
+</div>
 
 <p-dataView #dv [value]="films" [rows]="20">
   <ng-template let-film pTemplate="listItem">
@@ -10,9 +12,6 @@
       </div>
       <div class="ui-g-12 ui-md-8">
         <div class="ui-g">
-          <div class="ui-g-2 ui-sm-6">Titolo: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{film.nome}}</b></div>
-
           <div class="ui-g-2 ui-sm-6">Anno: </div>
           <div class="ui-g-10 ui-sm-6"><b>{{film.anno}}</b></div>
 
@@ -20,10 +19,16 @@
           <div class="ui-g-10 ui-sm-6"><b>{{film.formato}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{film.linguaAudio}}</b></div>
+          <div class="ui-g-10 ui-sm-6">
+            <img *ngFor="let lingua of film.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+          </div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{film.linguaSottotitoli}}</b></div>
+          <div class="ui-g-10 ui-sm-6">
+            <img *ngFor="let linguaSub of film.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
+              title="{{linguaSub}}">
+            <span *ngIf="!film.linguaSottotitoli"> - </span>
+          </div>
 
           <div class="ui-g-2 ui-sm-6"></div>
           <div class="ui-g-10 ui-sm-6"><b></b></div>

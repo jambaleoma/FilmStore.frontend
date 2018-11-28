@@ -159,13 +159,23 @@
           <label>Lingua Audio:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="audio" name="audio" [(ngModel)]="singolaStagione.linguaAudio" style="width: 100%" />
+          <p-multiSelect name="audio" [options]="audios" [(ngModel)]="singolaStagione.linguaAudio" [panelStyle]="{minWidth:'12em'}">
+            <ng-template let-audio pTemplate="item">
+                <img src="assets/showcase/images/flags/{{audio.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
+                <div style="font-size:14px;float:right;margin-top:4px">{{audio.label}}</div>
+            </ng-template>
+        </p-multiSelect>
         </div>
         <div class="ui-g-3">
           <label>Lingua Sottotitoli:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="subtitle" name="subtitle" [(ngModel)]="singolaStagione.linguaSottotitoli" style="width: 100%" />
+          <p-multiSelect name="subtitle" [options]="audios" [(ngModel)]="singolaStagione.linguaSottotitoli" [panelStyle]="{minWidth:'12em'}" defaultLabel="-">
+            <ng-template let-subtitle pTemplate="item">
+                <img src="assets/showcase/images/flags/{{subtitle.value}}.png" style="width:24px;display:inline-block;vertical-align:middle"/>
+                <div style="font-size:14px;float:right;margin-top:4px">{{subtitle.label}}</div>
+            </ng-template>
+        </p-multiSelect>
         </div>
       </div>
       <div class="ui-g-12">
