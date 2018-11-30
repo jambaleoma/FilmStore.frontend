@@ -56,6 +56,9 @@ import { StagioneService } from './_api/services/stagione.service';
 import {InputMaskModule} from 'primeng/inputmask';
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
 import {ProgressBarModule} from 'primeng/progressbar';
+import {RatingModule} from 'primeng/rating';
+import {ToggleButtonModule} from 'primeng/togglebutton';
+import { VotoService } from './_api/services/voto.service';
 
 registerLocaleData(localeITCA);
 
@@ -78,6 +81,8 @@ registerLocaleData(localeITCA);
     CustomerProfileComponent
   ],
   imports: [
+    ToggleButtonModule,
+    RatingModule,
     ProgressBarModule,
     InputMaskModule,
     CarouselModule,
@@ -112,6 +117,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    VotoService,
     StagioneService,
     ApplicationService,
     ConfirmationService,

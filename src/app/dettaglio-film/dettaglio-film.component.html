@@ -10,17 +10,32 @@
       <div class="ui-g-12 ui-md-3" style="text-align:center">
         <img src="../../assets/showcase/images/film/{{films[0].urlLocandina}}.jpg" style="width: 70%;">
       </div>
-      <div class="ui-g-12 ui-md-8">
+      <div class="ui-g-12 ui-md-8" *ngIf="voto">
         <div class="ui-g">
           <div class="ui-g-2 ui-sm-6">Anno: </div>
-          <div class="ui-g-10 ui-sm-6"><b>{{film.anno}}</b></div>
+          <div class="ui-g-5 ui-sm-6"><b>{{film.anno}}</b></div>
+
+          <div class="ui-g-1.3 ui-sm-6" style="padding-right: 20px; padding-top: 2px;">Vota Film: </div>
+          <div class="ui-g-2.7 ui-sm-6">
+            <p-rating [(ngModel)]="voto.votazione" stars="10" [cancel]="false" (onRate)="upDateVoto()"></p-rating>
+          </div>
+          <div class="ui-g-1 ui-sm-6" style="padding-top: 2px;">{{voto.votazione}} / 10</div>
 
           <div class="ui-g-2 ui-sm-6">Formato: </div>
           <div class="ui-g-10 ui-sm-6"><b>{{film.formato}}</b></div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
-          <div class="ui-g-10 ui-sm-6">
+          <div class="ui-g-5 ui-sm-6">
             <img *ngFor="let lingua of film.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+          </div>
+
+          <div class="ui-g-2 ui-sm-6">
+            <p-toggleButton [(ngModel)]="voto.like" onLabel="" offLabel="" onIcon="fa fa-thumbs-o-up" offIcon="fa fa-thumbs-o-up"
+              [style]="{'width':'150px'}" (onChange)="likeFilm()"></p-toggleButton>
+          </div>
+          <div class="ui-g-3 ui-sm-6">
+            <p-toggleButton [(ngModel)]="dislike" onLabel="" offLabel="" onIcon="fa fa-thumbs-o-down" offIcon="fa fa-thumbs-o-down"
+              [style]="{'width':'150px'}" (onChange)="dislikeFilm()"></p-toggleButton>
           </div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
