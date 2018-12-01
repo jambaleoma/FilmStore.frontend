@@ -1,3 +1,5 @@
+import { Voto } from './../_api/models/voto';
+import { VotoService } from './../_api/services/voto.service';
 import { Stagione } from './../_api/models/stagione';
 import { FilmService } from './../_api/services/film.service';
 import { Component } from '@angular/core';
@@ -22,6 +24,10 @@ export class StatisticheComponent {
   films: Film[] = [];
 
   stagioni: Stagione[] = [];
+
+  voti: Voto[] = [];
+
+  cols: any[];
 
   dataPieRichieste: any;
 
@@ -70,10 +76,40 @@ export class StatisticheComponent {
     private customerService: CustomerService,
     private richiestaService: RichiestaService,
     private filmService: FilmService,
-    private stagioneService: StagioneService
+    private stagioneService: StagioneService,
+    private votoService: VotoService
   ) {
+
+    this.cols = [
+      { field: 'nomeFilm', header: 'Film' },
+      { field: 'firstNameCustomer', header: 'Nome Utente' },
+      { field: 'lastNameCustomer', header: 'Cognome Utente' },
+      { field: 'dataCreazioneVoto', header: 'Data Creazione Voto' },
+      {
+        field: 'votazione',
+        header: 'Voto',
+        renderer: (row: Voto) => {
+          if (row.votazione) {
+            return row.votazione + ' / 10';
+          }
+        }
+      },
+      {
+        field: 'like',
+        header: 'Gradimento',
+        renderer: (row: Voto) => {
+          if (row.like === true) {
+            return '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
+          } else if (row.like === false) {
+            return '<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+          }
+        }
+      }
+    ];
+
     this.getRichiesteForStatistics();
     this.subsrcibeToListOfRichieste();
+    this.subsrcibeToListOfVoti();
     this.subsrcibeToListOfCustomers();
     this.subsrcibeToListOfFilms();
     this.subsrcibeToListOfStagioni();
@@ -110,6 +146,12 @@ export class StatisticheComponent {
           this.loadChartStatoRichiestePolar();
         }
       }
+    });
+  }
+
+  subsrcibeToListOfVoti() {
+    this.votoService.getVoti().subscribe(notificationVoti => {
+      this.voti = notificationVoti.filter(voto => voto.votazione || voto.like);
     });
   }
 
@@ -190,9 +232,9 @@ export class StatisticheComponent {
       const dataPolarRichiesteData = [];
       const dataPolarRichiestebackgroundColor = [];
       for (const stato of this.statiRichiesta) {
-          dataPolarRichiesteLabel.push('STATO ' + stato);
-          dataPolarRichiesteData.push(this.stato2richieste.get(stato) ? this.stato2richieste.get(stato) : 0);
-          dataPolarRichiestebackgroundColor.push(this.getRandomColor());
+        dataPolarRichiesteLabel.push('STATO ' + stato);
+        dataPolarRichiesteData.push(this.stato2richieste.get(stato) ? this.stato2richieste.get(stato) : 0);
+        dataPolarRichiestebackgroundColor.push(this.getRandomColor());
       }
       this.dataPolarRichieste = {
         labels: dataPolarRichiesteLabel,

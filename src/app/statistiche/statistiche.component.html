@@ -38,6 +38,32 @@
   </div>
 </div>
 
+<div class="ui-g-12" style="padding-top: 2em;" align="center">
+  <h2>Voti Film</h2>
+  <p-table [columns]="cols" film-table [value]="voti" #vt>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-voto let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(voto) : voto[col.field]">
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="cols.length">
+          Nessun Voto Trovato
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
 <div style="text-align: center;">
   <h1>Serie TV</h1>
 </div>
