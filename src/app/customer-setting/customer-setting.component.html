@@ -1,10 +1,10 @@
 <p-growl [(value)]="msgs"></p-growl>
 
 
-<div *ngIf="showCustomerDetails" align="center">
+<div *ngIf="showCustomerDetails">
 
   <div class="ui-g-12">
-    <h1>
+    <h1 style="text-align: center">
       Utente: {{customer[0].firstName}} {{customer[0].lastName}}
     </h1>
 
@@ -47,31 +47,31 @@
             <div class="ui-g-2" *ngIf="normalUser"><b>Utente Base</b></div>
             <div class="ui-g-2" *ngIf="adminCheck"><b>Admin</b></div>
 
-            <div align="center" style="padding-top: 2em; padding-bottom: 2em" *ngIf="!showChangePassword">
+            <div style="text-align: center" *ngIf="!showChangePassword">
               <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
                 label="Modifca Password"></button>
             </div>
 
-            <div align="center" style="padding-top: 2em; padding-bottom: 2em" *ngIf="showChangePassword">
-              <button type="button" pButton class="ui-button-info" icon="fa fa-times" (click)="showChangePassword = false;"
+            <div style="text-align: center" *ngIf="showChangePassword">
+              <button type="button" pButton class="ui-button-danger" icon="fa fa-times" (click)="showChangePassword = false;"
                 label="Annulla Modifca"></button>
             </div>
           </div>
-          <div class="ui-g-12" *ngIf="showChangePassword" align="center">
+          <div class="ui-g-12" *ngIf="showChangePassword">
             <form name="form" #fRichieste="ngForm">
-              <div class="ui-g-4">
+              <div class="ui-g-4" style="text-align: center">
                   <div class="label">Password Attuale:</div>
-                <input pInputText id="psw" name="psw" type="password" [(ngModel)]="customerPassword" style="width: 65%" />
+                <input pInputText id="psw" name="psw" type="password" [(ngModel)]="customerPassword" style="width: 65%; align-self: center;" />
               </div>
-              <div class="ui-g-4">
+              <div class="ui-g-4" style="text-align: center">
                 <div class="label">Nuova Password:</div>
                 <input pInputText id="newPsw" name="newPsw" type="password" [(ngModel)]="newCustomerPassword" style="width: 65%" />
               </div>
-              <div class="ui-g-4">
+              <div class="ui-g-4" style="text-align: center">
                   <div class="label">Conferma Nuova Password:</div>
                 <input pInputText id="repeatedNewPsw" name="repeatedNewPsw" type="password" [(ngModel)]="repeatedNewCustomerPassword" style="width: 65%" />
               </div>
-              <div align="center" style="padding-top: 6em" *ngIf="showChangePassword">
+              <div style="padding-top: 6em; text-align: center" *ngIf="showChangePassword">
                 <button type="submit" [disabled]="!customerPassword || !newCustomerPassword || !repeatedNewCustomerPassword"
                   pButton class="ui-button-success" icon="fa fa-check" (click)="saveNewPassword()" label="Cambia Password"></button>
               </div>
@@ -85,12 +85,12 @@
   <p-confirmDialog #cd [width]="700">
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-3">
-          <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+        <div class="ui-g-3" style="text-align: right">
+          <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
         </div>
         <div class="ui-g-6"></div>
         <div class="ui-g-3">
-          <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+          <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
         </div>
       </div>
     </p-footer>

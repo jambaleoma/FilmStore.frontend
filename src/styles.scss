@@ -149,27 +149,17 @@ body.backImage {
   }
 }
 
-.ui-table table {
-  border-collapse: collapse;
-  width: auto !important;
-  table-layout: fixed;
-  text-align: center;
-}
-
-.ui-table-caption {
-  border-collapse: collapse;
-  width: max-content !important;
-  table-layout: fixed;
-}
-
-.ui-paginator {
-  width: max-content;
-}
-
-.ui-table-summary {
-  border-collapse: collapse;
-  width: max-content !important;
-  table-layout: fixed;
+[setting-table] {
+  .ui-table {
+    .ui-table-tbody {
+      tr {
+        td {
+          text-align: center;
+          color: black;
+        }
+      }
+    }
+  }
 }
 
 [sdc-multiselect] {

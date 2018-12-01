@@ -55,7 +55,7 @@
 <p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
   [width]="800" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
   <div class="ui-g" *ngIf="selectedStagione">
-    <div class="ui-g-12" align="center">
+    <div class="ui-g-12" style="text-align: center">
       <div class="ui-g-4">Titolo: </div>
       <div class="ui-g-8"><b>{{serie.nome}}</b></div>
 
@@ -68,11 +68,11 @@
     <div class="ui-g-4">
       <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{selectedStagione.urlLocandina}}.jpg" style="width: 100%;">
     </div>
-    <div class="ui-g-8" align="center">
+    <div class="ui-g-8" style="padding-left: 15%; padding-right: 15%">
       <p-table film-table [value]="selectedStagione.episodi" #ft>
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th style="width: 10px">
+            <th style="width: 19%">
               N°
             </th>
             <th>

@@ -2,20 +2,21 @@
 
 <div class="ui-grid-col-12" *ngIf="loggedCustomer && loggedCustomer.admin">
   <div class="ui-g">
-    <div class="ui-g-10" align="center" style="padding-left: 20em;">
-      <h1>Utenti</h1>
+    <div class="ui-g-2"></div>
+    <div class="ui-g-8">
+      <h1 style="text-align: center">Utenti</h1>
     </div>
-    <div class="ui-g-2">
+    <div class="ui-g-2" style="text-align: center">
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Utente" style="margin-top: 1em;"></button>
     </div>
   </div>
 </div>
 
-<div align="center" *ngIf="loggedCustomer && !loggedCustomer.admin">
-  <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
+<div *ngIf="loggedCustomer && !loggedCustomer.admin">
+  <h1 style="text-align: center" *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em;" align="center" *ngIf="loggedCustomer">
+<div class="ui-grid-col-12" style="padding-top: 2em;" style="padding-left: 20%; padding-right: 20%" *ngIf="loggedCustomer">
   <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -157,13 +158,13 @@
         <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword">
           <button type="button" pButton class="ui-button-info" icon="fa fa-times" (click)="annul()" label="Annulla Modifica"></button>
         </div>
-        <div class="ui-g-12" *ngIf="newCustomer" align="center">
+        <div class="ui-g-12" *ngIf="newCustomer" style="text-align: center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva Utente"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newCustomer && !showChangePassword && loggedCustomer.admin" align="right">
+        <div class="ui-g-6" *ngIf="!newCustomer && !showChangePassword && loggedCustomer.admin" style="text-align: right">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna Utente"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword" align="right">
+        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword" style="text-align: right">
           <button type="submit" [disabled]="!customerPassword || !newCustomerPassword || !repeatedNewCustomerPassword"
             pButton class="ui-button-success" icon="fa fa-check" (click)="save(true)" label="Cambia Password"></button>
         </div>
@@ -177,7 +178,7 @@
   <p-header>
     AH Ah Ah! you didn't say the magic word...
   </p-header>
-  <div align="center">
+  <div style="text-align: center">
     <img src="../../assets/showcase/images/applicationService/magicWord.gif">
   </div>
 </p-dialog>
@@ -185,12 +186,12 @@
 <p-confirmDialog #cd [width]="700">
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
       </div>
       <div class="ui-g-6"></div>
-      <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+      <div class="ui-g-3" style="text-align: left">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
       </div>
     </div>
   </p-footer>

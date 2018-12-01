@@ -1,10 +1,10 @@
 <p-growl [(value)]="msgs"></p-growl>
 
-<div align="center">
-  <h1>Richieste di {{nomeCustomer}} </h1>
+<div>
+  <h1 style="text-align: center">Richieste di {{nomeCustomer}} </h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 1em;" align="center" *ngIf="loggedCustomer">
+<div setting-table class="ui-grid-col-12" style="padding-left: 5%; padding-right: 5%; padding-top: 1em;" *ngIf="loggedCustomer">
   <p-table [columns]="cols" #rt [value]="richieste" selectionMode="single" [(selection)]="richiestaSelezionata"
     (onRowSelect)="onRowSelect($event)" [rows]="50">
     <ng-template pTemplate="header" let-columns>
@@ -34,7 +34,7 @@
       </tr>
     </ng-template>
   </p-table>
-  <div style="text-align:center" style="padding-top: 2em;">
+  <div style="text-align:center" style="padding-top: 2em; text-align: center">
     <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Richiesta"></button>
   </div>
 </div>
@@ -104,16 +104,14 @@
       </div>
     </div>
     <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="richiesta">
-        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')"
-          align="center">
+      <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="richiesta" style="text-align: center">
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')"
-          align="center">
+        <div class="ui-g-6" *ngIf="!newRichiesta && (richiesta.stato === 'IN LAVORAZIONE')">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
         </div>
-        <div class="ui-g-12" *ngIf="newRichiesta" align="center">
+        <div class="ui-g-12" *ngIf="newRichiesta">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
         </div>
       </div>
@@ -124,12 +122,12 @@
 <p-confirmDialog #cd>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
       </div>
       <div class="ui-g-6"></div>
       <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
       </div>
     </div>
   </p-footer>

@@ -1,12 +1,12 @@
-<div align="center">
-  <h1>Elenco Film</h1>
+<div>
+  <h1 style="text-align: center">Elenco Film</h1>
 </div>
 
 <!-- FILTRI DI RICERCA -->
-<div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
+<div class="ui-grid-col-12" style="padding-left: 5%; padding-right: 5%;">
   <div class="ui-g">
-    <div class="ui-g-3" align="right">
-      <div class="label" style="padding-right: 18%;"> Nome Film </div>
+    <div class="ui-g-3" style="padding-left: 0px">
+      <div class="label"> Nome Film </div>
       <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleMsg" (input)="ft.filter($event.target.value, 'nome', 'contains')">
     </div>
     <div class="ui-g-3">
@@ -14,18 +14,18 @@
       <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
         [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
     </div>
-    <div class="ui-g-3">
-      <div class="label">Anno Film dal {{yearFilter || 1996}} a Oggi </div>
-      <p-slider [style]="{'width':'80%','margin-top':'8px'}" [(ngModel)]="yearFilter" [min]="1996" [max]="2018"
+    <div class="ui-g-4">
+      <div class="label" style="text-align: center">Anno Film dal {{yearFilter || 1996}} a Oggi </div>
+      <p-slider [style]="{'width':'80%','margin-top':'14px','margin-left':'10%'}" [(ngModel)]="yearFilter" [min]="1996" [max]="2018"
         (onChange)="onYearChange($event, ft)"></p-slider>
     </div>
-    <div film-button-third class="ui-g-3 resetButton" align="center">
+    <div film-button-third class="ui-g-2 resetButton" style="text-align: right; padding-right: 0px;">
       <button pButton type="button" label="Reset Filtri" (click)="reset(ft)" style="margin-top: 14px;"></button>
     </div>
   </div>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 3em;" align="center">
+<div class="ui-grid-col-12" style="padding-left: 5%; padding-right: 5%; padding-top: 3em;">
   <p-table film-table [columns]="cols" [value]="films" #ft [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,25,50]">
     <ng-template pTemplate="colgroup" let-columns>
       <colgroup>
@@ -41,21 +41,21 @@
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
-        <th style="width: 7em">
+        <th style="width: 7%">
           Audio
         </th>
-        <th>
+        <th style="width: 7%">
           Sottotitoli
         </th>
-        <th style="width: 7em">
+        <th style="width: 7%">
           Dettagli
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
-        <td style="width: 15em">
-          <img src="assets/showcase/images/film/{{rowData.urlLocandina}}.jpg" style="width: 100%">
+        <td>
+          <img src="assets/showcase/images/film/{{rowData.urlLocandina}}.jpg" style="width: 80%">
         </td>
         <td *ngFor="let col of columns">
           {{rowData[col.field] ? rowData[col.field] : '-'}}
