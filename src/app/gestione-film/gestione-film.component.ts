@@ -48,7 +48,6 @@ export class GestioneFilmComponent implements OnInit {
     private renderer: Renderer2
   ) {
     this.formats = [
-      { label: '', value: '' },
       { label: '4K', value: '4K' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },

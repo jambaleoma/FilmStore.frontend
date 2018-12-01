@@ -97,7 +97,6 @@ export class GestioneSerieTvComponent implements OnInit {
       { field: 'numeroEpisodi', header: 'N° Episodi' },
       { field: 'formato', header: 'Formato' },
       { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' }
     ];
   }
