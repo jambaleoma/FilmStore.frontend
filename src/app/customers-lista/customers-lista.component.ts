@@ -76,8 +76,7 @@ export class CustomersListaComponent implements OnInit {
       { field: 'firstName', header: 'Nome' },
       { field: 'lastName', header: 'Cognome' },
       { field: 'sesso', header: 'Sesso' },
-      { field: 'dataDiNascita', header: 'Data di Nascita' },
-      { field: 'numeroRichieste', header: 'Richieste' }
+      { field: 'dataDiNascita', header: 'Data di Nascita' }
     ];
   }
 

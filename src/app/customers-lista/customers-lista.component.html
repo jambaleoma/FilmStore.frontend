@@ -16,15 +16,18 @@
   <h1 style="text-align: center" *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em;" style="padding-left: 20%; padding-right: 20%" *ngIf="loggedCustomer">
-  <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-left: 10%; padding-right: 10%" *ngIf="loggedCustomer">
+  <p-table [columns]="cols" film-table [value]="customers" #ct>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 250px;">
+        <th>
           Foto
         </th>
         <th *ngFor="let col of columns">
           {{col.header}}
+        </th>
+        <th style="width: 6em">
+          Richieste
         </th>
         <th style="width: 7em">
           Dettaglio Richieste
@@ -36,12 +39,14 @@
     </ng-template>
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
-        <td style="width: 250px;">
-          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="display:inline-block;margin:5px 0 0 5px"
-            width="200">
+        <td>
+          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;">
         </td>
         <td *ngFor="let col of columns">
           {{customer[col.field]}}
+        </td>
+        <td>
+          {{customer.numeroRichieste}}
         </td>
         <td>
           <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
