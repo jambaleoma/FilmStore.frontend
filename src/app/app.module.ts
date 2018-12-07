@@ -49,16 +49,19 @@ import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
-import {ChipsModule} from 'primeng/chips';
+import { ChipsModule } from 'primeng/chips';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
-import {CarouselModule} from 'primeng/carousel';
+import { CarouselModule } from 'primeng/carousel';
 import { StagioneService } from './_api/services/stagione.service';
-import {InputMaskModule} from 'primeng/inputmask';
+import { InputMaskModule } from 'primeng/inputmask';
 import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {RatingModule} from 'primeng/rating';
-import {ToggleButtonModule} from 'primeng/togglebutton';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { RatingModule } from 'primeng/rating';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { VotoService } from './_api/services/voto.service';
+import { CustomerRegistrationComponent } from './customer-registration/customer-registration.component';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
 
 registerLocaleData(localeITCA);
 
@@ -78,9 +81,12 @@ registerLocaleData(localeITCA);
     RichiesteUtenteComponent,
     DettaglioSerieTvComponent,
     CustomerSettingComponent,
-    CustomerProfileComponent
+    CustomerProfileComponent,
+    CustomerRegistrationComponent
   ],
   imports: [
+    InputTextModule,
+    PasswordModule,
     ToggleButtonModule,
     RatingModule,
     ProgressBarModule,

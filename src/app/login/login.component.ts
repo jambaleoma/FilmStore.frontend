@@ -68,6 +68,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  goToRegistration() {
+    this.router.navigate(['registration']);
+  }
+
   close() {
     this.psw = null;
     this.showDialog = false;
