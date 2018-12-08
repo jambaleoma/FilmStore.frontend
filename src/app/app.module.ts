@@ -16,7 +16,7 @@ import { ApiConfiguration } from './_api/api-configuration';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, NgControl, ControlContainer, ReactiveFormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
 import { MenubarModule } from 'primeng/menubar';
@@ -62,6 +62,8 @@ import { VotoService } from './_api/services/voto.service';
 import { CustomerRegistrationComponent } from './customer-registration/customer-registration.component';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { CaptchaModule } from 'primeng/captcha';
 
 registerLocaleData(localeITCA);
 
@@ -85,6 +87,8 @@ registerLocaleData(localeITCA);
     CustomerRegistrationComponent
   ],
   imports: [
+    CaptchaModule,
+    ReactiveFormsModule,
     InputTextModule,
     PasswordModule,
     ToggleButtonModule,
@@ -98,6 +102,7 @@ registerLocaleData(localeITCA);
     InputTextareaModule,
     GrowlModule,
     MessagesModule,
+    MessageModule,
     ConfirmDialogModule,
     ToastModule,
     SpinnerModule,
@@ -123,6 +128,7 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    FormBuilder,
     VotoService,
     StagioneService,
     ApplicationService,

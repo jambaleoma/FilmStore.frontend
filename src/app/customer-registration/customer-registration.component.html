@@ -1,3 +1,5 @@
+<p-growl [(value)]="msgs"></p-growl>
+
 <div class="ui-g">
   <div class="ui-g-12 ui-md-6 ui-md-offset-3 ui-lg-8 ui-lg-offset-2">
     <h1 class="registerTitle"> Registrazione Utente </h1>
@@ -7,67 +9,96 @@
   </div>
 </div>
 
-<div class="ui-g">
-  <div class="ui-g-12">
-    <p-panel header="Anagrafica Utente">
-      <div class="ui-g" style="padding-top: 1em;">
-        <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
-          <span class="ui-float-label">
-            <input id="float-input-firstName" type="text" size="20" [(ngModel)]="customer.firstName" pInputText>
-            <label for="float-input">Nome</label>
-          </span>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
-          <span class="ui-float-label">
-            <input id="float-input-lastName" type="text" size="20" [(ngModel)]="customer.lastName" pInputText>
-            <label for="float-input">Cognome</label>
-          </span>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px">
-          <span class="ui-float-label">
-            <p-inputMask id="float-input-dataDiNascita" mask="99/99/9999" [(ngModel)]="customer.dataDiNascita" slotChar="__/__/____"></p-inputMask>
-            <label for="float-input">Data di Nascita</label>
-          </span>
-        </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px; padding-bottom: 2em;">
-          <div class="ui-inputgroup">
-            <button type="button" class="maleButton" (click)='sessoCheck("MASCHIO")'><i class="fa fa-male fa-2x"
-                aria-hidden="true"></i></button>
-            <input id="float-input-sesso" style="text-align: center" type="text" size="12" pInputText [(ngModel)]="customer.sesso" placeholder="Sesso"
-              disabled="true">
-            <button type="button" class="femaleButton" (click)='sessoCheck("FEMMINA")'><i class="fa fa-female fa-2x"
-                aria-hidden="true"></i></button>
+<form [formGroup]="registrationForm" (ngSubmit)="registerCustomer()">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-panel header="Anagrafica Utente">
+        <div class="ui-g" style="padding-top: 1em;">
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="firstName" formControlName="firstname" type="text" size="20" [(ngModel)]="customer.firstName" required pInputText>
+              <label for="firstName">Nome</label>
+            </span>
+            <p-message severity="error" text="Nome Utente Obbligatorio" *ngIf="!registrationForm.controls['firstname'].valid&&registrationForm.controls['firstname'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="lastName" formControlName="lastName" name="lastName" type="text" size="20" [(ngModel)]="customer.lastName" required pInputText>
+              <label for="lastName">Cognome</label>
+            </span>
+            <p-message severity="error" text="Cognome Utente Obbligatorio" *ngIf="!registrationForm.controls['lastName'].valid&&registrationForm.controls['lastName'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px">
+            <span class="ui-float-label">
+              <p-inputMask id="dataDiNascita" formControlName="dataDiNascita" mask="99/99/9999" [(ngModel)]="customer.dataDiNascita" required="true"
+                slotChar="__/__/____"></p-inputMask>
+              <label for="dataDiNascita">Data di Nascita</label>
+            </span>
+            <p-message severity="error" text="Data di Nascita Obbligatoria" *ngIf="!registrationForm.controls['dataDiNascita'].valid&&registrationForm.controls['dataDiNascita'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px; padding-bottom: 2em;">
+            <div class="ui-inputgroup">
+              <button type="button" class="maleButton" (click)='sessoCheck("Maschio")'><i class="fa fa-male fa-2x"
+                  aria-hidden="true"></i></button>
+              <input id="sesso" name="sesso" style="text-align: center" type="text" size="12" pInputText [(ngModel)]="customer.sesso"
+                placeholder="Sesso" disabled="true" formControlName="sesso">
+              <button type="button" class="femaleButton" (click)='sessoCheck("Femmina")'><i class="fa fa-female fa-2x"
+                  aria-hidden="true"></i></button>
+            </div>
           </div>
         </div>
-      </div>
-    </p-panel>
+      </p-panel>
+    </div>
   </div>
-</div>
 
-<div class="ui-g">
-  <div class="ui-g-12" style="padding-top: 2em;">
-    <p-panel header="Credenziali Utente">
-      <div class="ui-g" style="padding-top: 1em;">
-        <div class="ui-g-12 ui-md-6 ui-lg-6" style="padding-left: 0px;">
-          <span class="ui-float-label">
-            <input id="float-input-password" promptLabel="Inserire una Password" weakLabel="semplice" mediumLabel="media" strongLabel="difficile"
-              pPassword type="password" [(ngModel)]="customer.password" />
-            <label for="float-input">Password</label>
-          </span>
+  <div class="ui-g">
+    <div class="ui-g-12" style="padding-top: 2em;">
+      <p-panel header="Credenziali Utente">
+        <div class="ui-g" style="padding-top: 1em;">
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="password" formControlName="password" promptLabel="Inserire una Password" weakLabel="semplice" mediumLabel="media"
+                strongLabel="difficile" pPassword type="password" required [(ngModel)]="customer.password" />
+              <label for="password">Password</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="repeatPassword" formControlName="repeatPassword" type="password" size="20" required [(ngModel)]="repeatPassword" pInputText>
+              <label for="repeatPassword">Ripeti Password</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6" style="padding-left: 0px; padding-bottom: 2em;">
+            <p-captcha siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" (onResponse)="showResponse($event)"></p-captcha>
+          </div>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6" style="padding-left: 0px; padding-bottom: 2em;">
-          <span class="ui-float-label">
-            <input id="float-input-repeatPassword" type="text" size="20" [(ngModel)]="repeatPassword" pInputText>
-            <label for="float-input">Ripeti Password</label>
-          </span>
-        </div>
-      </div>
-    </p-panel>
+      </p-panel>
+    </div>
   </div>
-</div>
+</form>
 
 <div class="ui-g">
   <div class="ui-g-12 ui-md-6 ui-md-offset-3 ui-lg-4 ui-lg-offset-4" style="text-align: center">
-    <button type="submit" pButton (click)="saveCustomer()" icon="fa fa-check" label="Salva Utente" [disabled]="disableSave"></button>
+    <button type="submit" pButton (click)="registerCustomer()" icon="fa fa-check" label="Salva" [disabled]="!registrationForm.valid"></button>
   </div>
 </div>
+
+<div style="text-align:center;margin-top:20px" *ngIf="submitted">
+  Form Submitted
+  <br>
+  {{diagnostic}}
+</div>
+
+<p-confirmDialog #cd [width]="700">
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3" style="text-align: left">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

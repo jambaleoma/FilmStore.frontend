@@ -2,6 +2,8 @@ import { Customer } from './../_api/models/customer';
 import { CustomerService } from './../_api/services/customer.service';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Message, ConfirmationService, SelectItem } from 'primeng/api';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-registration',
@@ -14,32 +16,89 @@ export class CustomerRegistrationComponent implements OnInit {
     value: null
   };
 
-  repeatPassword: string;
+  registrationForm: FormGroup;
 
-  sesso: string;
+  repeatPassword: string;
 
   disableSave = true;
 
+  msgs: Message[] = [];
+
+  submitted: boolean;
+
+  genders: SelectItem[];
+
+  description: string;
+
   constructor(
+    private formBuilder: FormBuilder,
     private renderer: Renderer2,
     private router: Router,
     private customerService: CustomerService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
+
     this.renderer.addClass(document.body, 'backImage');
+
+    this.registrationForm = this.formBuilder.group({
+      'firstname': new FormControl('', Validators.required),
+      'lastName': new FormControl('', Validators.required),
+      'dataDiNascita': new FormControl('', Validators.required),
+      'sesso': new FormControl('', Validators.required),
+      'password': new FormControl('', Validators.required),
+      'repeatPassword': new FormControl('', Validators.required)
+    });
+
+    this.genders = [];
+    this.genders.push({ label: 'Select Gender', value: '' });
+    this.genders.push({ label: 'Male', value: 'Male' });
+    this.genders.push({ label: 'Female', value: 'Female' });
   }
 
+  get diagnostic() { return JSON.stringify(this.registrationForm.value); }
+
   sessoCheck(s: string) {
-    this.sesso = s;
+    this.customer.sesso = s;
   }
 
   goToLogin() {
     this.router.navigate(['login']);
   }
 
-  saveCustomer() {
-    console.log(this.customer);
+  registerCustomer() {
+    this.saveCustomer();
+    this.submitted = true;
   }
 
+  showResponse(response) {
+    console.log(response);
+  }
+
+  saveCustomer() {
+    if (this.customer.password === this.repeatPassword) {
+      this.confirmationService.confirm({
+        message: 'Registrare l\'utente ' + this.customer.firstName + ' ' + this.customer.lastName + ' ?',
+        header: 'Registrazione Utente',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.customer.label = this.customer.firstName;
+          this.customer.value = this.customer.firstName;
+          this.customerService.addCustomer(this.customer).subscribe(response => {
+            if (response !== null) {
+              this.msgs = [{ severity: 'success', summary: 'Registrazione Completata', detail: 'Utente Registrato' }];
+              setTimeout(() => {
+                this.router.navigate(['login']);
+              }, 3000);
+            }
+          });
+        },
+        reject: () => {
+        }
+      });
+    } else {
+      this.msgs = [{ severity: 'warn', summary: 'Errore Password', detail: 'Attenzione le Password non corrispondono' }];
+    }
+  }
 }
