@@ -30,6 +30,8 @@ export class CustomerRegistrationComponent implements OnInit {
 
   description: string;
 
+  uploadedFiles: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private renderer: Renderer2,
@@ -47,8 +49,8 @@ export class CustomerRegistrationComponent implements OnInit {
       'lastName': new FormControl('', Validators.required),
       'dataDiNascita': new FormControl('', Validators.required),
       'sesso': new FormControl('', Validators.required),
-      'password': new FormControl('', Validators.required),
-      'repeatPassword': new FormControl('', Validators.required)
+      'password': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
+      'repeatPassword': new FormControl('', Validators.compose([Validators.required, Validators.minLength(6)])),
     });
 
     this.genders = [];
@@ -56,8 +58,6 @@ export class CustomerRegistrationComponent implements OnInit {
     this.genders.push({ label: 'Male', value: 'Male' });
     this.genders.push({ label: 'Female', value: 'Female' });
   }
-
-  get diagnostic() { return JSON.stringify(this.registrationForm.value); }
 
   sessoCheck(s: string) {
     this.customer.sesso = s;
@@ -72,14 +72,10 @@ export class CustomerRegistrationComponent implements OnInit {
     this.submitted = true;
   }
 
-  showResponse(response) {
-    console.log(response);
-  }
-
   saveCustomer() {
     if (this.customer.password === this.repeatPassword) {
       this.confirmationService.confirm({
-        message: 'Registrare l\'utente ' + this.customer.firstName + ' ' + this.customer.lastName + ' ?',
+        message: 'Sicuro di voler registrare l\'utente ' + this.customer.firstName + ' ' + this.customer.lastName + ' ?',
         header: 'Registrazione Utente',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
@@ -100,5 +96,12 @@ export class CustomerRegistrationComponent implements OnInit {
     } else {
       this.msgs = [{ severity: 'warn', summary: 'Errore Password', detail: 'Attenzione le Password non corrispondono' }];
     }
+  }
+
+  onUpload(event) {
+    console.log(event);
+    for (const file of event.files) {
+      this.uploadedFiles.push(file);
+  }
   }
 }

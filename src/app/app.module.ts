@@ -63,7 +63,7 @@ import { CustomerRegistrationComponent } from './customer-registration/customer-
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
-import { CaptchaModule } from 'primeng/captcha';
+import { FileUploadModule } from 'primeng/fileupload';
 
 registerLocaleData(localeITCA);
 
@@ -87,7 +87,7 @@ registerLocaleData(localeITCA);
     CustomerRegistrationComponent
   ],
   imports: [
-    CaptchaModule,
+    FileUploadModule,
     ReactiveFormsModule,
     InputTextModule,
     PasswordModule,
