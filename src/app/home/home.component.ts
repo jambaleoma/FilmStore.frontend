@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   newSerie: Serie[] = [];
   newSerieToPut: Serie[] = [];
   newSerieNumber = 3;
+  loadFooter = false;
 
   constructor(
     private filmSerive: FilmService,
@@ -46,10 +47,16 @@ export class HomeComponent implements OnInit {
             summary: 'Accesso Eseguito', detail: 'Bentornato ' + this.loggedCustomer.firstName
           });
           this.applicationService.setFalseShowWelcome();
-        } else {
+        } else if (this.loggedCustomer.sesso === 'Femmina') {
           this.messageService.add({
             key: 'homeTost', severity: 'success',
             summary: 'Accesso Eseguito', detail: 'Bentornata ' + this.loggedCustomer.firstName
+          });
+          this.applicationService.setFalseShowWelcome();
+        } else {
+          this.messageService.add({
+            key: 'homeTost', severity: 'success',
+            summary: 'Accesso Eseguito', detail: 'Salve ' + this.loggedCustomer.firstName
           });
           this.applicationService.setFalseShowWelcome();
         }
@@ -84,6 +91,7 @@ export class HomeComponent implements OnInit {
         }
       }
       this.newSerie = this.newSerieToPut;
+      this.loadFooter = true;
     });
   }
 
