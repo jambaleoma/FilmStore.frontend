@@ -262,4 +262,45 @@ private deleteCustomerResponse(id: string): Observable<HttpResponse<boolean>> {
   );
 }
 
+ /**
+ * @param id undefined
+ * @return Deleted status
+ */
+private logingCustomerResponse(params: Customer, psw: string): Observable<HttpResponse<Customer[]>> {
+  let __params = this.newParams();
+  let __headers = new HttpHeaders();
+  let __body: any = null;
+
+  __body = params;
+  let req = new HttpRequest<any>(
+    "POST",
+    this.rootUrl + `rest/customers/loginCustomer/`+ psw,
+    __body,
+    {
+      headers: __headers,
+      params: __params,
+      responseType: 'json'
+    });
+
+  return this.http.request<any>(req).pipe(
+    filter(_r => _r instanceof HttpResponse),
+    map(_r => {
+      let _resp = _r as HttpResponse<any>;
+      let _body: Customer[] = null;
+      _body = _resp.body as Customer[];
+      return _resp.clone({body: _body}) as HttpResponse<Customer[]>;
+    })
+  );
+}
+
+/**
+ * @param psw undefined
+ * @return Deleted status
+ */
+ logingCustomer(params: Customer, psw: string): Observable<Customer[]> {
+  return this.logingCustomerResponse(params, psw).pipe(
+    map(_r => _r.body)
+  );
+}
+
 }

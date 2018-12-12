@@ -42,7 +42,9 @@ export class RichiesteListComponent implements OnInit {
 
   customerOfRichiesta: Customer;
 
-  nomeCustomerLoggato: string;
+  loggedCustomer: Customer;
+
+  percenutaleAvanzamento: number;
 
   @ViewChild('rt') rt: Table;
 
@@ -53,10 +55,13 @@ export class RichiesteListComponent implements OnInit {
     private renderer: Renderer2
   ) {
 
-    this.nomeCustomerLoggato = sessionStorage.getItem('customerfirstName');
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+    });
 
     this.formats = [
       { label: '', value: '' },
+      { label: '4K', value: '4K' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },
       { label: 'DVD', value: 'DVD' }
@@ -66,7 +71,7 @@ export class RichiesteListComponent implements OnInit {
       { label: '', value: '' },
       { label: 'IN LAVORAZIONE', value: 'IN LAVORAZIONE' },
       { label: 'PRESA IN CARICO', value: 'PRESA IN CARICO' },
-      { label: 'ACCETTATA', value: 'ACCETTATA' },
+      { label: 'COMPLETATA', value: 'COMPLETATA' },
       { label: 'RIFIUTATA', value: 'RIFIUTATA' }
     ];
   }
@@ -105,24 +110,9 @@ export class RichiesteListComponent implements OnInit {
   subsrcibeToListOfCustomer() {
     this.customerService.getCustomers().subscribe(notification => {
       if (notification) {
-        this.listaRichiedenti = [
-          {
-            label: notification[0].firstName.toString(),
-            value: notification[0].firstName.toString()
-          },
-          {
-            label: notification[1].firstName.toString(),
-            value: notification[1].firstName.toString()
-          },
-          {
-            label: notification[2].firstName.toString(),
-            value: notification[2].firstName.toString()
-          },
-          {
-            label: notification[3].firstName.toString(),
-            value: notification[3].firstName.toString()
-          },
-        ];
+        for (const richiedente of notification) {
+          this.listaRichiedenti.push(richiedente);
+        }
       }
     });
   }
@@ -137,15 +127,8 @@ export class RichiesteListComponent implements OnInit {
     );
   }
 
-  adminMode() {
-    if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   onRowSelect(event) {
+    this.percenutaleAvanzamento = 0;
     this.newRichiesta = false;
     this.richiesta = this.cloneRichiesta(event.data);
     this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe(response => {
@@ -155,6 +138,27 @@ export class RichiesteListComponent implements OnInit {
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
+    switch (this.richiesta.stato) {
+      case 'IN LAVORAZIONE':
+        this.richiesta.avanzamento = 33;
+        break;
+      case 'PRESA IN CARICO':
+        this.richiesta.avanzamento = 66;
+        break;
+      case 'RIFIUTATA':
+        this.richiesta.avanzamento = 100;
+        break;
+      case 'COMPLETATA':
+        this.richiesta.avanzamento = 100;
+        break;
+    }
+    const interval = setInterval(() => {
+      this.percenutaleAvanzamento = this.percenutaleAvanzamento + Math.floor(Math.random() * 10) + 1;
+      if (this.percenutaleAvanzamento >= this.richiesta.avanzamento) {
+        this.percenutaleAvanzamento = this.richiesta.avanzamento;
+        clearInterval(interval);
+      }
+    }, 1);
   }
 
   cloneRichiesta(r: Richiesta): Richiesta {
@@ -167,11 +171,12 @@ export class RichiesteListComponent implements OnInit {
   }
 
   showDialogToAdd() {
+    this.percenutaleAvanzamento = 0;
     this.newRichiesta = true;
     this.richiesta = {
       id: null,
       dataInserimento: this.pipe.transform(new Date(), 'fullDate'),
-      nomeCliente: sessionStorage.getItem('customerfirstName')
+      nomeCliente: this.loggedCustomer.firstName
     };
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(response => {
       this.customerOfRichiesta = response;
@@ -180,12 +185,6 @@ export class RichiesteListComponent implements OnInit {
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
-  }
-
-  changeCustomer(event) {
-    this.customerService.getCustomerByName(event.value).subscribe(response => {
-      this.customerOfRichiesta = response;
-    });
   }
 
   save() {
@@ -202,7 +201,6 @@ export class RichiesteListComponent implements OnInit {
               this.richieste = response as Richiesta[];
               this.richiesta = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.customerOfRichiesta.numeroRichieste++;
               this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Richiesta Inserita' }];
@@ -217,12 +215,20 @@ export class RichiesteListComponent implements OnInit {
         header: 'Aggiornamento Richiesta',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
+          if (this.customerOfRichiesta.firstName !== this.richiesta.nomeCliente) {
+            this.customerOfRichiesta.numeroRichieste--;
+            this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
+            this.customerService.getCustomerByName(this.richiesta.nomeCliente).subscribe(notification => {
+              const customerToRemoveRequest = notification;
+              customerToRemoveRequest.numeroRichieste++;
+              this.customerService.updateCustomer(customerToRemoveRequest).subscribe();
+            });
+          }
           this.richiestaService.updateRichiesta(this.richiesta).subscribe(response => {
             if (response !== null) {
               this.richieste = response as Richiesta[];
               this.richiesta = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Richiesta Aggiornata' }];
             }
           });
@@ -244,7 +250,6 @@ export class RichiesteListComponent implements OnInit {
             this.richieste = this.richieste.filter((val, i) => i !== index);
             this.richiesta = null;
             this.displayDialog = false;
-            this.rt.reset();
             this.customerOfRichiesta.numeroRichieste--;
             this.customerService.updateCustomer(this.customerOfRichiesta).subscribe();
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Richiesta Eliminata' }];
@@ -272,14 +277,13 @@ export class RichiesteListComponent implements OnInit {
       case 'Rifiuta':
         richiesta.stato = 'RIFIUTATA';
         break;
-      case 'Accetta':
-        richiesta.stato = 'ACCETTATA';
+      case 'Completa':
+        richiesta.stato = 'COMPLETATA';
         break;
     }
     this.richiestaService.updateRichiesta(richiesta).subscribe(response => {
       if (response !== null) {
         this.richieste = response as Richiesta[];
-        this.rt.reset();
         this.msgs = [{ severity: 'success', summary: 'Gestione Completata', detail: 'Stato Richiesta: ' + richiesta.stato }];
       }
     });

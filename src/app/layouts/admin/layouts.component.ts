@@ -11,47 +11,57 @@ import { CustomerService } from '../../_api/services/customer.service';
 })
 export class LayoutsComponent implements OnInit {
 
-  customerLoggato: Customer;
+  loggedCustomer: Customer;
 
   items: MenuItem[];
 
   adminItems: MenuItem[];
 
+  itemsProfile: MenuItem[];
+
   logOutItems: MenuItem[];
-
-  showMenuItems = false;
-
-  adminMode = false;
 
   constructor(
     private router: Router,
     private customerService: CustomerService,
-  ) { }
+  ) {
+    this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
+      this.loggedCustomer = notification;
+      this.itemsProfile = [
+        {
+          label: 'Profilo Personale' , icon: 'fa fa-user', command: () => {
+            this.openUserProfile();
+          }
+        },
+        {
+          label: 'Impostazioni', icon: 'fa fa-cog', command: () => {
+            this.goToManageCustomer(this.loggedCustomer.firstName);
+          }
+        },
+        {
+          label: 'Logout', icon: 'fa fa-sign-out', command: () => {
+            this.logOut();
+          }
+        }
+      ];
+
+      this.items = [
+        { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
+        { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
+        { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
+        {
+          label: 'Richieste', icon: 'fa fa-clipboard',
+          routerLink: '/filmStore/richieste/view/' + this.loggedCustomer.firstName
+        }
+      ];
+    });
+  }
 
   ngOnInit() {
+    this.loadAdminMenuItems();
+  }
 
-    if (sessionStorage.getItem('customerfirstName') !== null) {
-      this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
-        this.customerLoggato = notification;
-      });
-    }
-
-    if (sessionStorage.getItem('customerfirstName') !== null) {
-      this.showMenuItems = true;
-    }
-
-    if (sessionStorage.getItem('customerfirstName') === 'Vincenzo') {
-      this.adminMode = true;
-    }
-
-    this.items = [
-      { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
-      { label: 'Ricerca SerieTV', icon: 'fa fa-television', routerLink: '/filmStore/ricercaSerieTV' },
-      { label: 'Ricerca Film', icon: 'fa fa-film', routerLink: '/filmStore/ricercaFilm' },
-      { label: 'Richieste', icon: 'fa fa-clipboard',
-       routerLink: '/filmStore/richieste/view/' + sessionStorage.getItem('customerfirstName') },
-      { label: 'Statistiche', icon: 'fa fa-pie-chart', routerLink: '/filmStore/statistiche' }
-    ];
+  loadAdminMenuItems() {
 
     this.adminItems = [
       { label: 'Home', icon: 'fa fa-home', routerLink: '/filmStore/home' },
@@ -75,11 +85,19 @@ export class LayoutsComponent implements OnInit {
 
   logOut() {
     sessionStorage.clear();
-    location.reload();
     this.router.navigate(['/login']);
   }
 
-  openUserProfile() {
+  openUsersProfile() {
     this.router.navigate(['/filmStore/utenti']);
   }
+
+  openUserProfile() {
+    this.router.navigate(['/filmStore/profiloUtente']);
+  }
+
+  goToManageCustomer(nomeCustomer: string) {
+    this.router.navigate(['/filmStore/gestioneUtente/view/' + nomeCustomer]);
+  }
+
 }

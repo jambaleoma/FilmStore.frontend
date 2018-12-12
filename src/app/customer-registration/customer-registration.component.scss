@@ -1,0 +1,50 @@
+.registerTitle {
+  text-align: center;
+  color: white;
+}
+
+.femaleButton {
+  background-color: pink;
+  border: 1px solid lightcoral;
+  width: 40px;
+
+  &:enabled:hover {
+    background-color: palevioletred;
+    border: 1px solid lightcoral;
+  }
+
+  &:active {
+    background-color: palevioletred;
+    border: 1px solid lightcoral;
+  }
+
+  &:focus {
+    background-color: palevioletred;
+    border: 1px solid lightcoral;
+  }
+}
+
+.maleButton {
+    background-color: #007fff;
+    border: 1px solid #0066cc;
+    width: 40px;
+  
+    &:enabled:hover {
+      background-color: #0052a3;
+      border: 1px solid #0066cc;
+    }
+  
+    &:active {
+      background-color: #0052a3;
+      border: 1px solid #0066cc;
+    }  
+}
+
+.ui-button-info {
+  background-color: transparent !important;
+  border-color: black !important;
+}
+
+:host .ui-password-meter {
+  width: 100%;
+}

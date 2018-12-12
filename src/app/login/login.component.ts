@@ -1,3 +1,4 @@
+import { ApplicationService } from './../_service/application.service';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
@@ -17,17 +18,16 @@ export class LoginComponent implements OnInit {
 
   selectedCustomer: string;
 
-  customer: Customer;
+  loggingCustomer: Customer;
 
   showDialog = false;
-
-  customerAutenticate: boolean;
 
   constructor(
     private router: Router,
     private customerService: CustomerService,
     private renderer: Renderer2,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private applicationService: ApplicationService
   ) {
     this.renderer.addClass(document.body, 'backImage');
   }
@@ -42,7 +42,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  showLoginDilog() {
+  showLoginDilog(selectedCustomer: string) {
+    this.psw = undefined;
+    this.customerService.getCustomerByName(selectedCustomer).subscribe(notification => {
+      this.loggingCustomer = notification;
+    });
     this.showDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#loginPassword').focus();
@@ -50,22 +54,22 @@ export class LoginComponent implements OnInit {
   }
 
   loginCustomer(password: string) {
-    for (let i = 0; i < this.customersItems.length; i++) {
-      if (this.customersItems[i].password === password) {
-        this.customerAutenticate = true;
-        sessionStorage.setItem('customerfirstName', this.customersItems[i].value);
-        sessionStorage.setItem('customerId', this.customersItems[i].id);
-        break;
-      } else {
-        this.customerAutenticate = false;
-      }
+    if (password) {
+      this.customerService.logingCustomer(this.loggingCustomer, password).subscribe(login => {
+        if (login) {
+          this.applicationService.firstLogin();
+          sessionStorage.setItem('customerfirstName', this.loggingCustomer.value);
+          sessionStorage.setItem('customerId', this.loggingCustomer.id);
+          this.router.navigate(['filmStore']);
+        } else {
+          this.messageService.add({ key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
+        }
+      });
     }
-    if (this.customerAutenticate) {
-      this.router.navigate(['filmStore']);
-      location.reload();
-    } else {
-      this.messageService.add({key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
-    }
+  }
+
+  goToRegistration() {
+    this.router.navigate(['registration']);
   }
 
   close() {

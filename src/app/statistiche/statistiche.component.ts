@@ -1,31 +1,39 @@
-import { Serie } from '../_api/models/serie';
-import { SerieService } from '../_api/services/serie.service';
+import { Voto } from './../_api/models/voto';
+import { VotoService } from './../_api/services/voto.service';
+import { Stagione } from './../_api/models/stagione';
 import { FilmService } from './../_api/services/film.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Customer } from '../_api/models/customer';
 import { Richiesta } from '../_api/models/richiesta';
 import { CustomerService } from '../_api/services/customer.service';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Film } from '../_api/models/film';
+import { StagioneService } from '../_api/services/stagione.service';
 
 @Component({
   selector: 'app-statistiche',
   templateUrl: './statistiche.component.html',
   styleUrls: ['./statistiche.component.scss']
 })
-export class StatisticheComponent implements OnInit {
+export class StatisticheComponent {
 
   customers: Customer[] = [];
 
-  richieste: Richiesta[];
+  richieste: Richiesta[] = [];
 
   films: Film[] = [];
 
-  serieTV: Serie[] = [];
+  stagioni: Stagione[] = [];
+
+  voti: Voto[] = [];
+
+  cols: any[];
 
   dataPieRichieste: any;
 
   dataLineRichieste: any;
+
+  dataPolarRichieste: any;
 
   dataLineFilm: any;
 
@@ -33,14 +41,12 @@ export class StatisticheComponent implements OnInit {
 
   dataBarSerieTV: any;
 
-  richiestaMese2017: number[] = [];
+  statiRichiesta: string[] = ['COMPLETATA', 'IN LAVORAZIONE', 'PRESA IN CARICO', 'RIFIUTATA'];
 
-  richiestaMese2018: number[] = [];
+  anniRichieste: string[] = [];
 
   mesiAnno: string[] = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno',
     'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
-
-  anni: string[] = ['2017', '2018'];
 
   formatiFilms: string[] = [];
 
@@ -54,7 +60,9 @@ export class StatisticheComponent implements OnInit {
 
   serieTVFormati: number[] = [];
 
-  anno2_mese2richieste: Map<string, Map<string, number>> = new Map;
+  stato2richieste: Map<string, number> = new Map;
+
+  anno2_mese2richieste: Map<string, number[]> = new Map;
 
   customer2richieste: Map<string, number> = new Map;
 
@@ -68,73 +76,130 @@ export class StatisticheComponent implements OnInit {
     private customerService: CustomerService,
     private richiestaService: RichiestaService,
     private filmService: FilmService,
-    private serieTVService: SerieService
-  ) { }
+    private stagioneService: StagioneService,
+    private votoService: VotoService
+  ) {
 
-  ngOnInit() {
-    this.getRichieste();
-    this.subsrcibeToListOfCustomers();
-    this.subsrcibeToListOfFilms();
-    this.subsrcibeToListOfSerieTVs();
-  }
-
-  getRichieste() {
-    const map2017 = new Map();
-    const map2018 = new Map();
-    for (const meseAnno of this.mesiAnno) {
-      this.anno2_mese2richieste.set(this.anni[0], map2017.set(meseAnno, 0));
-      this.anno2_mese2richieste.set(this.anni[1], map2018.set(meseAnno, 0));
-    }
-    this.richiestaService.getRichieste().subscribe(notification => {
-      this.richieste = notification;
-      for (const richiesta of this.richieste) {
-        const dataRichiesta = richiesta.dataInserimento.split(' ');
-        const anno = dataRichiesta[3];
-        const mese = dataRichiesta[2];
-        if (anno === this.anni[0]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2017.get(mese) + 1));
+    this.cols = [
+      { field: 'nomeFilm', header: 'Film' },
+      { field: 'firstNameCustomer', header: 'Nome Utente' },
+      { field: 'lastNameCustomer', header: 'Cognome Utente' },
+      { field: 'dataCreazioneVoto', header: 'Data Creazione Voto' },
+      {
+        field: 'votazione',
+        header: 'Voto',
+        renderer: (row: Voto) => {
+          if (row.votazione) {
+            return row.votazione + ' / 10';
+          } else {
+            return '-';
+          }
         }
-        if (anno === this.anni[1]) {
-          this.anno2_mese2richieste.set(anno, this.anno2_mese2richieste.get(anno).set(mese, map2018.get(mese) + 1));
+      },
+      {
+        field: 'like',
+        header: 'Gradimento',
+        renderer: (row: Voto) => {
+          if (row.like === true) {
+            return '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
+          } else if (row.like === false) {
+            return '<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+          } else {
+            return '-';
+          }
         }
       }
-      this.richiestaMese2017 = Array.from(this.anno2_mese2richieste.get(this.anni[0]).values());
-      this.richiestaMese2018 = Array.from(this.anno2_mese2richieste.get(this.anni[1]).values());
+    ];
+
+    this.getRichiesteForStatistics();
+    this.subsrcibeToListOfRichieste();
+    this.subsrcibeToListOfVoti();
+    this.subsrcibeToListOfCustomers();
+    this.subsrcibeToListOfFilms();
+    this.subsrcibeToListOfStagioni();
+  }
+
+  getRichiesteForStatistics() {
+    this.richiestaService.getRichiesteYearForStatistics().subscribe(notificationYear => {
+      if (notificationYear) {
+        this.anniRichieste = notificationYear;
+        for (const anno of this.anniRichieste) {
+          this.richiestaService.getRichiesteForStatistics(anno).subscribe(notification => {
+            if (notification) {
+              this.anno2_mese2richieste.set(anno, notification);
+            }
+            this.loadChartRichiestePerMeseLine();
+          });
+        }
+      }
+    });
+  }
+
+  subsrcibeToListOfRichieste() {
+    this.richiestaService.getRichieste().subscribe(notification => {
+      if (notification) {
+        this.richieste = notification;
+        if (this.richieste.length > 0) {
+          for (const richiesta of this.richieste) {
+            if (this.stato2richieste.has(richiesta.stato)) {
+              this.stato2richieste.set(richiesta.stato, this.stato2richieste.get(richiesta.stato) + 1);
+            } else {
+              this.stato2richieste.set(richiesta.stato, 1);
+            }
+          }
+          this.loadChartStatoRichiestePolar();
+        }
+      }
+    });
+  }
+
+  subsrcibeToListOfVoti() {
+    this.votoService.getVoti().subscribe(notificationVoti => {
+      this.voti = notificationVoti.filter(voto => voto.votazione || voto.like);
     });
   }
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      this.customers = notification;
-      if (this.customers.length > 0) {
-        for (let i = 0; i < this.customers.length; i++) {
-          this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+      if (notification) {
+        this.customers = notification;
+        if (this.customers.length > 0) {
+          for (let i = 0; i < this.customers.length; i++) {
+            this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+          }
+          this.loadChartCustomerRichiestePie();
         }
-        this.loadChartRichiestePerMeseLine();
-        this.loadChartCustomerRichiestePie();
       }
     });
   }
 
   loadChartRichiestePerMeseLine() {
-    if (this.customers.length > 0) {
+    if (this.anniRichieste.length > 0) {
+      const dataLineRichiesteLabel = [];
+      const dataLineRichiesteData = [];
+      const dataLineRichiestebackgroundColor = [];
+      for (const anno of this.anniRichieste) {
+        dataLineRichiesteLabel.push('Richieste nel ' + anno);
+        dataLineRichiesteData.push(this.anno2_mese2richieste.get(anno));
+        dataLineRichiestebackgroundColor.push(this.getRandomColor());
+      }
       this.dataLineRichieste = {
         labels: this.mesiAnno,
         datasets: [
           {
-            label: 'Richieste nel 2018',
-            data: this.richiestaMese2018,
+            label: dataLineRichiesteLabel[0],
+            data: dataLineRichiesteData[0],
             fill: false,
-            borderColor: '#008000',
-            backgroundColor: '#008000'
+            borderColor: dataLineRichiestebackgroundColor[0],
+            backgroundColor: dataLineRichiestebackgroundColor[0]
           },
           {
-            label: 'Richieste nel 2017',
-            data: this.richiestaMese2017,
+            label: dataLineRichiesteLabel[1],
+            data: dataLineRichiesteData[1],
             fill: false,
-            borderColor: '#0020C2',
-            backgroundColor: '#0020C2'
-          },
+            borderColor: dataLineRichiestebackgroundColor[1],
+            backgroundColor: dataLineRichiestebackgroundColor[1]
+          }
         ]
       };
     }
@@ -142,30 +207,47 @@ export class StatisticheComponent implements OnInit {
 
   loadChartCustomerRichiestePie() {
     if (this.customers.length > 0) {
+      const dataPieRichiesteLabels = [];
+      const dataPieRichiesteData = [];
+      const dataPieRichiestebackgroundColor = [];
+      for (const customer of this.customers) {
+        if (this.customer2richieste.get(customer.firstName) !== 0) {
+          dataPieRichiesteLabels.push('Richieste di ' + customer.firstName);
+          dataPieRichiesteData.push(this.customer2richieste.get(customer.firstName));
+          dataPieRichiestebackgroundColor.push(this.getRandomColor());
+        }
+      }
       this.dataPieRichieste = {
-        labels: [
-          'Richieste di ' + this.customers[0].firstName,
-          'Richieste di ' + this.customers[1].firstName,
-          'Richieste di ' + this.customers[2].firstName,
-          'Richieste di ' + this.customers[3].firstName
-        ],
+        labels: dataPieRichiesteLabels,
         datasets: [
           {
-            data: [this.customer2richieste.get(this.customers[0].firstName), this.customer2richieste.get(this.customers[1].firstName),
-            this.customer2richieste.get(this.customers[2].firstName), this.customer2richieste.get(this.customers[3].firstName)],
-            backgroundColor: [
-              '#f70236',
-              '#36A2EB',
-              '#FFCE56',
-              '#006400'
-            ],
-            hoverBackgroundColor: [
-              '#f70236',
-              '#36A2EB',
-              '#FFCE56',
-              '#006400'
-            ]
-          }]
+            data: dataPieRichiesteData,
+            backgroundColor: dataPieRichiestebackgroundColor,
+            hoverBackgroundColor: dataPieRichiestebackgroundColor
+          }
+        ]
+      };
+    }
+  }
+
+  loadChartStatoRichiestePolar() {
+    if (this.richieste.length > 0) {
+      const dataPolarRichiesteLabel = [];
+      const dataPolarRichiesteData = [];
+      const dataPolarRichiestebackgroundColor = [];
+      for (const stato of this.statiRichiesta) {
+        dataPolarRichiesteLabel.push('STATO ' + stato);
+        dataPolarRichiesteData.push(this.stato2richieste.get(stato) ? this.stato2richieste.get(stato) : 0);
+        dataPolarRichiestebackgroundColor.push(this.getRandomColor());
+      }
+      this.dataPolarRichieste = {
+        labels: dataPolarRichiesteLabel,
+        datasets: [
+          {
+            data: dataPolarRichiesteData,
+            backgroundColor: dataPolarRichiestebackgroundColor
+          }
+        ]
       };
     }
   }
@@ -201,23 +283,19 @@ export class StatisticheComponent implements OnInit {
 
   loadChartFilmsPerFormatoDoughnut() {
     if (this.films.length > 0) {
+      const dataDoughnutFilmLabels = [];
+      const dataDoughnutFilmbackgroundColor = [];
+      for (const formato of this.formatiFilms) {
+        dataDoughnutFilmLabels.push('Film in Formato ' + formato);
+        dataDoughnutFilmbackgroundColor.push(this.getRandomColor());
+      }
       this.dataDoughnutFilm = {
-        labels: ['Film in Formato ' + this.formatiFilms[0],
-        'Film in Formato ' + this.formatiFilms[1],
-        'Film in Formato ' + this.formatiFilms[2]],
+        labels: dataDoughnutFilmLabels,
         datasets: [
           {
             data: this.filmsFormati,
-            backgroundColor: [
-              '#006000',
-              '#E10000',
-              '#0020C2'
-            ],
-            hoverBackgroundColor: [
-              '#006000',
-              '#E10000',
-              '#0020C2'
-            ]
+            backgroundColor: dataDoughnutFilmbackgroundColor,
+            hoverBackgroundColor: dataDoughnutFilmbackgroundColor
           }]
       };
     }
@@ -225,6 +303,7 @@ export class StatisticheComponent implements OnInit {
 
   loadChartFilmsPerAnnoLine() {
     if (this.films.length > 0) {
+      const dataLineRichiestebackgroundColor = this.getRandomColor();
       this.dataLineFilm = {
         labels: this.anniFilms,
         datasets: [
@@ -232,22 +311,22 @@ export class StatisticheComponent implements OnInit {
             label: 'Film per Anno',
             data: this.filmsAnni,
             fill: false,
-            borderColor: '#36A2EB',
-            backgroundColor: '#36A2EB'
+            backgroundColor: dataLineRichiestebackgroundColor,
+            borderColor: dataLineRichiestebackgroundColor
           }
         ]
       };
     }
   }
 
-  subsrcibeToListOfSerieTVs() {
-    this.serieTVService.getSerieTVs().subscribe(notification => {
-      this.serieTV = notification;
-      for (const serietv of this.serieTV) {
-        if (this.formato2serieTV.has(serietv.formato)) {
-          this.formato2serieTV.set(serietv.formato, this.formato2serieTV.get(serietv.formato) + 1);
+  subsrcibeToListOfStagioni() {
+    this.stagioneService.getStagioni().subscribe(notification => {
+      this.stagioni = notification;
+      for (const stagione of this.stagioni) {
+        if (this.formato2serieTV.has(stagione.formato)) {
+          this.formato2serieTV.set(stagione.formato, this.formato2serieTV.get(stagione.formato) + 1);
         } else {
-          this.formato2serieTV.set(serietv.formato, 1);
+          this.formato2serieTV.set(stagione.formato, 1);
         }
       }
       this.formatiSerieTV = Array.from(this.formato2serieTV.keys());
@@ -257,25 +336,38 @@ export class StatisticheComponent implements OnInit {
   }
 
   loadChartFormatiSerieTVBar() {
-    if (this.serieTV.length > 0) {
+    if (this.stagioni.length > 0) {
+      const dataBarRichiestebackgroundColor = [];
+      for (const formato of this.formatiSerieTV) {
+        dataBarRichiestebackgroundColor.push(this.getRandomColor());
+      }
       this.dataBarSerieTV = {
-        labels: ['Formati Serie TV'],
+        labels: ['Formato Stagione'],
         datasets: [
           {
             label: this.formatiSerieTV[0],
-            backgroundColor: '#006000',
-            borderColor: '#006000',
+            backgroundColor: dataBarRichiestebackgroundColor[0],
+            borderColor: dataBarRichiestebackgroundColor[0],
             data: [this.serieTVFormati[0], 0]
           },
           {
             label: this.formatiSerieTV[1],
-            backgroundColor: '#E10000',
-            borderColor: '#E10000',
+            backgroundColor: dataBarRichiestebackgroundColor[1],
+            borderColor: dataBarRichiestebackgroundColor[1],
             data: [this.serieTVFormati[1], 0]
           }
         ]
       };
     }
+  }
+
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
 }

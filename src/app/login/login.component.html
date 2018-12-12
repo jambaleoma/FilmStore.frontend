@@ -1,5 +1,9 @@
-<div class="ui-grid-col-12" style="padding-top: 3em; padding-bottom: 2em;" align="center">
-  <p-listbox [options]="customersItems" [(ngModel)]="selectedCustomer" (onDblClick)="showLoginDilog()" [style]="{'width':'25%'}"
+<div class="registerNow" style="text-align: right">
+  <button type="submit" pButton class="ui-button-info" (click)="goToRegistration()" label="Registrati Ora!"></button>
+</div>
+
+<div class="ui-grid-col-12" style="padding-bottom: 2em;" align="center">
+  <p-listbox [options]="customersItems" [(ngModel)]="selectedCustomer" (onDblClick)="showLoginDilog(selectedCustomer)" [style]="{'width':'25%'}"
     [listStyle]="{'min-height':'25%'}">
     <p-header style="padding-top: 2em">
       Esegui Accesso Come: {{selectedCustomer||''}}
@@ -14,8 +18,11 @@
   </p-listbox>
 </div>
 
-<p-dialog header="Login Utente" [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
+<p-dialog [(visible)]="showDialog" closable="true" [responsive]="true" [modal]="true" [width]="500"
   [height]="450">
+  <p-header>
+    Login Utente: {{selectedCustomer}}
+  </p-header>
   <p-toast [style]="{marginTop: '80px'}" styleClass="error-toast" key="KO"></p-toast>
   <form name="form" #flogin="ngForm">
     <div class="ui-g ui-fluid" *ngIf="selectedCustomer" style="padding-bottom: 5em; padding-top: 3em">
@@ -30,10 +37,10 @@
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-6" align="left">
+        <div class="ui-g-6">
           <button type="button" pButton (click)="close()" label="Annulla"></button>
         </div>
-        <div class="ui-g-6" align="right">
+        <div class="ui-g-6" style="text-align: right">
           <button type="submit" pButton class="ui-button-success" (click)="loginCustomer(psw)" label="Login"></button>
         </div>
       </div>

@@ -1,8 +1,10 @@
+import { ApplicationService } from './../_service/application.service';
 import { Film } from './../_api/models/film';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
 import { SelectItem, Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { FilmService } from '../_api/services/film.service';
+import { ListItem } from '../_api/models';
 
 @Component({
   selector: 'app-gestione-film',
@@ -35,16 +37,18 @@ export class GestioneFilmComponent implements OnInit {
 
   displayDialog: boolean;
 
+  audios: ListItem[] = [];
+
   @ViewChild('rt') rt: Table;
 
   constructor(
+    private applicationService: ApplicationService,
     private confirmationService: ConfirmationService,
     private filmService: FilmService,
     private renderer: Renderer2
   ) {
-
     this.formats = [
-      { label: '', value: '' },
+      { label: '4K', value: '4K' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },
       { label: 'DVD', value: 'DVD' }
@@ -52,17 +56,24 @@ export class GestioneFilmComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.subscribeToListOfCountry();
     this.subsrcibeToListOfFilm();
     this.getCols();
+  }
+
+  subscribeToListOfCountry() {
+    this.applicationService.countriesObservable.subscribe(notification => {
+      this.audios = notification;
+    });
   }
 
   getCols() {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
-      { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
       { field: 'anno', header: 'Anno' },
-      { field: 'formato', header: 'Formato' }
+      { field: 'formato', header: 'Formato' },
+      { field: 'linguaAudio', header: 'Audio' },
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' }
     ];
   }
 
@@ -116,7 +127,6 @@ export class GestioneFilmComponent implements OnInit {
               this.films = response as Film[];
               this.film = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Inserimento Completato', detail: 'Film Inserito' }];
             }
           });
@@ -135,7 +145,6 @@ export class GestioneFilmComponent implements OnInit {
               this.films = response as Film[];
               this.film = null;
               this.displayDialog = false;
-              this.rt.reset();
               this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Film Aggiornato' }];
             }
           });
@@ -157,7 +166,6 @@ export class GestioneFilmComponent implements OnInit {
             this.films = this.films.filter((val, i) => i !== index);
             this.film = null;
             this.displayDialog = false;
-            this.rt.reset();
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
           }
         });
@@ -184,6 +192,25 @@ export class GestioneFilmComponent implements OnInit {
     rt.reset();
     this.filters = {};
     this.yearFilter = null;
+  }
+
+  deleteAudio(film: Film) {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare l\'Audio di questo Film?',
+      header: 'Eliminazione Film',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.filmService.deleteAudioFilm(film._id).subscribe(response => {
+          if (response !== null) {
+            this.films = response as Film[];
+            this.film = null;
+            this.displayDialog = false;
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Audio Film Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
 }

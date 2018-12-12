@@ -5,5 +5,6 @@ export interface Richiesta {
     dataInserimento?: string;
     nomeCliente?: string;
     stato?: string;
+    avanzamento?: number;
     note?: string;
 }

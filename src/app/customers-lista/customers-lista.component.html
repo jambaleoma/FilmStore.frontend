@@ -1,58 +1,64 @@
 <p-growl [(value)]="msgs"></p-growl>
 
-<div class="ui-grid-col-12" *ngIf="adminMode">
+<div class="ui-grid-col-12" *ngIf="loggedCustomer && loggedCustomer.admin">
   <div class="ui-g">
-    <div class="ui-g-12" align="center" style="margin-bottom: -100%">
-      <h1>Utenti</h1>
+    <div class="ui-g-2"></div>
+    <div class="ui-g-8">
+      <h1 style="text-align: center">Utenti</h1>
     </div>
-    <div class="ui-g-12" align="right">
+    <div class="ui-g-2" style="text-align: center">
       <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="Aggiungi Utente" style="margin-top: 1em;"></button>
     </div>
   </div>
 </div>
 
-<div align="center" *ngIf="!adminMode">
-  <h1 *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
+<div *ngIf="loggedCustomer && !loggedCustomer.admin">
+  <h1 style="text-align: center" *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
 </div>
 
-<div class="ui-grid-col-12" style="padding-top: 2em;" align="center">
-  <p-table [columns]="cols" film-table [value]="customers" #ct [globalFilterFields]="['_id','title','text']">
+<div class="ui-grid-col-12" style="padding-top: 2em; padding-left: 10%; padding-right: 10%" *ngIf="loggedCustomer">
+  <p-table [columns]="cols" film-table [value]="customers" #ct>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 250px;">
+        <th>
           Foto
         </th>
         <th *ngFor="let col of columns">
           {{col.header}}
         </th>
-        <th style="width: 7em">
+        <th style="width: 7%">
+          Richieste
+        </th>
+        <th style="width: 7%">
           Dettaglio Richieste
         </th>
-        <th style="width: 7em" *ngIf="adminMode">
+        <th style="width: 7%" *ngIf="loggedCustomer.admin">
           Gestione Utente
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
-        <td style="width: 250px;">
-          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="display:inline-block;margin:5px 0 0 5px"
-            width="200">
+        <td>
+          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;">
         </td>
         <td *ngFor="let col of columns">
           {{customer[col.field]}}
         </td>
         <td>
-          <p-button icon="fa fa-search" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
+          {{customer.numeroRichieste}}
         </td>
-        <td *ngIf="adminMode">
-          <p-button icon="fa fa-wrench" (onClick)="manageUser(customer)"></p-button>
+        <td>
+          <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
+        </td>
+        <td *ngIf="loggedCustomer.admin">
+          <p-button icon="fa fa-cog" title="Opzioni Utente" (onClick)="manageUser(customer)"></p-button>
         </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td [attr.colspan]="cols.length+1">
+        <td [attr.colspan]="cols.length+2">
           Nessun Utente Trovato
         </td>
       </tr>
@@ -60,22 +66,41 @@
   </p-table>
 </div>
 
-<p-dialog header="Dettaglio Utente" [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true"
-  [width]="900" [height]="550">
+<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="900" [positionTop]="250">
+  <p-header>
+    Dettaglio Utente
+  </p-header>
   <form name="form" #fRichieste="ngForm">
-    <div class="ui-g ui-fluid" style="padding-bottom: 2em" *ngIf="customer">
+    <div class="ui-g ui-fluid" style="padding-bottom: 2em" *ngIf="loggedCustomer && customer">
       <div class="ui-g-12">
         <div class="ui-g-3">
           <label>Nome:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="nome" name="nome" [(ngModel)]="customer.firstName" style="width: 100%" />
+          <input pInputText [disabled]="!loggedCustomer.admin" id="nome" name="nome" [(ngModel)]="customer.firstName"
+            style="width: 100%" />
         </div>
         <div class="ui-g-3">
           <label>Cognome:</label>
         </div>
         <div class="ui-g-3">
-          <input pInputText id="cognome" name="cognome" [(ngModel)]="customer.lastName" style="width: 100%" />
+          <input pInputText [disabled]="!loggedCustomer.admin" id="cognome" name="cognome" [(ngModel)]="customer.lastName"
+            style="width: 100%" />
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Sesso:</label>
+        </div>
+        <div class="ui-g-3">
+          <p-dropdown id="sesso" name="sesso" [options]="sessi" [(ngModel)]="customer.sesso"></p-dropdown>
+        </div>
+        <div class="ui-g-3">
+          <label>Data di Nascita:</label>
+        </div>
+        <div class="ui-g-3">
+          <p-inputMask id="dataDiNascita" name="dataDiNascita" mask="99/99/9999" [(ngModel)]="customer.dataDiNascita"
+            slotChar="gg/mm/aaaa"></p-inputMask>
         </div>
       </div>
       <div class="ui-g-12">
@@ -83,49 +108,95 @@
           <label>N. Richieste:</label>
         </div>
         <div class="ui-g-3" *ngIf="!newCustomer">
-          <p-spinner size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste" [max]="100" [min]="0"
-            [step]="1" style="width: 100%"></p-spinner>
+          <p-spinner [disabled]="!loggedCustomer.admin" size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste"
+            [max]="100" [min]="0" [step]="1" style="width: 100%"></p-spinner>
         </div>
-        <div class="ui-g-2" *ngIf="!newCustomer">
+        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && !loggedCustomer.admin">
           <label></label>
         </div>
-        <div class="ui-g-4" *ngIf="!newCustomer">
-          <button type="button" pButton class="ui-button-danger" icon="fa fa-eraser" (click)="resetPassword(customer)"
-            label="Resetta Password"></button>
+        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword">
+          <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
+            label="Modifca Password" style="font-size: 15px !important; height: 40px;"></button>
         </div>
-        <div class="ui-g-3" *ngIf="newCustomer">
-          <label>Password:</label>
+        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && customer.admin && loggedCustomer.admin">
+          <button type="button" pButton class="ui-button-warning" icon="fa fa-unlock" (click)="changeCustomerRole(customer, false)"
+            label="Rimuovi Admin" style="font-size: 15px !important; height: 40px;"></button>
         </div>
-        <div class="ui-g-9" *ngIf="newCustomer">
-          <input pInputText id="psw" name="psw" [(ngModel)]="customer.password" style="width: 100%" />
+        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && !customer.admin && loggedCustomer.admin">
+          <button type="button" pButton class="ui-button-warning" icon="fa fa-lock" (click)="changeCustomerRole(customer, true)"
+            label="Assegna Admin" style="font-size: 15px !important; height: 40px;"></button>
+        </div>
+        <div class="ui-g-12" *ngIf="showChangePassword">
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Password Attuale:</label>
+          </div>
+          <div class="ui-g-9" *ngIf="!newCustomer">
+            <input pInputText id="psw" name="psw" type="password" [(ngModel)]="customerPassword" style="width: 100%" />
+          </div>
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Nuova Password:</label>
+          </div>
+          <div class="ui-g-3" *ngIf="newCustomer">
+            <label>Password:</label>
+          </div>
+          <div class="ui-g-9">
+            <input pInputText id="newPsw" name="newPsw" type="password" [(ngModel)]="newCustomerPassword" style="width: 100%" />
+          </div>
+          <div class="ui-g-3" *ngIf="!newCustomer">
+            <label>Conferma Nuova Password:</label>
+          </div>
+          <div class="ui-g-3" *ngIf="newCustomer">
+            <label>Conferma Password:</label>
+          </div>
+          <div class="ui-g-9">
+            <input pInputText id="repeatedNewPsw" name="repeatedNewPsw" type="password" [(ngModel)]="repeatedNewCustomerPassword"
+              style="width: 100%" />
+          </div>
         </div>
       </div>
     </div>
     <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <div class="ui-g-6" *ngIf="!newCustomer" align="center">
-          <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina"></button>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="loggedCustomer">
+        <div class="ui-g-6" *ngIf="!newCustomer && loggedCustomer.admin && !showChangePassword">
+          <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina Utente"></button>
         </div>
-        <div class="ui-g-12" *ngIf="newCustomer" align="center">
-          <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva"></button>
+        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword">
+          <button type="button" pButton class="ui-button-info" icon="fa fa-times" (click)="annul()" label="Annulla Modifica"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newCustomer" align="center">
-          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna"></button>
+        <div class="ui-g-12" *ngIf="newCustomer" style="text-align: center">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva Utente"></button>
+        </div>
+        <div class="ui-g-6" *ngIf="!newCustomer && !showChangePassword && loggedCustomer.admin" style="text-align: right">
+          <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna Utente"></button>
+        </div>
+        <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword" style="text-align: right">
+          <button type="submit" [disabled]="!customerPassword || !newCustomerPassword || !repeatedNewCustomerPassword"
+            pButton class="ui-button-success" icon="fa fa-check" (click)="save(true)" label="Cambia Password"></button>
         </div>
       </div>
     </p-footer>
   </form>
 </p-dialog>
 
-<p-confirmDialog #cd>
+<p-dialog [(visible)]="showYDSTMW" [responsive]="true" [modal]="true" [width]="600" [height]="900" [positionTop]="250"
+  [closable]="false">
+  <p-header>
+    AH Ah Ah! you didn't say the magic word...
+  </p-header>
+  <div style="text-align: center">
+    <img src="../../assets/showcase/images/applicationService/magicWord.gif">
+  </div>
+</p-dialog>
+
+<p-confirmDialog #cd [width]="700">
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()" align="right"></button>
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
       </div>
       <div class="ui-g-6"></div>
-      <div class="ui-g-3">
-        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()" align="left"></button>
+      <div class="ui-g-3" style="text-align: left">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
       </div>
     </div>
   </p-footer>

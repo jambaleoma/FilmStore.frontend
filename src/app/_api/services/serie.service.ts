@@ -147,7 +147,7 @@ export class SerieService extends BaseService {
         __body = params;
         let req = new HttpRequest<any>(
             "PUT",
-            this.rootUrl + 'rest/serie/upDateSerieById/' + params._id,
+            this.rootUrl + 'rest/serie/upDateSerieById/' + params.serie_id,
             __body,
             {
                 headers: __headers,

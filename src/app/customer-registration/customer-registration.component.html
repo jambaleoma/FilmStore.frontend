@@ -1,0 +1,110 @@
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-md-offset-3 ui-lg-8 ui-lg-offset-2">
+    <h1 class="registerTitle"> Registrazione Utente </h1>
+  </div>
+  <div class="ui-g-12 ui-md-3 ui-lg-2" style="text-align: right">
+    <button type="submit" pButton class="ui-button-info" (click)="goToLogin()" label="Torna alla Login"></button>
+  </div>
+</div>
+
+<form [formGroup]="registrationForm" (ngSubmit)="registerCustomer()">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <p-panel header="Anagrafica Utente">
+        <div class="ui-g" style="padding-top: 1em;">
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="firstName" formControlName="firstname" type="text" size="20" [(ngModel)]="customer.firstName"
+                required pInputText>
+              <label for="firstName">Nome</label>
+            </span>
+            <p-message severity="error" text="Nome Utente Obbligatorio" *ngIf="!registrationForm.controls['firstname'].valid&&registrationForm.controls['firstname'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="lastName" formControlName="lastName" name="lastName" type="text" size="20" [(ngModel)]="customer.lastName"
+                required pInputText>
+              <label for="lastName">Cognome</label>
+            </span>
+            <p-message severity="error" text="Cognome Utente Obbligatorio" *ngIf="!registrationForm.controls['lastName'].valid&&registrationForm.controls['lastName'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px">
+            <span class="ui-float-label">
+              <p-inputMask id="dataDiNascita" formControlName="dataDiNascita" mask="99/99/9999" [(ngModel)]="customer.dataDiNascita"
+                required="true" slotChar="__/__/____"></p-inputMask>
+              <label for="dataDiNascita">Data di Nascita</label>
+            </span>
+            <p-message severity="error" text="Data di Nascita Obbligatoria" *ngIf="!registrationForm.controls['dataDiNascita'].valid&&registrationForm.controls['dataDiNascita'].dirty"></p-message>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px; padding-bottom: 2em;">
+            <div class="ui-inputgroup">
+              <button type="button" class="maleButton" (click)='sessoCheck("Maschio")'><i class="fa fa-male fa-2x"
+                  aria-hidden="true"></i></button>
+              <input id="sesso" name="sesso" style="text-align: center" type="text" size="12" pInputText [(ngModel)]="customer.sesso"
+                placeholder="Sesso" formControlName="sesso" readonly>
+              <button type="button" class="femaleButton" (click)='sessoCheck("Femmina")'><i class="fa fa-female fa-2x"
+                  aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12" style="padding-top: 2em;">
+      <p-panel header="Credenziali Utente">
+        <div class="ui-g" style="padding-top: 1em;">
+          <div class="ui-g-12 ui-md-6 ui-lg-6" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="password" formControlName="password" promptLabel="Inserire una Password" weakLabel="semplice"
+                mediumLabel="media" strongLabel="difficile" pPassword type="password" required [(ngModel)]="customer.password" />
+              <label for="password">Password</label>
+              <p-message severity="error" [text]="registrationForm.controls['password'].errors['required'] ?
+            'Password Obbligatioria' : registrationForm.controls['password'].errors['minlength'] ? 'Password Lunga almeno 6 Caratteri ' : ''"
+                *ngIf="!registrationForm.controls['password'].valid&&registrationForm.controls['password'].dirty"></p-message>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <span class="ui-float-label">
+              <input id="repeatPassword" formControlName="repeatPassword" type="password" size="20" required
+                [(ngModel)]="repeatPassword" pInputText>
+              <label for="repeatPassword">Ripeti Password</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
+            <p-fileUpload name="demo[]" mode="basic" url="http://localhost:8080/rest/customers/saveCustomerImage" (uploadHandler)="onUpload($event)" accept="image/*" maxFileSize="1000000">
+              <ng-template pTemplate="content">
+                <ul *ngIf="uploadedFiles.length">
+                  <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                </ul>
+              </ng-template>
+            </p-fileUpload>
+          </div>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</form>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-md-offset-3 ui-lg-4 ui-lg-offset-4" style="text-align: center">
+    <button type="submit" pButton (click)="registerCustomer()" icon="fa fa-check" label="Salva" [disabled]="!registrationForm.valid"></button>
+  </div>
+</div>
+
+<p-confirmDialog #cd [width]="700">
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3" style="text-align: left">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

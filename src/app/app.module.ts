@@ -1,3 +1,4 @@
+import { ApplicationService } from './_service/application.service';
 import { RichiestaService } from './_api/services/richiesta.service';
 import { CustomerService } from './_api/services/customer.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,7 +16,7 @@ import { ApiConfiguration } from './_api/api-configuration';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PanelMenuModule } from 'primeng/components/panelmenu/panelmenu';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, NgControl, ControlContainer, ReactiveFormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
 import { MenubarModule } from 'primeng/menubar';
@@ -48,7 +49,21 @@ import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
-import {ChipsModule} from 'primeng/chips';
+import { ChipsModule } from 'primeng/chips';
+import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
+import { CarouselModule } from 'primeng/carousel';
+import { StagioneService } from './_api/services/stagione.service';
+import { InputMaskModule } from 'primeng/inputmask';
+import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { RatingModule } from 'primeng/rating';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { VotoService } from './_api/services/voto.service';
+import { CustomerRegistrationComponent } from './customer-registration/customer-registration.component';
+import { PasswordModule } from 'primeng/password';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageModule } from 'primeng/message';
+import { FileUploadModule } from 'primeng/fileupload';
 
 registerLocaleData(localeITCA);
 
@@ -66,15 +81,28 @@ registerLocaleData(localeITCA);
     GestioneFilmComponent,
     GestioneSerieTvComponent,
     RichiesteUtenteComponent,
-    DettaglioSerieTvComponent
+    DettaglioSerieTvComponent,
+    CustomerSettingComponent,
+    CustomerProfileComponent,
+    CustomerRegistrationComponent
   ],
   imports: [
+    FileUploadModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    PasswordModule,
+    ToggleButtonModule,
+    RatingModule,
+    ProgressBarModule,
+    InputMaskModule,
+    CarouselModule,
     ChipsModule,
     PanelModule,
     DataViewModule,
     InputTextareaModule,
     GrowlModule,
     MessagesModule,
+    MessageModule,
     ConfirmDialogModule,
     ToastModule,
     SpinnerModule,
@@ -100,6 +128,10 @@ registerLocaleData(localeITCA);
     FormsModule
   ],
   providers: [
+    FormBuilder,
+    VotoService,
+    StagioneService,
+    ApplicationService,
     ConfirmationService,
     MessageService,
     RichiestaService,

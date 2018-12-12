@@ -1,3 +1,6 @@
+import { CustomerRegistrationComponent } from './customer-registration/customer-registration.component';
+import { CustomerProfileComponent } from './customer-profile/customer-profile.component';
+import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import { DettaglioSerieTvComponent } from './dettaglio-serie-tv/dettaglio-serie-tv.component';
 import { GestioneSerieTvComponent } from './gestione-serie-tv/gestione-serie-tv.component';
 import { GestioneFilmComponent } from './gestione-film/gestione-film.component';
@@ -16,6 +19,8 @@ import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.co
 const appRoutes: Routes = [
     /** Login */
     { path: 'login', component: LoginComponent, data: { pageTitle: 'Login' } },
+    /** Registration */
+    { path: 'registration', component: CustomerRegistrationComponent, data: { pageTitle: 'Registration' } },
     /** layouts */
     {path: 'filmStore', component: LayoutsComponent, children: [
         { path: '', redirectTo: '/filmStore/home', pathMatch: 'full'},
@@ -37,6 +42,10 @@ const appRoutes: Routes = [
         { path: 'statistiche', component: StatisticheComponent, data: { pageTitle: 'Statistiche' } },
         /** Utenti */
         { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' } },
+        /** Profilo Utente */
+        { path: 'profiloUtente', component: CustomerProfileComponent, data: { pageTitle: 'Progilo Utente' } },
+        /** Gestione Utente */
+        { path: 'gestioneUtente/view/:firstName', component: CustomerSettingComponent, data: { pageTitle: 'Gestione Utente' } },
         /** Richieste */
         { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' } },
         /** Richieste Utente*/

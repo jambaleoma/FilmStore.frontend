@@ -11,5 +11,8 @@ export interface Customer {
     numeroRichieste?: number;
     firstName?: string;
     lastName?: string;
+    sesso?: string;
+    dataDiNascita?: string;
     richieste?: Richiesta[];
+    admin?: boolean;
 }
