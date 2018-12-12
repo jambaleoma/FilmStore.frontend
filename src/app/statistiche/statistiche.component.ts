@@ -91,6 +91,8 @@ export class StatisticheComponent {
         renderer: (row: Voto) => {
           if (row.votazione) {
             return row.votazione + ' / 10';
+          } else {
+            return '-';
           }
         }
       },
@@ -102,6 +104,8 @@ export class StatisticheComponent {
             return '<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>';
           } else if (row.like === false) {
             return '<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>';
+          } else {
+            return '-';
           }
         }
       }
