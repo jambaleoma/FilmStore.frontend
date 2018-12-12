@@ -52,8 +52,8 @@
   </ng-template>
 </p-dataView>
 
-<p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="800" [height]="400" (onAfterHide)="onDialogHide()" [positionTop]="50">
+<p-dialog header="Dettagli Serie TV" [(visible)]="displayDialog" [responsive]="true" [modal]="true"
+  [width]="800" [positionTop]="50" [contentStyle]="{'max-height':'75vh'}" [closeOnEscape]="true" [resizable]="false">
   <div class="ui-g" *ngIf="selectedStagione">
     <div class="ui-g-12" style="text-align: center">
       <div class="ui-g-4">Titolo: </div>

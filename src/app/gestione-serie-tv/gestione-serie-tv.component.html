@@ -136,11 +136,11 @@
 
 <!-- DIALOG AGGIUNGI STAGIONE -->
 <p-dialog header="Dettaglio Serie TV" [(visible)]="displayDialogStagione" closable="true" [responsive]="true" [modal]="true"
-  [width]="1000" [height]="550" [positionTop]="50">
+  [width]="1000" [positionTop]="50" [contentStyle]="{'max-height':'80vh'}" [closeOnEscape]="true" [resizable]="false">
   <form name="form" #fRichieste="ngForm">
-    <div class="ui-g ui-fluid" style="padding-bottom: 2em" *ngIf="singolaStagione">
+    <div class="ui-g ui-fluid" *ngIf="singolaStagione">
       <div class="ui-g-12" style="text-align: center">
-        <h1>Stagione N. {{singolaStagione.numeroStagione}}</h1>
+        <h1 style="margin: 0%">Stagione N. {{singolaStagione.numeroStagione}}</h1>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
@@ -217,7 +217,7 @@
           Trama:
         </div>
         <div class="ui-g-9">
-          <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="singolaStagione.trama"></textarea>
+          <textarea rows="1" id="trama" name="trama" pInputTextarea [(ngModel)]="singolaStagione.trama"></textarea>
         </div>
       </div>
     </div>
