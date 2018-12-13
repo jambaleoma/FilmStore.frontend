@@ -31,6 +31,10 @@ export class GestioneFilmComponent implements OnInit {
 
   formats: SelectItem[];
 
+  formatiFilter: SelectItem[] = [];
+
+  formatDialog: SelectItem[];
+
   msgs: Message[] = [];
 
   newFilm: boolean;
@@ -38,6 +42,8 @@ export class GestioneFilmComponent implements OnInit {
   displayDialog: boolean;
 
   audios: ListItem[] = [];
+
+  category: ListItem[] = [];
 
   @ViewChild('rt') rt: Table;
 
@@ -48,15 +54,20 @@ export class GestioneFilmComponent implements OnInit {
     private renderer: Renderer2
   ) {
     this.formats = [
+      { label: '', value: '' },
       { label: '4K', value: '4K' },
       { label: 'FULL-HD', value: 'FULL-HD' },
       { label: 'HD', value: 'HD' },
       { label: 'DVD', value: 'DVD' }
     ];
+
+    this.formatDialog = this.formats;
+    this.formatDialog.shift();
   }
 
   ngOnInit() {
     this.subscribeToListOfCountry();
+    this.subscribeToListOfCategory();
     this.subsrcibeToListOfFilm();
     this.getCols();
   }
@@ -64,6 +75,12 @@ export class GestioneFilmComponent implements OnInit {
   subscribeToListOfCountry() {
     this.applicationService.countriesObservable.subscribe(notification => {
       this.audios = notification;
+    });
+  }
+
+  subscribeToListOfCategory() {
+    this.applicationService.categoriesObservable.subscribe(notification => {
+      this.category = notification;
     });
   }
 
@@ -81,6 +98,18 @@ export class GestioneFilmComponent implements OnInit {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
       this.showFilm = true;
+      const formati: string[] = [];
+      for (const film of this.films) {
+        if (!formati.find(formato => formato === film.formato)) {
+          formati.push(film.formato);
+        }
+      }
+      if (formati) {
+        for (let i = 0; i < formati.length; i++) {
+          const item: SelectItem = {label: formati[i], value: formati[i]};
+          this.formatiFilter.push(item);
+        }
+      }
     }, error => {
       this.showFilm = true;
     }
