@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FilmService } from '../_api/services/film.service';
 import { Table } from 'primeng/table';
 import { ListItem } from '../_api/models/list-items';
+import { ApplicationService } from '../_service/application.service';
 
 @Component({
   selector: 'app-ricerca-film',
@@ -20,6 +21,8 @@ export class RicercaFilmComponent implements OnInit {
 
   formats: ListItem[];
 
+  category: ListItem[];
+
   yearFilter: number;
 
   yearTimeout: any;
@@ -28,7 +31,8 @@ export class RicercaFilmComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private filmService: FilmService
+    private filmService: FilmService,
+    private applicationService: ApplicationService,
   ) {
 
     this.formats = [
@@ -42,6 +46,7 @@ export class RicercaFilmComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfFilms();
+    this.subscribeToListOfCategory();
     this.getColumns();
   }
 
@@ -49,13 +54,30 @@ export class RicercaFilmComponent implements OnInit {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
       { field: 'anno', header: 'Anno' },
-      { field: 'formato', header: 'Formato' }
+      { field: 'formato', header: 'Formato' },
+      {
+        field: 'categoria',
+        header: 'Categoria',
+        renderer: (row: Film) => {
+          if (row.categoria) {
+            return row.categoria.join(', ');
+          } else {
+            return '-';
+          }
+        }
+      }
     ];
   }
 
   subsrcibeToListOfFilms() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
+    });
+  }
+
+  subscribeToListOfCategory() {
+    this.applicationService.categoriesObservable.subscribe(notification => {
+      this.category = notification;
     });
   }
 

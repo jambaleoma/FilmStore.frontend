@@ -57,8 +57,7 @@
         <td>
           <img src="assets/showcase/images/film/{{rowData.urlLocandina}}.jpg" style="width: 80%">
         </td>
-        <td *ngFor="let col of columns">
-          {{rowData[col.field] ? rowData[col.field] : '-'}}
+        <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(rowData) : rowData[col.field]">
         </td>
         <td>
           <img *ngFor="let lingua of rowData.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">

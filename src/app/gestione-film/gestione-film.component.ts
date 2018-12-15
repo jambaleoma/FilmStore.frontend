@@ -88,6 +88,17 @@ export class GestioneFilmComponent implements OnInit {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
       { field: 'anno', header: 'Anno' },
+      {
+        field: 'categoria',
+        header: 'Categoria',
+        renderer: (row: Film) => {
+          if (row.categoria) {
+            return row.categoria.join(', ');
+          } else {
+            return '-';
+          }
+        }
+      },
       { field: 'formato', header: 'Formato' },
       { field: 'linguaAudio', header: 'Audio' },
       { field: 'linguaSottotitoli', header: 'Sottotitoli' }
@@ -106,7 +117,7 @@ export class GestioneFilmComponent implements OnInit {
       }
       if (formati) {
         for (let i = 0; i < formati.length; i++) {
-          const item: SelectItem = {label: formati[i], value: formati[i]};
+          const item: SelectItem = { label: formati[i], value: formati[i] };
           this.formatiFilter.push(item);
         }
       }
@@ -221,25 +232,6 @@ export class GestioneFilmComponent implements OnInit {
     rt.reset();
     this.filters = {};
     this.yearFilter = null;
-  }
-
-  deleteAudio(film: Film) {
-    this.confirmationService.confirm({
-      message: 'Sicuro di voler Eliminare l\'Audio di questo Film?',
-      header: 'Eliminazione Film',
-      icon: 'fa fa-trash',
-      accept: () => {
-        this.filmService.deleteAudioFilm(film._id).subscribe(response => {
-          if (response !== null) {
-            this.films = response as Film[];
-            this.film = null;
-            this.displayDialog = false;
-            this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Audio Film Eliminato' }];
-          }
-        });
-      },
-      reject: () => { }
-    });
   }
 
 }

@@ -25,9 +25,19 @@
           <div class="ui-g-2 ui-sm-6">Formato: </div>
           <div class="ui-g-10 ui-sm-6"><b>{{film.formato}}</b></div>
 
+          <div class="ui-g-2 ui-sm-6">Categoria: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{film.categoria.join(', ')}}</b></div>
+
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
-          <div class="ui-g-5 ui-sm-6">
+          <div class="ui-g-10 ui-sm-6">
             <img *ngFor="let lingua of film.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+          </div>
+
+          <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
+          <div class="ui-g-5 ui-sm-6">
+            <img *ngFor="let linguaSub of film.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
+              title="{{linguaSub}}">
+            <span *ngIf="!film.linguaSottotitoli"> - </span>
           </div>
 
           <div class="ui-g-2 ui-sm-6">
@@ -37,13 +47,6 @@
           <div class="ui-g-3 ui-sm-6">
             <p-toggleButton [(ngModel)]="dislike" onLabel="" offLabel="" onIcon="fa fa-thumbs-o-down" offIcon="fa fa-thumbs-o-down"
               [style]="{'width':'150px'}" (onChange)="dislikeFilm()"></p-toggleButton>
-          </div>
-
-          <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
-          <div class="ui-g-10 ui-sm-6">
-            <img *ngFor="let linguaSub of film.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
-              title="{{linguaSub}}">
-            <span *ngIf="!film.linguaSottotitoli"> - </span>
           </div>
 
           <div class="ui-g-2 ui-sm-6"></div>
