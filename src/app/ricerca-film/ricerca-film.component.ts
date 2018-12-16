@@ -17,6 +17,8 @@ export class RicercaFilmComponent implements OnInit {
 
   films: Film[];
 
+  filmsByCategory: Film[];
+
   cols: any[];
 
   formats: ListItem[];
@@ -81,11 +83,29 @@ export class RicercaFilmComponent implements OnInit {
     });
   }
 
+  findForCategory(category: string[], ft: Table) {
+    if (category[0]) {
+      this.films = [];
+      this.filmService.getFilms().subscribe(notification => {
+        if (notification) {
+          for (const singleCategory of category) {
+            this.filmsByCategory = notification.filter(film => film.categoria.includes(singleCategory));
+            this.filmsByCategory.forEach(film => this.films.push(film));
+          }
+          ft.reset();
+        }
+      });
+    } else {
+      this.subsrcibeToListOfFilms();
+    }
+  }
+
   //  *** Reset Valori selzionati nei Filtri ***
-  reset(tr: Table) {
-    tr.reset();
+  reset(ft: Table) {
+    ft.reset();
     this.filters = {};
     this.yearFilter = null;
+    this.subsrcibeToListOfFilms();
   }
 
   //  *** Vado a visulizzare nel dattaglio il film selezionato ***
