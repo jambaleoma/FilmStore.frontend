@@ -3,7 +3,7 @@
 </div>
 
 <!-- FILTRI DI RICERCA -->
-<div class="ui-grid-col-12" style="padding-left: 10%; padding-right: 10%;">
+<div class="ui-grid-col-12" style="padding-left: 5%; padding-right: 5%;">
   <div class="ui-g">
     <div class="ui-g-4" style="padding-left: 0px">
       <div class="label"> Nome SerieTV </div>
@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<div class="ui-grid-col-12" style="padding-left: 10%; padding-right: 10%; padding-top: 3em;">
+<div class="ui-grid-col-12" style="padding-left: 5%; padding-right: 5%; padding-top: 3em;">
   <p-table film-table [columns]="cols" [value]="serieTV" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,25,50]"
     #stvt>
     <ng-template pTemplate="header" let-columns>
@@ -31,10 +31,10 @@
           {{col.header}}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
-        <th style="width: 7%">
+        <th style="width: 10%">
           Stagioni
         </th>
-        <th style="width: 7%">
+        <th style="width: 10%">
           Dettagli
         </th>
       </tr>

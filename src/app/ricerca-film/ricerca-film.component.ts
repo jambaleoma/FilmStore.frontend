@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FilmService } from '../_api/services/film.service';
 import { Table } from 'primeng/table';
 import { ListItem } from '../_api/models/list-items';
+import { ApplicationService } from '../_service/application.service';
 
 @Component({
   selector: 'app-ricerca-film',
@@ -16,9 +17,13 @@ export class RicercaFilmComponent implements OnInit {
 
   films: Film[];
 
+  filmsByCategory: Film[];
+
   cols: any[];
 
   formats: ListItem[];
+
+  category: ListItem[];
 
   yearFilter: number;
 
@@ -28,7 +33,8 @@ export class RicercaFilmComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private filmService: FilmService
+    private filmService: FilmService,
+    private applicationService: ApplicationService,
   ) {
 
     this.formats = [
@@ -42,6 +48,7 @@ export class RicercaFilmComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfFilms();
+    this.subscribeToListOfCategory();
     this.getColumns();
   }
 
@@ -49,7 +56,18 @@ export class RicercaFilmComponent implements OnInit {
     this.cols = [
       { field: 'nome', header: 'Titolo' },
       { field: 'anno', header: 'Anno' },
-      { field: 'formato', header: 'Formato' }
+      { field: 'formato', header: 'Formato' },
+      {
+        field: 'categoria',
+        header: 'Categoria',
+        renderer: (row: Film) => {
+          if (row.categoria) {
+            return row.categoria.join(', ');
+          } else {
+            return '-';
+          }
+        }
+      }
     ];
   }
 
@@ -59,11 +77,35 @@ export class RicercaFilmComponent implements OnInit {
     });
   }
 
+  subscribeToListOfCategory() {
+    this.applicationService.categoriesObservable.subscribe(notification => {
+      this.category = notification;
+    });
+  }
+
+  findForCategory(category: string[], ft: Table) {
+    if (category[0]) {
+      this.films = [];
+      this.filmService.getFilms().subscribe(notification => {
+        if (notification) {
+          for (const singleCategory of category) {
+            this.filmsByCategory = notification.filter(film => film.categoria.includes(singleCategory));
+            this.filmsByCategory.forEach(film => this.films.push(film));
+          }
+          ft.reset();
+        }
+      });
+    } else {
+      this.subsrcibeToListOfFilms();
+    }
+  }
+
   //  *** Reset Valori selzionati nei Filtri ***
-  reset(tr: Table) {
-    tr.reset();
+  reset(ft: Table) {
+    ft.reset();
     this.filters = {};
     this.yearFilter = null;
+    this.subsrcibeToListOfFilms();
   }
 
   //  *** Vado a visulizzare nel dattaglio il film selezionato ***

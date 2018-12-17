@@ -26,10 +26,14 @@
     <h2 style="text-align: center">Numero Di Film Per Anno</h2>
     <p-chart type="bar" [data]="dataLineFilm"></p-chart>
   </div>
+  <div class="ui-g-12" style="padding-top: 2em; padding-left: 10%; padding-right: 10%;">
+    <h2 style="text-align: center">Numero Di Film Per Categoria</h2>
+    <p-chart type="bar" [data]="dataLineCategoryFilm"></p-chart>
+  </div>
   <div class="ui-g-12">
     <h2 style="text-align: center">Voti & Like Di Film</h2>
   </div>
-  <div class="ui-g-12" style="padding-left: 20%; padding-right: 20%;">
+  <div class="ui-g-12" style="padding-left: 10%; padding-right: 10%;">
     <p-table [columns]="cols" film-table [value]="voti" #vt>
       <ng-template pTemplate="header" let-columns>
         <tr>

@@ -1,0 +1,126 @@
+[{
+    "_id": "001",
+    "label": "Animazione",
+    "value": "Animazione"
+  },
+  {
+    "_id": "002",
+    "label": "Avventura",
+    "value": "Avventura"
+  },
+  {
+    "_id": "003",
+    "label": "Azione",
+    "value": "Azione"
+  },
+  {
+    "_id": "004",
+    "label": "Biografico",
+    "value": "Biografico"
+  },
+  {
+   "_id": "005",
+   "label": "Catastrofico",
+   "value": "Catastrofico"
+ },
+  {
+    "_id": "006",
+    "label": "Commedia",
+    "value": "Commedia"
+  },
+  {
+    "_id": "007",
+    "label": "Documentario",
+    "value": "Documentario"
+  },
+  {
+    "_id": "008",
+    "label": "Drammatico",
+    "value": "Drammatico"
+  },
+  {
+    "_id": "009",
+    "label": "Epico",
+    "value": "Epico"
+  },
+  {
+    "_id": "010",
+    "label": "Erotico",
+    "value": "Erotico"
+  },
+  {
+    "_id": "011",
+    "label": "Fantascienza",
+    "value": "Fantascienza"
+  },
+  {
+    "_id": "012",
+    "label": "Fantasy",
+    "value": "Fantasy"
+  },
+  {
+    "_id": "013",
+    "label": "Gangster",
+    "value": "Gangster"
+  },
+  {
+    "_id": "014",
+    "label": "Giallo",
+    "value": "Giallo"
+  },
+  {
+    "_id": "015",
+    "label": "Guerra",
+    "value": "Guerra"
+  },
+  {
+    "_id": "016",
+    "label": "Horror",
+    "value": "Horror"
+  },
+  {
+    "_id": "017",
+    "label": "Musical",
+    "value": "Musical"
+  },
+  {
+    "_id": "018",
+    "label": "Poliziesco",
+    "value": "Poliziesco"
+  },
+  {
+    "_id": "019",
+    "label": "Satirico",
+    "value": "Satirico"
+  },
+  {
+    "_id": "020",
+    "label": "Sentimentale",
+    "value": "Sentimentale"
+  },
+  {
+    "_id": "021",
+    "label": "Spionaggio",
+    "value": "Spionaggio"
+  },
+  {
+    "_id": "022",
+    "label": "Sportivo",
+    "value": "Sportivo"
+  },
+  {
+    "_id": "023",
+    "label": "Storico",
+    "value": "Storico"
+  },
+  {
+    "_id": "024",
+    "label": "Thriller",
+    "value": "Thriller"
+  },
+  {
+    "_id": "025",
+    "label": "Western",
+    "value": "Western"
+  }
+]

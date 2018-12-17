@@ -6,6 +6,7 @@ export class ApplicationService {
 
   private show_welcome = false;
   countriesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  categoriesObservable: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
   constructor() {}
 
@@ -19,6 +20,10 @@ export class ApplicationService {
 
   getShowWelcome() {
     return this.show_welcome;
+  }
+
+  setCategoriesItems(items: any[]) {
+    this.categoriesObservable.next(items);
   }
 
   setCountriesItems(items: any[]) {

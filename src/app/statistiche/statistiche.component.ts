@@ -1,3 +1,5 @@
+import { ListItem } from './../_api/models/list-items';
+import { ApplicationService } from './../_service/application.service';
 import { Voto } from './../_api/models/voto';
 import { VotoService } from './../_api/services/voto.service';
 import { Stagione } from './../_api/models/stagione';
@@ -23,6 +25,8 @@ export class StatisticheComponent {
 
   films: Film[] = [];
 
+  category: ListItem[];
+
   stagioni: Stagione[] = [];
 
   voti: Voto[] = [];
@@ -36,6 +40,8 @@ export class StatisticheComponent {
   dataPolarRichieste: any;
 
   dataLineFilm: any;
+
+  dataLineCategoryFilm: any;
 
   dataDoughnutFilm: any;
 
@@ -56,6 +62,10 @@ export class StatisticheComponent {
 
   filmsAnni: number[] = [];
 
+  categorieFilms: string[] = [];
+
+  filmsCategorie: number[] = [];
+
   formatiSerieTV: string[] = [];
 
   serieTVFormati: number[] = [];
@@ -70,6 +80,8 @@ export class StatisticheComponent {
 
   anno2film: Map<number, number> = new Map;
 
+  categoria2film: Map<string, number> = new Map;
+
   formato2serieTV: Map<string, number> = new Map;
 
   constructor(
@@ -77,7 +89,8 @@ export class StatisticheComponent {
     private richiestaService: RichiestaService,
     private filmService: FilmService,
     private stagioneService: StagioneService,
-    private votoService: VotoService
+    private votoService: VotoService,
+    private applicationService: ApplicationService
   ) {
 
     this.cols = [
@@ -267,10 +280,19 @@ export class StatisticheComponent {
         } else {
           this.formato2film.set(film.formato, 1);
         }
+        for (const cat of film.categoria) {
+          if (this.categoria2film.has(cat)) {
+            this.categoria2film.set(cat, this.categoria2film.get(cat) + 1);
+          } else {
+            this.categoria2film.set(cat, 1);
+          }
+        }
       }
       this.anniFilms = Array.from(unsortedFilmMap.keys());
       this.formatiFilms = Array.from(this.formato2film.keys());
       this.filmsFormati = Array.from(this.formato2film.values());
+      this.categorieFilms = Array.from(this.categoria2film.keys());
+      this.filmsCategorie = Array.from(this.categoria2film.values());
       this.anniFilms.sort();
       for (const annofilm of this.anniFilms) {
         this.anno2film.set(annofilm, unsortedFilmMap.get(annofilm));
@@ -278,6 +300,7 @@ export class StatisticheComponent {
       this.filmsAnni = Array.from(this.anno2film.values());
       this.loadChartFilmsPerFormatoDoughnut();
       this.loadChartFilmsPerAnnoLine();
+      this.loadChartFilmsPerCategoriaLine();
     });
   }
 
@@ -310,6 +333,24 @@ export class StatisticheComponent {
           {
             label: 'Film per Anno',
             data: this.filmsAnni,
+            fill: false,
+            backgroundColor: dataLineRichiestebackgroundColor,
+            borderColor: dataLineRichiestebackgroundColor
+          }
+        ]
+      };
+    }
+  }
+
+  loadChartFilmsPerCategoriaLine() {
+    if (this.films.length > 0) {
+      const dataLineRichiestebackgroundColor = this.getRandomColor();
+      this.dataLineCategoryFilm = {
+        labels: this.categorieFilms,
+        datasets: [
+          {
+            label: 'Film per Categoria',
+            data: this.filmsCategorie,
             fill: false,
             backgroundColor: dataLineRichiestebackgroundColor,
             borderColor: dataLineRichiestebackgroundColor
