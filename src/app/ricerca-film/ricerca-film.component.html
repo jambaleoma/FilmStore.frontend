@@ -17,7 +17,7 @@
     <div class="ui-g-12 ui-md-4 ui-lg-2">
       <div class="label"> Categoria Film </div>
       <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="category"
-        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="findForCategory($event.value, ft)"></p-multiSelect>
+        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Categoria" (onChange)="findForCategory($event.value, ft)"></p-multiSelect>
     </div>
     <div class="ui-g-12 ui-md-6 ui-lg-5">
       <div class="label" style="text-align: center; font-family: FontAwesome;"> &#xF002; Film dal {{yearFilter || 1996}} a Oggi </div>
