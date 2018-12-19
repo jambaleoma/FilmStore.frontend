@@ -90,7 +90,11 @@ export class RicercaFilmComponent implements OnInit {
         if (notification) {
           for (const singleCategory of category) {
             this.filmsByCategory = notification.filter(film => film.categoria.includes(singleCategory));
-            this.filmsByCategory.forEach(film => this.films.push(film));
+            this.filmsByCategory.forEach(film => {
+              if (!this.films.includes(film)) {
+                this.films.push(film);
+              }
+            });
           }
           ft.reset();
         }
