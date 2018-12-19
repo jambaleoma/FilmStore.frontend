@@ -3,7 +3,7 @@ import { CustomerService } from '../_api/services/customer.service';
 import { Richiesta } from '../_api/models/richiesta';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Component, OnInit, ViewChild, Renderer2 } from '@angular/core';
-import { SelectItem, ConfirmationService, Message } from 'primeng/api';
+import { SelectItem, MessageService, ConfirmationService, Message } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
 
@@ -15,8 +15,6 @@ import { Table } from 'primeng/table';
 export class RichiesteListComponent implements OnInit {
 
   listaRichiedenti: SelectItem[] = [];
-
-  listaStati: SelectItem[] = [];
 
   pipe: DatePipe = new DatePipe('it');
 
@@ -69,7 +67,6 @@ export class RichiesteListComponent implements OnInit {
       { label: 'DVD', value: 'DVD' }
     ];
 
-    // POPOLO LA LISTA DEGLI STATI PER LA DIALOG
     this.statiRichiesta = [
       { label: '', value: '' },
       { label: 'IN LAVORAZIONE', value: 'IN LAVORAZIONE' },
@@ -77,12 +74,6 @@ export class RichiesteListComponent implements OnInit {
       { label: 'COMPLETATA', value: 'COMPLETATA' },
       { label: 'RIFIUTATA', value: 'RIFIUTATA' }
     ];
-
-    // POPOLO LA LISTA DEGLI STATI PER IL FILTRO
-    for (const stato of this.statiRichiesta) {
-      this.listaStati.push(stato);
-    }
-    this.listaStati.shift();
   }
 
   ngOnInit() {
