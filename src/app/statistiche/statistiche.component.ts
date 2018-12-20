@@ -11,6 +11,8 @@ import { CustomerService } from '../_api/services/customer.service';
 import { RichiestaService } from '../_api/services/richiesta.service';
 import { Film } from '../_api/models/film';
 import { StagioneService } from '../_api/services/stagione.service';
+import { SelectItem } from 'primeng/api';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-statistiche',
@@ -32,6 +34,10 @@ export class StatisticheComponent {
   voti: Voto[] = [];
 
   cols: any[];
+
+  listaRichiedenti: SelectItem[] = [];
+
+  filters: any = {};
 
   dataPieRichieste: any;
 
@@ -179,6 +185,7 @@ export class StatisticheComponent {
         if (this.customers.length > 0) {
           for (let i = 0; i < this.customers.length; i++) {
             this.customer2richieste.set(this.customers[i].firstName, this.customers[i].numeroRichieste);
+            this.listaRichiedenti.push(this.customers[i]);
           }
           this.loadChartCustomerRichiestePie();
         }
@@ -409,6 +416,12 @@ export class StatisticheComponent {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  }
+
+   //  *** Reset Valori selzionati nei Filtri ***
+   reset(vt: Table) {
+    vt.reset();
+    this.filters = {};
   }
 
 }
