@@ -74,15 +74,6 @@
               <label for="repeatPassword">Ripeti Password</label>
             </span>
           </div>
-          <div class="ui-g-12 ui-md-6 ui-lg-3" style="padding-left: 0px;">
-            <p-fileUpload name="demo[]" mode="basic" url="http://localhost:8080/rest/customers/saveCustomerImage" (onUpload)="onUpload($event)" accept="image/*" maxFileSize="1000000">
-              <ng-template pTemplate="content">
-                <ul *ngIf="uploadedFiles.length">
-                  <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                </ul>
-              </ng-template>
-            </p-fileUpload>
-          </div>
         </div>
       </p-panel>
     </div>

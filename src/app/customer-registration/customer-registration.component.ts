@@ -29,19 +29,12 @@ export class CustomerRegistrationComponent implements OnInit {
 
   genders: SelectItem[];
 
-  description: string;
-
-  uploadedFiles: any[] = [];
-
-  customerAvatar: File = null;
-
   constructor(
     private formBuilder: FormBuilder,
     private renderer: Renderer2,
     private router: Router,
     private customerService: CustomerService,
-    private confirmationService: ConfirmationService,
-    private http: HttpClient
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit() {
@@ -102,12 +95,4 @@ export class CustomerRegistrationComponent implements OnInit {
     }
   }
 
-  onUpload(event) {
-    this.customerAvatar = event.files[0];
-    const fd = new FormData();
-    fd.append('image', this.customerAvatar, this.customerAvatar.name);
-    this.http.post('http://localhost:8080/rest/customers/saveCustomerImage', fd).subscribe(res => {
-      console.log(res);
-    });
-  }
 }
