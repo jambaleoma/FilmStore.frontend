@@ -195,32 +195,26 @@ export class StatisticheComponent {
 
   loadChartRichiestePerMeseLine() {
     if (this.anniRichieste.length > 0) {
+      const dataSets = [];
       const dataLineRichiesteLabel = [];
       const dataLineRichiesteData = [];
       const dataLineRichiestebackgroundColor = [];
-      for (const anno of this.anniRichieste) {
-        dataLineRichiesteLabel.push('Richieste nel ' + anno);
-        dataLineRichiesteData.push(this.anno2_mese2richieste.get(anno));
+      for (let i = 0; i < this.anniRichieste.length; i++) {
+        dataLineRichiesteLabel.push('Richieste nel ' + this.anniRichieste[i]);
+        dataLineRichiesteData.push(this.anno2_mese2richieste.get(this.anniRichieste[i]));
         dataLineRichiestebackgroundColor.push(this.getRandomColor());
+        const dataSet = {
+          label: dataLineRichiesteLabel[i],
+            data: dataLineRichiesteData[i],
+            fill: false,
+            borderColor: dataLineRichiestebackgroundColor[i],
+            backgroundColor: dataLineRichiestebackgroundColor[i]
+        };
+        dataSets.push(dataSet);
       }
       this.dataLineRichieste = {
         labels: this.mesiAnno,
-        datasets: [
-          {
-            label: dataLineRichiesteLabel[0],
-            data: dataLineRichiesteData[0],
-            fill: false,
-            borderColor: dataLineRichiestebackgroundColor[0],
-            backgroundColor: dataLineRichiestebackgroundColor[0]
-          },
-          {
-            label: dataLineRichiesteLabel[1],
-            data: dataLineRichiesteData[1],
-            fill: false,
-            borderColor: dataLineRichiestebackgroundColor[1],
-            backgroundColor: dataLineRichiestebackgroundColor[1]
-          }
-        ]
+        datasets: dataSets
       };
     }
   }
