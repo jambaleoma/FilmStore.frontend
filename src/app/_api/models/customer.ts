@@ -14,5 +14,6 @@ export interface Customer {
     sesso?: string;
     dataDiNascita?: string;
     richieste?: Richiesta[];
+    categoriePreferite?: string[];
     admin?: boolean;
 }

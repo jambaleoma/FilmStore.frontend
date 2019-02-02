@@ -1,125 +1,125 @@
 [{
-    "_id": "001",
+    "_id": "Animazione",
     "label": "Animazione",
     "value": "Animazione"
   },
   {
-    "_id": "002",
+    "_id": "Avventura",
     "label": "Avventura",
     "value": "Avventura"
   },
   {
-    "_id": "003",
+    "_id": "Azione",
     "label": "Azione",
     "value": "Azione"
   },
   {
-    "_id": "004",
+    "_id": "Biografico",
     "label": "Biografico",
     "value": "Biografico"
   },
   {
-   "_id": "005",
+   "_id": "Catastrofico",
    "label": "Catastrofico",
    "value": "Catastrofico"
  },
   {
-    "_id": "006",
+    "_id": "Commedia",
     "label": "Commedia",
     "value": "Commedia"
   },
   {
-    "_id": "007",
+    "_id": "Documentario",
     "label": "Documentario",
     "value": "Documentario"
   },
   {
-    "_id": "008",
+    "_id": "Drammatico",
     "label": "Drammatico",
     "value": "Drammatico"
   },
   {
-    "_id": "009",
+    "_id": "Epico",
     "label": "Epico",
     "value": "Epico"
   },
   {
-    "_id": "010",
+    "_id": "Erotico",
     "label": "Erotico",
     "value": "Erotico"
   },
   {
-    "_id": "011",
+    "_id": "Fantascienza",
     "label": "Fantascienza",
     "value": "Fantascienza"
   },
   {
-    "_id": "012",
+    "_id": "Fantasy",
     "label": "Fantasy",
     "value": "Fantasy"
   },
   {
-    "_id": "013",
+    "_id": "Gangster",
     "label": "Gangster",
     "value": "Gangster"
   },
   {
-    "_id": "014",
+    "_id": "Giallo",
     "label": "Giallo",
     "value": "Giallo"
   },
   {
-    "_id": "015",
+    "_id": "Guerra",
     "label": "Guerra",
     "value": "Guerra"
   },
   {
-    "_id": "016",
+    "_id": "Horror",
     "label": "Horror",
     "value": "Horror"
   },
   {
-    "_id": "017",
+    "_id": "Musical",
     "label": "Musical",
     "value": "Musical"
   },
   {
-    "_id": "018",
+    "_id": "Poliziesco",
     "label": "Poliziesco",
     "value": "Poliziesco"
   },
   {
-    "_id": "019",
+    "_id": "Satirico",
     "label": "Satirico",
     "value": "Satirico"
   },
   {
-    "_id": "020",
+    "_id": "Sentimentale",
     "label": "Sentimentale",
     "value": "Sentimentale"
   },
   {
-    "_id": "021",
+    "_id": "Spionaggio",
     "label": "Spionaggio",
     "value": "Spionaggio"
   },
   {
-    "_id": "022",
+    "_id": "Sportivo",
     "label": "Sportivo",
     "value": "Sportivo"
   },
   {
-    "_id": "023",
+    "_id": "Storico",
     "label": "Storico",
     "value": "Storico"
   },
   {
-    "_id": "024",
+    "_id": "Thriller",
     "label": "Thriller",
     "value": "Thriller"
   },
   {
-    "_id": "025",
+    "_id": "Western",
     "label": "Western",
     "value": "Western"
   }

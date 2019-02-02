@@ -54,27 +54,43 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="displayCategoryDialog" closable="true" [responsive]="true" [modal]="true" [width]="850"
+<p-dialog [(visible)]="displayCategoryDialog" closable="true" [responsive]="true" [modal]="true" [width]="1200"
   [positionTop]="150">
   <p-header>
     Categorie Preferite dall'Utente
   </p-header>
   <div class="ui-g ui-fluid" style="padding-bottom: 2em">
-    <p-pickList [source]="category" [target]="list2" sourceHeader="Categorie Possibili" targetHeader="Categorie Selezionate" [responsive]="true" filterBy="label" 
-    dragdrop="true" sourceFilterPlaceholder="Cerca per Nome" targetFilterPlaceholder="Cerca per Nome" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+    <p-pickList [source]="category" [target]="customerCategory" sourceHeader="Categorie Possibili" targetHeader="Categorie Selezionate"
+      [responsive]="true" filterBy="label" dragdrop="true" sourceFilterPlaceholder="Cerca per Nome"
+      targetFilterPlaceholder="Cerca per Nome" [sourceStyle]="{'height':'300px', 'width':'450px'}" [targetStyle]="{'height':'300px', 'width':'450px'}">
       <ng-template let-cat pTemplate="item">
-          <div class="ui-helper-clearfix">
-              <img style="display:inline-block;margin:2px 0 2px 2px" width="48">
-              <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{cat.label}}</div>
-          </div>
+        <div class="ui-helper-clearfix">
+          <img src="../../assets/showcase/images/categorie/{{cat.value}}.png" style="display:inline-block; margin:2px 0 2px 2px; width: 100px"
+            width="48">
+          <div style="font-size:18px;float:right;margin:15px 5px 0 0"><strong>{{cat.label}}</strong></div>
+        </div>
       </ng-template>
-  </p-pickList>
+    </p-pickList>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <div class="ui-g-12" style="text-align: center">
-        <button type="submit" pButton class="ui-button-success saveCategoryButton" label="Salva"></button>
+        <button type="submit" pButton class="ui-button-success saveCategoryButton" (click)="save(customers[0])" label="Salva"></button>
       </div>
     </div>
   </p-footer>
 </p-dialog>
+
+<p-confirmDialog #cd [width]="700">
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-3" style="text-align: right">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-3" style="text-align: left">
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-confirmDialog>

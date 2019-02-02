@@ -31,8 +31,6 @@ export class CustomerProfileComponent implements OnInit {
 
   cols: any[];
 
-  displayDialog: boolean;
-
   displayCategoryDialog: boolean;
 
   showChangePassword = false;
@@ -49,22 +47,48 @@ export class CustomerProfileComponent implements OnInit {
 
   sessi: ListItem[];
 
-  category: ListItem[] = [];
+  category: string[] = [];
 
-  list2: ListItem[] = [];
+  customerCategory: ListItem[] = [];
 
   @ViewChild('ct') ct: Table;
 
   constructor(
     private customerService: CustomerService,
     private router: Router,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private confirmationService: ConfirmationService,
   ) {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
-      this.loggedCustomer = notification;
-      this.customers.push(this.loggedCustomer);
+      if (notification) {
+        this.loggedCustomer = notification;
+        this.customers.push(this.loggedCustomer);
+        if (this.customers[0].categoriePreferite) {
+          for (const cat of this.customers[0].categoriePreferite) {
+            const listItem: ListItem = {
+              _id: cat,
+              value: cat,
+              label: cat,
+            };
+            this.customerCategory.push(listItem);
+          }
+        }
+        this.applicationService.categoriesObservable.subscribe(notificationCategories => {
+          if (notificationCategories) {
+            for (const category of this.customerCategory) {
+              for (const allCat of notificationCategories) {
+                if (category.value === allCat.value) {
+                  const index = notificationCategories.indexOf(allCat);
+                  notificationCategories.splice(index, 1);
+                }
+              }
+            }
+            this.category = notificationCategories;
+          }
+        });
+      }
     });
-   }
+  }
 
   ngOnInit() {
     this.getColumns();
@@ -87,14 +111,33 @@ export class CustomerProfileComponent implements OnInit {
     ];
   }
 
-  subscribeToListOfCategory() {
-    this.applicationService.categoriesObservable.subscribe(notification => {
-      this.category = notification;
-    });
-  }
+  subscribeToListOfCategory() { }
 
   goToListaRichiesteCustomer(nomeCustomer: string) {
     this.router.navigate(['filmStore/richieste/view', nomeCustomer]);
+  }
+
+  save(customer: Customer) {
+    this.customer = customer;
+    this.customer.categoriePreferite = [];
+    for (const cat of this.customerCategory) {
+      this.customer.categoriePreferite.push(cat.value);
+    }
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Salvare queste Categorie?',
+      header: 'Salvataggio Categorie',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.customerService.updateCustomer(this.customer).subscribe(response => {
+          if (response !== null) {
+            this.displayCategoryDialog = false;
+            this.msgs = [{ severity: 'success', summary: 'Salvataggio Completato', detail: 'Categorie Salvate con Successo' }];
+          }
+        });
+      },
+      reject: () => {
+      }
+    });
   }
 
 }
