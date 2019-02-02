@@ -25,6 +25,10 @@ export class RicercaFilmComponent implements OnInit {
 
   category: ListItem[];
 
+  maxYear: number;
+
+  minYear: number;
+
   yearFilter: number;
 
   yearTimeout: any;
@@ -74,6 +78,18 @@ export class RicercaFilmComponent implements OnInit {
   subsrcibeToListOfFilms() {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
+      let min = this.films[0].anno;
+      let max = this.films[0].anno;
+      for (const film of this.films) {
+        if (film.anno < min) {
+          min = film.anno;
+        }
+        if (film.anno > max) {
+          max = film.anno;
+        }
+      }
+      this.maxYear = max;
+      this.minYear = min;
     });
   }
 
