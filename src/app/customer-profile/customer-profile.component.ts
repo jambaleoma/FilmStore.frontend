@@ -1,3 +1,4 @@
+import { ApplicationService } from './../_service/application.service';
 import { ListItem } from './../_api/models/list-items';
 import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
@@ -32,6 +33,8 @@ export class CustomerProfileComponent implements OnInit {
 
   displayDialog: boolean;
 
+  displayCategoryDialog: boolean;
+
   showChangePassword = false;
 
   checked1 = false;
@@ -46,11 +49,16 @@ export class CustomerProfileComponent implements OnInit {
 
   sessi: ListItem[];
 
+  category: ListItem[] = [];
+
+  list2: ListItem[] = [];
+
   @ViewChild('ct') ct: Table;
 
   constructor(
     private customerService: CustomerService,
-    private router: Router
+    private router: Router,
+    private applicationService: ApplicationService
   ) {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
@@ -60,6 +68,7 @@ export class CustomerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getColumns();
+    this.subscribeToListOfCategory();
   }
 
   getColumns() {
@@ -76,6 +85,12 @@ export class CustomerProfileComponent implements OnInit {
       { field: 'sesso', header: 'Sesso' },
       { field: 'dataDiNascita', header: 'Data di Nascita' }
     ];
+  }
+
+  subscribeToListOfCategory() {
+    this.applicationService.categoriesObservable.subscribe(notification => {
+      this.category = notification;
+    });
   }
 
   goToListaRichiesteCustomer(nomeCustomer: string) {

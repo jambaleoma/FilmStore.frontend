@@ -15,27 +15,32 @@
           {{col.header}}
         </th>
         <th style="width: 10%">
-            Richieste
+          Richieste
         </th>
         <th style="width: 12%">
           Dettaglio Richieste
+        </th>
+        <th style="width: 12%">
+          Categorie Preferite
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
         <td>
-          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;"
-            width="200">
+          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;" width="200">
         </td>
         <td *ngFor="let col of columns">
           {{customer[col.field]}}
         </td>
         <td>
-            {{customer.numeroRichieste}}
+          {{customer.numeroRichieste}}
         </td>
         <td>
           <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
+        </td>
+        <td>
+          <p-button icon="fa fa-tags" title="Categorie Preferite" (onClick)="displayCategoryDialog = true"></p-button>
         </td>
       </tr>
     </ng-template>
@@ -48,3 +53,28 @@
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog [(visible)]="displayCategoryDialog" closable="true" [responsive]="true" [modal]="true" [width]="850"
+  [positionTop]="150">
+  <p-header>
+    Categorie Preferite dall'Utente
+  </p-header>
+  <div class="ui-g ui-fluid" style="padding-bottom: 2em">
+    <p-pickList [source]="category" [target]="list2" sourceHeader="Categorie Possibili" targetHeader="Categorie Selezionate" [responsive]="true" filterBy="label" 
+    dragdrop="true" sourceFilterPlaceholder="Cerca per Nome" targetFilterPlaceholder="Cerca per Nome" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}">
+      <ng-template let-cat pTemplate="item">
+          <div class="ui-helper-clearfix">
+              <img style="display:inline-block;margin:2px 0 2px 2px" width="48">
+              <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{cat.label}}</div>
+          </div>
+      </ng-template>
+  </p-pickList>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <div class="ui-g-12" style="text-align: center">
+        <button type="submit" pButton class="ui-button-success saveCategoryButton" label="Salva"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>

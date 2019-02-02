@@ -64,6 +64,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { FileUploadModule } from 'primeng/fileupload';
+import { PickListModule } from 'primeng/picklist';
 
 registerLocaleData(localeITCA);
 
@@ -87,6 +88,7 @@ registerLocaleData(localeITCA);
     CustomerRegistrationComponent
   ],
   imports: [
+    PickListModule,
     FileUploadModule,
     ReactiveFormsModule,
     InputTextModule,
