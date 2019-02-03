@@ -92,7 +92,6 @@ export class CustomerProfileComponent implements OnInit {
 
   ngOnInit() {
     this.getColumns();
-    this.subscribeToListOfCategory();
   }
 
   getColumns() {
@@ -110,8 +109,6 @@ export class CustomerProfileComponent implements OnInit {
       { field: 'dataDiNascita', header: 'Data di Nascita' }
     ];
   }
-
-  subscribeToListOfCategory() { }
 
   goToListaRichiesteCustomer(nomeCustomer: string) {
     this.router.navigate(['filmStore/richieste/view', nomeCustomer]);
