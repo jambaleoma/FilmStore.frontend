@@ -1,3 +1,4 @@
+import { ApplicationService } from './../_service/application.service';
 import { ListItem } from './../_api/models/list-items';
 import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
@@ -46,13 +47,16 @@ export class CustomersListaComponent implements OnInit {
 
   sessi: ListItem[];
 
+  category: string[] = [];
+
   @ViewChild('ct') ct: Table;
 
   constructor(
     private confirmationService: ConfirmationService,
     private customerService: CustomerService,
     private router: Router,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private applicationService: ApplicationService
   ) {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
@@ -62,6 +66,7 @@ export class CustomersListaComponent implements OnInit {
   ngOnInit() {
     this.subsrcibeToListOfCustomers();
     this.getColumns();
+    this.subscribeToListOfCategory();
   }
 
   getColumns() {
@@ -76,7 +81,19 @@ export class CustomersListaComponent implements OnInit {
       { field: 'firstName', header: 'Nome' },
       { field: 'lastName', header: 'Cognome' },
       { field: 'sesso', header: 'Sesso' },
-      { field: 'dataDiNascita', header: 'Data di Nascita' }
+      { field: 'dataDiNascita', header: 'Data di Nascita' },
+      { field: 'numeroRichieste', header: 'Richieste' },
+      {
+        field: 'categoriePreferite',
+        header: 'Categorie Preferite',
+        renderer: (row: Customer) => {
+          if (row.categoriePreferite && row.categoriePreferite.length > 0) {
+            return row.categoriePreferite.join(', ');
+          } else {
+            return '-';
+          }
+        }
+      }
     ];
   }
 
@@ -87,6 +104,12 @@ export class CustomersListaComponent implements OnInit {
       } else {
         this.customers = notification;
       }
+    });
+  }
+
+  subscribeToListOfCategory() {
+    this.applicationService.categoriesObservable.subscribe(notificationCategories => {
+      this.category = notificationCategories;
     });
   }
 
@@ -158,31 +181,33 @@ export class CustomersListaComponent implements OnInit {
       }
     } else {
       if (pwsChange) {
-        if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
-          if (this.customerPassword === this.customer.password) {
-            this.confirmationService.confirm({
-              message: 'Sicuro di voler Cambiare la Password?',
-              header: 'Aggiornamento Password',
-              icon: 'pi pi-exclamation-triangle',
-              accept: () => {
-                this.customer.password = this.newCustomerPassword;
-                this.customerService.updateCustomer(this.customer).subscribe(response => {
-                  if (response !== null) {
-                    this.customers = response as Customer[];
-                    this.customer = null;
-                    this.displayDialog = false;
-                    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
-                  }
-                });
-              },
-              reject: () => { }
-            });
+        this.customerService.logingCustomer(this.customer, this.customerPassword).subscribe(login => {
+          if (login) {
+            if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
+              this.confirmationService.confirm({
+                message: 'Sicuro di voler Cambiare la Password?',
+                header: 'Aggiornamento Password',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                  this.customer.password = this.newCustomerPassword;
+                  this.customerService.changeCustomerPsw(this.customer).subscribe(response => {
+                    if (response !== null) {
+                      this.customers = response as Customer[];
+                      this.customer = null;
+                      this.displayDialog = false;
+                      this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
+                    }
+                  });
+                },
+                reject: () => { }
+              });
+            } else {
+              this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Le Password non Corrispondono' }];
+            }
           } else {
             this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'La Password Attuale non è Corretta' }];
           }
-        } else {
-          this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Le Password non Corrispondono' }];
-        }
+        });
       } else {
         this.confirmationService.confirm({
           message: 'Sicuro di voler Aggiornare questo Utente?',
@@ -194,7 +219,6 @@ export class CustomersListaComponent implements OnInit {
             this.customerService.updateCustomer(this.customer).subscribe(response => {
               if (response !== null) {
                 this.customers = response as Customer[];
-                this.customer = null;
                 this.displayDialog = false;
                 this.msgs = [{ severity: 'success', summary: 'Aggiornamento Completato', detail: 'Utente Aggiornato' }];
               }
@@ -243,7 +267,6 @@ export class CustomersListaComponent implements OnInit {
           this.customerService.updateCustomer(customerToChange).subscribe(response => {
             if (response !== null) {
               this.customers = response as Customer[];
-              this.customer = null;
               this.displayDialog = false;
               this.msgs = [{
                 severity: 'success', summary: 'Aggiornamento Completato',
@@ -267,14 +290,15 @@ export class CustomersListaComponent implements OnInit {
             this.customerService.updateCustomer(customerToChange).subscribe(response => {
               if (response !== null) {
                 this.customers = response as Customer[];
-                this.customer = null;
                 this.displayDialog = false;
                 this.msgs = [{
                   severity: 'success', summary: 'Aggiornamento Completato',
                   detail: 'Ora l\'utente ' + customerToChange.firstName + ' ' + customerToChange.lastName +
                     ' non gode più dei privilegi di Admin'
                 }];
-                location.reload();
+                if (this.loggedCustomer.firstName !== 'Vincenzo') {
+                  location.reload();
+                }
               }
             });
           }
@@ -294,10 +318,10 @@ export class CustomersListaComponent implements OnInit {
   loadMagicWord() {
     this.showYDSTMW = true;
     const audio = new Audio('../../assets/showcase/audio/AH Ah Ah you didnt say the magic word.flv.mp3');
-    audio.addEventListener('ended', function() {
+    audio.addEventListener('ended', function () {
       this.currentTime = 0;
       this.play();
-  }, false);
+    }, false);
     audio.play();
   }
 

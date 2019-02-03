@@ -178,7 +178,7 @@ export class CustomerService extends BaseService {
    *
    * - `body`: 
    *
-   * @return Updated Customer
+   * @return Updated Customers
    */
   private updateCustomerResponse(params: Customer): Observable<HttpResponse<Customer[]>> {
     let __params = this.newParams();
@@ -214,10 +214,61 @@ export class CustomerService extends BaseService {
    *
    * - `body`: 
    *
-   * @return Updated Customer
+   * @return Updated Customers
    */
    updateCustomer(params: Customer): Observable<Customer[]> {
     return this.updateCustomerResponse(params).pipe(
+      map(_r => _r.body)
+    );
+  }
+
+    /**
+   * @param params The `CustomerService.changeCustomerPsw` containing the following parameters:
+   *
+   * - `id`: 
+   *
+   * - `body`: 
+   *
+   * @return Updated Customers
+   */
+  private changeCustomerPswResponse(params: Customer): Observable<HttpResponse<Customer[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params;
+    let req = new HttpRequest<any>(
+      "PUT",
+      this.rootUrl + `rest/customers/changeCustomerPsw/`+params.id,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: Customer[] = null;
+        _body = _resp.body as Customer[];
+        return _resp.clone({body: _body}) as HttpResponse<Customer[]>;
+      })
+    );
+  }
+
+  /**
+   * @param params The `CustomerService.changeCustomerPsw` containing the following parameters:
+   *
+   * - `id`: 
+   *
+   * - `body`: 
+   *
+   * @return Updated Customers
+   */
+  changeCustomerPsw(params: Customer): Observable<Customer[]> {
+    return this.changeCustomerPswResponse(params).pipe(
       map(_r => _r.body)
     );
   }

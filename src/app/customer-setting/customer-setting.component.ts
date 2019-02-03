@@ -11,9 +11,9 @@ import { ConfirmationService, Message } from 'primeng/api';
 })
 export class CustomerSettingComponent implements OnInit {
 
-  customer: Customer[] = [];
+  customers: Customer[] = [];
 
-  user: Customer = { value: null };
+  customer: Customer = { value: null };
 
   msgs: Message[] = [];
 
@@ -35,13 +35,13 @@ export class CustomerSettingComponent implements OnInit {
     private route: ActivatedRoute,
     private customerService: CustomerService,
     private confirmationService: ConfirmationService,
-    ) {
+  ) {
     this.route.params.subscribe(params => {
       if (params.firstName) {
         this.customerService.getCustomerByName(params.firstName).subscribe(notificationCustomer => {
-          this.customer.push(notificationCustomer);
+          this.customers.push(notificationCustomer);
           this.showCustomerDetails = true;
-          if (this.customer[0].admin) {
+          if (this.customers[0].admin) {
             this.adminCheck = true;
             this.normalUser = false;
           } else {
@@ -51,41 +51,40 @@ export class CustomerSettingComponent implements OnInit {
         });
       }
     });
-   }
+  }
 
   ngOnInit() {
   }
 
   saveNewPassword() {
-    this.user = this.cloneCustomer(this.customer[0]);
-    if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
-      if (this.customerPassword === this.user.password) {
-        this.confirmationService.confirm({
-          message: 'Sicuro di voler Cambiare la Password?',
-          header: 'Aggiornamento Password',
-          icon: 'pi pi-exclamation-triangle',
-          accept: () => {
-            this.user.password = this.newCustomerPassword;
-            this.customerService.updateCustomer(this.user).subscribe(response => {
-              if (response !== null) {
-                this.user = null;
-                this.customer = response.filter((val) => val.id === this.customer[0].id) as Customer[];
-                this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
+    this.customer = this.cloneCustomer(this.customers[0]);
+    this.customerService.logingCustomer(this.customer, this.customerPassword).subscribe(login => {
+      if (login) {
+        if (this.newCustomerPassword === this.repeatedNewCustomerPassword) {
+          this.confirmationService.confirm({
+            message: 'Sicuro di voler Cambiare la Password?',
+            header: 'Aggiornamento Password',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+              this.customer.password = this.newCustomerPassword;
+              this.customerService.changeCustomerPsw(this.customer).subscribe(response => {
+                if (response) {
+                  this.msgs = [{ severity: 'success', summary: 'Aggiornamento Password Completato', detail: 'Password Modificata' }];
+                } else {
+                  this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Aggiornamento Password Errato' }];
+                }
                 this.showChangePassword = false;
-                this.newCustomerPassword = undefined;
-                this.repeatedNewCustomerPassword = undefined;
-                this.customerPassword = undefined;
-              }
-            });
-          },
-          reject: () => { }
-        });
+              });
+            },
+            reject: () => { }
+          });
+        } else {
+          this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Le Password non Corrispondono' }];
+        }
       } else {
         this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'La Password Attuale non è Corretta' }];
       }
-    } else {
-      this.msgs = [{ severity: 'warn', summary: 'Attenzione', detail: 'Le Password non Corrispondono' }];
-    }
+    });
   }
 
   cloneCustomer(r: Customer): Customer {
