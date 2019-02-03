@@ -11,18 +11,31 @@
     </div>
     <div class="ui-g-12 ui-md-4 ui-lg-2">
       <div class="label"> Formato Film </div>
-      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="formats"
-        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
+      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" [panelStyle]="{minWidth:'12em'}"
+        [options]="formats" [(ngModel)]="filters.format" defaultLabel="Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
     </div>
     <div class="ui-g-12 ui-md-4 ui-lg-2">
       <div class="label"> Categoria Film </div>
-      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" sdc-multiselect [options]="category"
-        [(ngModel)]="filters.format" defaultLabel=" &#xF002; Categoria" (onChange)="findForCategory($event.value, ft)"></p-multiSelect>
+      <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" [panelStyle]="{minWidth:'12em'}"
+        [options]="category" [(ngModel)]="filters.category" (onChange)="findForCategory($event.value, ft)">
+        <ng-template let-value pTemplate="selectedItems">
+          <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+            <img src="./../../assets/showcase/images/categorie/{{val}}.png" style="width:20px;vertical-align:middle;margin-right:.5em" />
+            <span>{{val}}</span>
+          </div>
+          <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Categoria</span>
+        </ng-template>
+        <ng-template let-cat pTemplate="item">
+          <img src="./../../assets/showcase/images/categorie/{{cat.label}}.png" style="width:24px;display:inline-block;vertical-align:middle" />
+          <div style="font-size:14px;float:right;margin-top:4px">{{cat.label}}</div>
+        </ng-template>
+      </p-multiSelect>
     </div>
     <div class="ui-g-12 ui-md-6 ui-lg-5">
-      <div class="label" style="text-align: center; font-family: FontAwesome;"> &#xF002; Film dal {{yearFilter || 1996}} a Oggi </div>
-      <p-slider [style]="{'width':'80%','margin-top':'14px','margin-left':'10%'}" [(ngModel)]="yearFilter" [min]="minYear" [max]="maxYear"
-        (onChange)="onYearChange($event, ft)"></p-slider>
+      <div class="label" style="text-align: center; font-family: FontAwesome;"> &#xF002; Film dal {{yearFilter ||
+        1996}} a Oggi </div>
+      <p-slider [style]="{'width':'80%','margin-top':'14px','margin-left':'10%'}" [(ngModel)]="yearFilter" [min]="minYear"
+        [max]="maxYear" (onChange)="onYearChange($event, ft)"></p-slider>
     </div>
     <div film-button-third class="ui-g-12 ui-md-6 ui-lg-1 resetButton" style="text-align: right; padding-right: 0px;">
       <button pButton type="button" label="Reset Filtri" (click)="reset(ft)" style="margin-top: 14px;"></button>
@@ -68,7 +81,8 @@
           <img *ngFor="let lingua of rowData.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
         </td>
         <td>
-          <img *ngFor="let linguaSub of rowData.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png" title="{{linguaSub}}">
+          <img *ngFor="let linguaSub of rowData.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
+            title="{{linguaSub}}">
           <span *ngIf="!rowData.linguaSottotitoli"> - </span>
         </td>
         <td>

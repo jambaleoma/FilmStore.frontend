@@ -12,10 +12,6 @@
   </div>
 </div>
 
-<div *ngIf="loggedCustomer && !loggedCustomer.admin">
-  <h1 style="text-align: center" *ngIf="customers[0]">Profilo Personale di {{customers[0].firstName}}</h1>
-</div>
-
 <div class="ui-grid-col-12" style="padding-top: 2em; padding-left: 10%; padding-right: 10%" *ngIf="loggedCustomer">
   <p-table [columns]="cols" film-table [value]="customers" #ct>
     <ng-template pTemplate="header" let-columns>
@@ -29,9 +25,6 @@
         <th style="width: 10%">
           Richieste
         </th>
-        <th style="width: 12%">
-          Dettaglio Richieste
-        </th>
         <th style="width: 11%" *ngIf="loggedCustomer.admin">
           Gestione Utente
         </th>
@@ -42,11 +35,7 @@
         <td>
           <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;">
         </td>
-        <td *ngFor="let col of columns">
-          {{customer[col.field]}}
-        </td>
-        <td>
-          {{customer.numeroRichieste}}
+        <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(customer) : customer[col.field]">
         </td>
         <td>
           <p-button icon="fa fa-search" title="Visualizza Richieste" (onClick)="goToListaRichiesteCustomer(customer.firstName)"></p-button>
@@ -66,7 +55,7 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="900" [positionTop]="250">
+<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="900" [positionTop]="200">
   <p-header>
     Dettaglio Utente
   </p-header>
@@ -111,20 +100,16 @@
           <p-spinner [disabled]="!loggedCustomer.admin" size="30" id="richieste" name="richieste" [(ngModel)]="customer.numeroRichieste"
             [max]="100" [min]="0" [step]="1" style="width: 100%"></p-spinner>
         </div>
-        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && !loggedCustomer.admin">
-          <label></label>
+        <div class="ui-g-3" *ngIf="!newCustomer">
+          <label>Categorie Preferite:</label>
         </div>
-        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword">
+        <div class="ui-g-3" *ngIf="!newCustomer">
+          <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" [panelStyle]="{minWidth:'12em'}" [options]="category"
+            [(ngModel)]="customer.categoriePreferite" id="categoriePreferite" name="categoriePreferite"></p-multiSelect>
+        </div>
+        <div class="ui-g-4 ui-g-offset-4" *ngIf="!newCustomer && !showChangePassword" style="margin-bottom: 1em; margin-top: 2em;">
           <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
-            label="Modifca Password" style="font-size: 15px !important; height: 40px;"></button>
-        </div>
-        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && customer.admin && loggedCustomer.admin">
-          <button type="button" pButton class="ui-button-warning" icon="fa fa-unlock" (click)="changeCustomerRole(customer, false)"
-            label="Rimuovi Admin" style="font-size: 15px !important; height: 40px;"></button>
-        </div>
-        <div class="ui-g-3" *ngIf="!newCustomer && !showChangePassword && !customer.admin && loggedCustomer.admin">
-          <button type="button" pButton class="ui-button-warning" icon="fa fa-lock" (click)="changeCustomerRole(customer, true)"
-            label="Assegna Admin" style="font-size: 15px !important; height: 40px;"></button>
+            label="Modifca Password"></button>
         </div>
         <div class="ui-g-12" *ngIf="showChangePassword">
           <div class="ui-g-3" *ngIf="!newCustomer">
@@ -157,7 +142,7 @@
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix" *ngIf="loggedCustomer">
-        <div class="ui-g-6" *ngIf="!newCustomer && loggedCustomer.admin && !showChangePassword">
+        <div class="ui-g-4" *ngIf="!newCustomer && loggedCustomer.admin && !showChangePassword">
           <button type="button" pButton class="ui-button-danger" icon="fa fa-trash-o" (click)="delete()" label="Elimina Utente"></button>
         </div>
         <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword">
@@ -166,7 +151,16 @@
         <div class="ui-g-12" *ngIf="newCustomer" style="text-align: center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva Utente"></button>
         </div>
-        <div class="ui-g-6" *ngIf="!newCustomer && !showChangePassword && loggedCustomer.admin" style="text-align: right">
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && customer.admin && loggedCustomer.admin" style="text-align: center">
+          <button type="button" pButton class="ui-button-warning" icon="fa fa-unlock" (click)="changeCustomerRole(customer, false)"
+            label="Rimuovi Admin"></button>
+        </div>
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && !customer.admin && loggedCustomer.admin"
+          style="text-align: center">
+          <button type="button" pButton class="ui-button-warning" icon="fa fa-lock" (click)="changeCustomerRole(customer, true)"
+            label="Assegna Admin"></button>
+        </div>
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && loggedCustomer.admin" style="text-align: right">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-upload" (click)="save()" label="Aggiorna Utente"></button>
         </div>
         <div class="ui-g-6" *ngIf="!newCustomer && showChangePassword" style="text-align: right">
