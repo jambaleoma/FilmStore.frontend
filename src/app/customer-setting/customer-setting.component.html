@@ -5,14 +5,14 @@
 
   <div class="ui-g-12">
     <h1 style="text-align: center">
-      Utente: {{customer[0].firstName}} {{customer[0].lastName}}
+      Utente: {{customers[0].firstName}} {{customers[0].lastName}}
     </h1>
 
-    <p-dataView #dv [value]="customer" [rows]="20">
-      <ng-template let-user pTemplate="listItem">
+    <p-dataView #dv [value]="customers" [rows]="20">
+      <ng-template let-customer pTemplate="listItem">
         <div class="ui-g-12">
           <div class="ui-g-3" style="text-align:center">
-            <img src="../../assets/showcase/images/customer/{{customer[0].id}}.png" style="width: 70%;">
+            <img src="../../assets/showcase/images/customer/{{customers[0].id}}.png" style="width: 70%;">
           </div>
           <div class="ui-g-9">
             <div class="ui-g-3"></div>
@@ -21,27 +21,27 @@
             <div class="ui-g-3"></div>
 
             <div class="ui-g-2">Nome: </div>
-            <div class="ui-g-2"><b>{{user.firstName}}</b></div>
+            <div class="ui-g-2"><b>{{customer.firstName}}</b></div>
 
             <div class="ui-g-2">Cognome: </div>
-            <div class="ui-g-2"><b>{{user.lastName}}</b></div>
+            <div class="ui-g-2"><b>{{customer.lastName}}</b></div>
 
             <div class="ui-g-3"></div>
             <div class="ui-g-3"></div>
             <div class="ui-g-3"></div>
 
             <div class="ui-g-2">Sesso: </div>
-            <div class="ui-g-2"><b>{{user.sesso}}</b></div>
+            <div class="ui-g-2"><b>{{customer.sesso}}</b></div>
 
             <div class="ui-g-2">Data di Nascita: </div>
-            <div class="ui-g-2"><b>{{user.dataDiNascita}}</b></div>
+            <div class="ui-g-2"><b>{{customer.dataDiNascita}}</b></div>
 
             <div class="ui-g-3"></div>
             <div class="ui-g-3"></div>
             <div class="ui-g-3"></div>
 
             <div class="ui-g-2">N. Richieste: </div>
-            <div class="ui-g-2"><b>{{user.numeroRichieste}}</b></div>
+            <div class="ui-g-2"><b>{{customer.numeroRichieste}}</b></div>
 
             <div class="ui-g-2">Tipo Utente: </div>
             <div class="ui-g-2" *ngIf="normalUser"><b>Utente Base</b></div>
