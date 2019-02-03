@@ -55,7 +55,7 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="900" [positionTop]="200">
+<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="950" [positionTop]="150">
   <p-header>
     Dettaglio Utente
   </p-header>
@@ -104,8 +104,17 @@
           <label>Categorie Preferite:</label>
         </div>
         <div class="ui-g-3" *ngIf="!newCustomer">
-          <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" [panelStyle]="{minWidth:'12em'}" [options]="category"
-            [(ngModel)]="customer.categoriePreferite" id="categoriePreferite" name="categoriePreferite"></p-multiSelect>
+          <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false"
+            [panelStyle]="{minWidth:'12em'}" [options]="category" [(ngModel)]="customer.categoriePreferite" id="categoriePreferite"
+            name="categoriePreferite">
+            <ng-template let-value pTemplate="selectedItems">
+              <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+                <img src="./../../assets/showcase/images/categorie/{{val}}.png" style="width:20px;vertical-align:middle;margin-right:.5em" />
+                <span>{{val}}</span>
+              </div>
+              <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Nessuna</span>
+            </ng-template>
+          </p-multiSelect>
         </div>
         <div class="ui-g-4 ui-g-offset-4" *ngIf="!newCustomer && !showChangePassword" style="margin-bottom: 1em; margin-top: 2em;">
           <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
