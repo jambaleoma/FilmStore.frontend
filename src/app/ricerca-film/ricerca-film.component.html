@@ -12,7 +12,15 @@
     <div class="ui-g-12 ui-md-4 ui-lg-2">
       <div class="label"> Formato Film </div>
       <p-multiSelect [filter]="false" [showToggleAll]="false" [showHeader]="false" [panelStyle]="{minWidth:'12em'}"
-        [options]="formats" [(ngModel)]="filters.format" defaultLabel="Formato" (onChange)="ft.filter($event.value, 'formato', 'in')"></p-multiSelect>
+        [options]="formats" [(ngModel)]="filters.format" (onChange)="ft.filter($event.value, 'formato', 'in')">
+        <ng-template let-value pTemplate="selectedItems">
+          <div *ngFor="let val of value" class="ui-multiselected-item-token ui-corner-all">
+            <span>{{val}}</span>
+          </div>
+          <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all"><i class="fa fa-search"
+              aria-hidden="true" style="margin-right: 5px"></i>Formato</span>
+        </ng-template>
+      </p-multiSelect>
     </div>
     <div class="ui-g-12 ui-md-4 ui-lg-2">
       <div class="label"> Categoria Film </div>
@@ -23,7 +31,8 @@
             <img src="./../../assets/showcase/images/categorie/{{val}}.png" style="width:20px;vertical-align:middle;margin-right:.5em" />
             <span>{{val}}</span>
           </div>
-          <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all">Categoria</span>
+          <span *ngIf="!value || value.length === 0" class="ui-multiselected-empty-token ui-corner-all"><i class="fa fa-search"
+              aria-hidden="true" style="margin-right: 5px"></i>Categoria</span>
         </ng-template>
         <ng-template let-cat pTemplate="item">
           <img src="./../../assets/showcase/images/categorie/{{cat.label}}.png" style="width:24px;display:inline-block;vertical-align:middle" />
