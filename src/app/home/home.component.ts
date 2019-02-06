@@ -17,6 +17,9 @@ export class HomeComponent implements OnInit {
 
   showSerieTvAdminDialog = false;
   loggedCustomer: Customer;
+  recommendedFilms: Film[] = [];
+  recommendedFilmsToPut: Film[] = [];
+  recommendedfilmNumber = 3;
   newFilms: Film[] = [];
   newFilmsToPut: Film[] = [];
   newfilmNumber = 9;
@@ -40,6 +43,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
+      if (this.loggedCustomer.categoriePreferite.length > 0) {
+        this.getRecommendedFilm();
+      }
       if (this.applicationService.getShowWelcome()) {
         if (this.loggedCustomer.sesso === 'Maschio') {
           this.messageService.add({
@@ -93,6 +99,31 @@ export class HomeComponent implements OnInit {
       this.newSerie = this.newSerieToPut;
       this.loadFooter = true;
     });
+  }
+
+  getRecommendedFilm() {
+    if (this.loggedCustomer) {
+      this.filmSerive.getFilmsByCategory(
+        this.loggedCustomer.categoriePreferite[Math.floor(Math.random() * this.loggedCustomer.categoriePreferite.length)])
+        .subscribe(notification => {
+          if (notification) {
+            const films = notification;
+            for (let i = 0; i < this.recommendedfilmNumber; i++) {
+              if (films[i]) {
+                if (!this.recommendedFilmsToPut.find(f => f._id === films[i]._id)) {
+                  this.recommendedFilmsToPut.push(films[i]);
+                } else {
+                  i--;
+                }
+              }
+            }
+          } else {
+            this.getRecommendedFilm();
+          }
+          console.log(this.recommendedFilmsToPut);
+          this.recommendedFilms = this.recommendedFilmsToPut;
+        });
+    }
   }
 
   showDetailsFilm(filmId: string) {
