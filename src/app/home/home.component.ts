@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit {
   newSerieToPut: Serie[] = [];
   newSerieNumber = 3;
   loadFooter = false;
+  categoriaPreferita: string;
 
   constructor(
     private filmSerive: FilmService,
@@ -103,26 +104,25 @@ export class HomeComponent implements OnInit {
 
   getRecommendedFilm() {
     if (this.loggedCustomer) {
-      this.filmSerive.getFilmsByCategory(
-        this.loggedCustomer.categoriePreferite[Math.floor(Math.random() * this.loggedCustomer.categoriePreferite.length)])
-        .subscribe(notification => {
-          if (notification) {
-            const films = notification;
-            for (let i = 0; i < this.recommendedfilmNumber; i++) {
-              if (films[i]) {
-                if (!this.recommendedFilmsToPut.find(f => f._id === films[i]._id)) {
-                  this.recommendedFilmsToPut.push(films[i]);
-                } else {
-                  i--;
-                }
+      const index = Math.floor(Math.random() * this.loggedCustomer.categoriePreferite.length);
+      this.categoriaPreferita = this.loggedCustomer.categoriePreferite[index];
+      this.filmSerive.getFilmsByCategory(this.categoriaPreferita).subscribe(notification => {
+        if (notification) {
+          const films = notification;
+          for (let i = 0; i < this.recommendedfilmNumber; i++) {
+            if (films[i]) {
+              if (!this.recommendedFilmsToPut.find(f => f._id === films[i]._id)) {
+                this.recommendedFilmsToPut.push(films[i]);
+              } else {
+                i--;
               }
             }
-          } else {
-            this.getRecommendedFilm();
           }
-          console.log(this.recommendedFilmsToPut);
-          this.recommendedFilms = this.recommendedFilmsToPut;
-        });
+        } else {
+          this.getRecommendedFilm();
+        }
+        this.recommendedFilms = this.recommendedFilmsToPut;
+      });
     }
   }
 

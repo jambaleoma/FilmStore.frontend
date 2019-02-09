@@ -99,11 +99,11 @@
         </p-carousel>
       </div>
 
-      <div *ngIf="recommendedFilms" style="text-align: center; padding-top: 4em;">
-          <h1>Film consigliati per TE</h1>
-          <p-carousel [value]="recommendedFilms" autoplayInterval="5000">
+      <div *ngIf="recommendedFilms" style="padding-top: 4em;">
+          <h1 style="text-align: center">Film consigliati per TE</h1>
+          <p-carousel [value]="recommendedFilms" [headerText]="categoriaPreferita" autoplayInterval="5000">
             <ng-template let-film pTemplate="item">
-              <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em;">
+              <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em; text-align: center">
                 <div class="ui-grid-row">
                   <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg"
                       style="height: 20em;"></div>
