@@ -1,5 +1,4 @@
 import { ListItem } from './../_api/models/list-items';
-import { ApplicationService } from './../_service/application.service';
 import { Voto } from './../_api/models/voto';
 import { VotoService } from './../_api/services/voto.service';
 import { Stagione } from './../_api/models/stagione';
@@ -95,8 +94,7 @@ export class StatisticheComponent {
     private richiestaService: RichiestaService,
     private filmService: FilmService,
     private stagioneService: StagioneService,
-    private votoService: VotoService,
-    private applicationService: ApplicationService
+    private votoService: VotoService
   ) {
 
     this.cols = [
@@ -141,7 +139,7 @@ export class StatisticheComponent {
   getRichiesteForStatistics() {
     this.richiestaService.getRichiesteYearForStatistics().subscribe(notificationYear => {
       if (notificationYear) {
-        this.anniRichieste = notificationYear;
+        this.anniRichieste = notificationYear.sort();
         for (const anno of this.anniRichieste) {
           this.richiestaService.getRichiesteForStatistics(anno).subscribe(notification => {
             if (notification) {
@@ -202,7 +200,19 @@ export class StatisticheComponent {
       for (let i = 0; i < this.anniRichieste.length; i++) {
         dataLineRichiesteLabel.push('Richieste nel ' + this.anniRichieste[i]);
         dataLineRichiesteData.push(this.anno2_mese2richieste.get(this.anniRichieste[i]));
-        dataLineRichiestebackgroundColor.push(this.getRandomColor());
+        switch (this.anniRichieste[i]) {
+          case '2017':
+            dataLineRichiestebackgroundColor.push('#88B04B');
+            break;
+          case '2018':
+            dataLineRichiestebackgroundColor.push('#6b5b95');
+            break;
+          case '2019':
+            dataLineRichiestebackgroundColor.push('#fa7268');
+            break;
+          default:
+            dataLineRichiestebackgroundColor.push(this.getRandomColor());
+        }
         const dataSet = {
           label: dataLineRichiesteLabel[i],
             data: dataLineRichiesteData[i],
@@ -252,7 +262,20 @@ export class StatisticheComponent {
       for (const stato of this.statiRichiesta) {
         dataPolarRichiesteLabel.push('STATO ' + stato);
         dataPolarRichiesteData.push(this.stato2richieste.get(stato) ? this.stato2richieste.get(stato) : 0);
-        dataPolarRichiestebackgroundColor.push(this.getRandomColor());
+        switch (stato) {
+          case 'COMPLETATA':
+            dataPolarRichiestebackgroundColor.push('#00c400');
+            break;
+          case 'IN LAVORAZIONE':
+            dataPolarRichiestebackgroundColor.push('#0000FF');
+            break;
+          case 'PRESA IN CARICO':
+            dataPolarRichiestebackgroundColor.push('#FFA500');
+            break;
+          case 'RIFIUTATA':
+            dataPolarRichiestebackgroundColor.push('#FF0000');
+            break;
+        }
       }
       this.dataPolarRichieste = {
         labels: dataPolarRichiesteLabel,
