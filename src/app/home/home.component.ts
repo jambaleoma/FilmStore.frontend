@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   showSerieTvAdminDialog = false;
   loggedCustomer: Customer;
-  recommendedFilms: Film[] = [];
+  recommendedFilms: Film[];
   recommendedFilmsToPut: Film[] = [];
   recommendedfilmNumber = 3;
   newFilms: Film[] = [];
@@ -110,7 +110,7 @@ export class HomeComponent implements OnInit {
         if (notification) {
           const films = notification;
           for (let i = 0; i < this.recommendedfilmNumber; i++) {
-            if (films[i]) {
+            if (films[i] && this.recommendedFilmsToPut) {
               if (!this.recommendedFilmsToPut.find(f => f._id === films[i]._id)) {
                 this.recommendedFilmsToPut.push(films[i]);
               } else {
@@ -160,5 +160,9 @@ export class HomeComponent implements OnInit {
 
   goToRicheisteOnAdminMode() {
     this.router.navigate(['filmStore/richieste']);
+  }
+
+  goToPersonalPrifile() {
+    this.router.navigate(['filmStore/profiloUtente']);
   }
 }

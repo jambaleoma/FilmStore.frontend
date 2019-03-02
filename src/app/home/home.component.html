@@ -99,28 +99,41 @@
         </p-carousel>
       </div>
 
-      <div *ngIf="recommendedFilms" style="padding-top: 4em;">
-          <h1 style="text-align: center">Film consigliati per TE</h1>
-          <p-carousel [value]="recommendedFilms" [headerText]="categoriaPreferita" autoplayInterval="5000">
-            <ng-template let-film pTemplate="item">
-              <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em; text-align: center">
-                <div class="ui-grid-row">
-                  <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg"
-                      style="height: 20em;"></div>
-                </div>
-                <div class="ui-grid-row" style="padding-top: 2em">
-                  <div class="ui-grid-col-12"><b>{{film.nome}}</b></div>
-                </div>
-                <div class="ui-grid-row" style="padding-top: 2em">
-                  <div class="ui-grid-col-12">
-                    <button type="button" title="Visualizza Dettagli" pButton icon="pi pi-search" (click)="showDetailsFilm(film._id)"></button>
-                  </div>
+      <div *ngIf="categoriaPreferita" style="padding-top: 4em;">
+        <h1 style="text-align: center">Film Consigliati</h1>
+        <p-carousel [value]="recommendedFilms" [headerText]="'Categoria: ' + categoriaPreferita" autoplayInterval="5000">
+          <ng-template let-film pTemplate="item">
+            <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em; text-align: center">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg"
+                    style="height: 20em;"></div>
+              </div>
+              <div class="ui-grid-row" style="padding-top: 2em">
+                <div class="ui-grid-col-12"><b>{{film.nome}}</b></div>
+              </div>
+              <div class="ui-grid-row" style="padding-top: 2em">
+                <div class="ui-grid-col-12">
+                  <button type="button" title="Visualizza Dettagli" pButton icon="pi pi-search" (click)="showDetailsFilm(film._id)"></button>
                 </div>
               </div>
-            </ng-template>
-          </p-carousel>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+      <div *ngIf="!categoriaPreferita">
+        <div style="padding-top: 4em; text-align: center; padding-left: 25%; padding-right: 25%;">
+          <p-card title="Quali sono le tue Categorie preferite?" subtitle="Inserisci le tue Categorie" styleClass="ui-card-shadow">
+            <p-header>
+              <img src="Card" src="../../assets/showcase/images/HomePage/Card/Preferiti.jpg">
+            </p-header>
+            <div>Qui potrai scegliere le tue categorie di Film preferite, per essere sempre aggiornato sulle nuove
+              uscite che più ti piacciono.</div>
+            <p-footer>
+              <button pButton type="button" label="Aggiungi Categorie Preferite" icon="fa fa-star" (click)="goToPersonalPrifile()"></button>
+            </p-footer>
+          </p-card>
         </div>
-
+      </div>
     </div>
   </div>
 </div>
@@ -155,7 +168,7 @@
         </ul>
       </div>
       <div class="ui-g-2">
-          <img src="../../assets/showcase/images/icon/video-player-icon-1.jpg" style="margin-top: 5px; width: 40%;">
+        <img src="../../assets/showcase/images/icon/video-player-icon-1.jpg" style="margin-top: 5px; width: 40%;">
       </div>
       <div class="ui-g-3" style="text-align: right">
         <ul style="list-style-type: none;">
