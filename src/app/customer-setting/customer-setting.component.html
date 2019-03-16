@@ -34,8 +34,8 @@
             <div class="ui-g-3"><b>{{customer.numeroRichieste}}</b></div>
 
             <div class="ui-g-3">Tipo Utente: </div>
-            <div class="ui-g-3" *ngIf="normalUser"><b>Utente Base</b></div>
-            <div class="ui-g-3" *ngIf="adminCheck"><b>Admin</b></div>
+            <div class="ui-g-3" *ngIf="!customer.admin"><b>Utente Base</b></div>
+            <div class="ui-g-3" *ngIf="customer.admin"><b>Admin</b></div>
 
           </div>
           <div class="ui-g-12" style="text-align: center">
@@ -51,12 +51,12 @@
               </div>
             </div>
             <div class="ui-g-6">
-              <p-fileUpload name="demo[]" auto="true" mode="basic" chooseLabel="Scegli Avatar" url="http://localhost:8080/rest/customers/avatar/saveCustomerImage"
-                accept="image/*" maxFileSize="1000000"></p-fileUpload>
+              <p-fileUpload name="customerAvatar" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
+                auto="true" mode="basic" chooseLabel="Scegli Avatar" accept="image/*"></p-fileUpload>
             </div>
           </div>
           <div class="ui-g-12" *ngIf="showChangePassword">
-            <form name="form" #fRichieste="ngForm">
+            <form name="form" #fChangePsw="ngForm">
               <div class="ui-g-4" style="text-align: center">
                 <div class="label">Password Attuale:</div>
                 <input pInputText id="psw" name="psw" type="password" [(ngModel)]="customerPassword" style="width: 65%; align-self: center;" />
