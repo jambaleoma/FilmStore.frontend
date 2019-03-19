@@ -16,4 +16,5 @@ export interface Customer {
     richieste?: Richiesta[];
     categoriePreferite?: string[];
     admin?: boolean;
+    avatar?: boolean;
 }
