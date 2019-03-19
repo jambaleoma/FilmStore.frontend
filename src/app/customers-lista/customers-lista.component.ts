@@ -49,6 +49,8 @@ export class CustomersListaComponent implements OnInit {
 
   category: string[] = [];
 
+  postPath: string;
+
   @ViewChild('ct') ct: Table;
 
   constructor(
@@ -99,11 +101,7 @@ export class CustomersListaComponent implements OnInit {
 
   subsrcibeToListOfCustomers() {
     this.customerService.getCustomers().subscribe(notification => {
-      if (this.loggedCustomer && !this.loggedCustomer.admin) {
-        this.customers[0] = notification.find(customer => customer.firstName === this.loggedCustomer.firstName);
-      } else {
         this.customers = notification;
-      }
     });
   }
 
@@ -138,6 +136,7 @@ export class CustomersListaComponent implements OnInit {
     this.newCustomer = false;
     this.customer = this.cloneCustomer(customer);
     this.customerSelezionato = customer;
+    this.postPath = 'http://localhost:8080/rest/customers/avatar/saveCustomerImage/' + this.customerSelezionato.id;
     this.displayDialog = true;
     setTimeout(() => {
       this.renderer.selectRootElement('#nome').focus();
@@ -252,6 +251,36 @@ export class CustomersListaComponent implements OnInit {
             }
           });
         }
+      },
+      reject: () => { }
+    });
+  }
+
+  successfulUpload() {
+    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
+    location.reload();
+  }
+
+  errorUpload() {
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!'}];
+  }
+
+  deleteCustomerAvatar() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare L\'Avatar di questo Utente?',
+      header: 'Eliminazione Avatar',
+      icon: 'fa fa-trash',
+      accept: () => {
+        this.customerSelezionato.avatar = false;
+        this.customerSelezionato.avatarBase64 = null;
+        this.customerService.updateCustomer(this.customerSelezionato).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Avatar Completata', detail: 'Avatar Eliminato' }];
+            location.reload();
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Avatar NON Eliminato' }];
+          }
+        });
       },
       reject: () => { }
     });
