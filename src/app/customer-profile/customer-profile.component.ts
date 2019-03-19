@@ -2,9 +2,8 @@ import { ApplicationService } from './../_service/application.service';
 import { ListItem } from './../_api/models/list-items';
 import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
-import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Customer } from '../_api/models/customer';
-import { Richiesta } from '../_api/models';
 import { Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -19,29 +18,11 @@ export class CustomerProfileComponent implements OnInit {
 
   customer: Customer = { value: null };
 
-  customerSelezionato: Customer;
-
-  newCustomer: boolean;
-
-  showYDSTMW = false;
-
   msgs: Message[] = [];
-
-  richiestePerNomeUtente: Richiesta[];
 
   cols: any[];
 
   displayCategoryDialog: boolean;
-
-  showChangePassword = false;
-
-  checked1 = false;
-
-  customerPassword: string;
-
-  newCustomerPassword: string;
-
-  repeatedNewCustomerPassword: string;
 
   loggedCustomer: Customer;
 

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CustomerService } from '../_api/services/customer.service';
 import { Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Customer } from '../_api/models/customer';
-import { Richiesta } from '../_api/models';
 import { Message, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 
@@ -27,15 +26,11 @@ export class CustomersListaComponent implements OnInit {
 
   msgs: Message[] = [];
 
-  richiestePerNomeUtente: Richiesta[];
-
   cols: any[];
 
   displayDialog: boolean;
 
   showChangePassword = false;
-
-  checked1 = false;
 
   customerPassword: string;
 
