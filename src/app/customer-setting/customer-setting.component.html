@@ -8,51 +8,76 @@
       Utente: {{customers[0].firstName}} {{customers[0].lastName}}
     </h1>
 
-    <p-dataView #dv [value]="customers" [rows]="20">
+    <!-- PRIMO RIQUADRO -->
+
+    <div style="padding-bottom: 1em">
+      <p-dataView #dv [value]="customers" [rows]="20">
+        <ng-template let-customer pTemplate="listItem">
+          <div class="ui-g-12">
+            <div class="ui-g-3" style="text-align:center">
+              <img *ngIf="customer.avatar" src="../../assets/showcase/images/customer/{{customers[0].id}}.png" style="width: 70%;">
+              <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="width: 70%;">
+            </div>
+            <div class="ui-g-9">
+              <div style="padding-top: 3em">
+                <div class="ui-g-3">Nome: </div>
+                <div class="ui-g-3"><b>{{customer.firstName}}</b></div>
+                <div class="ui-g-3">Cognome: </div>
+                <div class="ui-g-3"><b>{{customer.lastName}}</b></div>
+                <div class="ui-g-3">Sesso: </div>
+                <div class="ui-g-3"><b>{{customer.sesso}}</b></div>
+                <div class="ui-g-3">Data di Nascita: </div>
+                <div class="ui-g-3"><b>{{customer.dataDiNascita}}</b></div>
+                <div class="ui-g-3">N. Richieste: </div>
+                <div class="ui-g-3"><b>{{customer.numeroRichieste}}</b></div>
+                <div class="ui-g-3">Tipo Utente: </div>
+                <div class="ui-g-3" *ngIf="!customer.admin"><b>Utente Base</b></div>
+                <div class="ui-g-3" *ngIf="customer.admin"><b>Admin</b></div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+
+    <!-- SECONDO RIQUADRO -->
+
+    <div style="padding-bottom: 1em">
+      <p-dataView #dv2 [value]="customers" [rows]="20">
+        <ng-template let-customer pTemplate="listItem">
+          <div class="ui-g-12" style="text-align: center">
+            <div *ngIf="customer.avatar" class="ui-g-6" style="padding-top: 1em">
+                <button type="button" pButton class="ui-button-danger" icon="fa fa-times" (click)="deleteAvatar();"
+                label="Elimina Avatar"></button>
+            </div>
+            <div *ngIf="!customer.avatar" class="ui-g-12">
+              <p-fileUpload name="customerAvatar" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
+                chooseLabel="Scegli Avatar" uploadLabel="Carica Immagine" cancelLabel="Cancella" accept="image/*"></p-fileUpload>
+            </div>
+            <div *ngIf="customer.avatar" class="ui-g-6">
+              <p-fileUpload name="customerAvatar" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
+                chooseLabel="Modifca Avatar" uploadLabel="Carica Immagine" cancelLabel="Cancella" accept="image/*"></p-fileUpload>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </div>
+
+    <!-- TERZO RIQUADRO -->
+
+    <p-dataView #dv3 [value]="customers" [rows]="20">
       <ng-template let-customer pTemplate="listItem">
         <div class="ui-g-12">
-          <div class="ui-g-3" style="text-align:center">
-            <img src="../../assets/showcase/images/customer/{{customers[0].id}}.png" style="width: 70%;">
-          </div>
-          <div class="ui-g-9">
-
-            <div style="padding-top: 1em">
-              <div class="ui-g-3">Nome: </div>
-              <div class="ui-g-3"><b>{{customer.firstName}}</b></div>
-
-              <div class="ui-g-3">Cognome: </div>
-              <div class="ui-g-3"><b>{{customer.lastName}}</b></div>
-            </div>
-
-            <div class="ui-g-3">Sesso: </div>
-            <div class="ui-g-3"><b>{{customer.sesso}}</b></div>
-
-            <div class="ui-g-3">Data di Nascita: </div>
-            <div class="ui-g-3"><b>{{customer.dataDiNascita}}</b></div>
-
-            <div class="ui-g-3">N. Richieste: </div>
-            <div class="ui-g-3"><b>{{customer.numeroRichieste}}</b></div>
-
-            <div class="ui-g-3">Tipo Utente: </div>
-            <div class="ui-g-3" *ngIf="!customer.admin"><b>Utente Base</b></div>
-            <div class="ui-g-3" *ngIf="customer.admin"><b>Admin</b></div>
-
-          </div>
           <div class="ui-g-12" style="text-align: center">
-            <div class="ui-g-6">
+            <div class="ui-g-12">
               <div *ngIf="!showChangePassword">
                 <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
                   label="Modifca Password"></button>
               </div>
-
               <div *ngIf="showChangePassword">
                 <button type="button" pButton class="ui-button-danger" icon="fa fa-times" (click)="showChangePassword = false;"
                   label="Annulla Modifca"></button>
               </div>
-            </div>
-            <div class="ui-g-6">
-              <p-fileUpload name="customerAvatar" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
-                auto="true" mode="basic" chooseLabel="Scegli Avatar" accept="image/*"></p-fileUpload>
             </div>
           </div>
           <div class="ui-g-12" *ngIf="showChangePassword">

@@ -82,7 +82,12 @@ export class CustomerSettingComponent {
   }
 
   successfulUpload() {
-    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
+    this.loggedCustomer.avatar = true;
+    this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
+      if (response !== null) {
+        this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
+      }
+    });
   }
 
   errorUpload() {
@@ -96,6 +101,25 @@ export class CustomerSettingComponent {
       ric[prop] = r[prop];
     }
     return ric;
+  }
+
+  deleteAvatar() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare il tuo Avatar?',
+      header: 'Eliminazione Avatar',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.loggedCustomer.avatar = false;
+        this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Avatar Completata', detail: 'Avatar Eliminato' }];
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Avatar NON Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
 }
