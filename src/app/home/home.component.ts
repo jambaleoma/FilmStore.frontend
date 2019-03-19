@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
-      if (this.loggedCustomer.categoriePreferite.length > 0) {
+      if (this.loggedCustomer.categoriePreferite && this.loggedCustomer.categoriePreferite.length > 0) {
         this.getRecommendedFilm();
       }
       if (this.applicationService.getShowWelcome()) {

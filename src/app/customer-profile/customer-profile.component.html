@@ -28,7 +28,8 @@
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
         <td>
-          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;" width="200">
+          <img *ngIf="customer.avatar" src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;" width="200">
+          <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="width: 100%" width="200">
         </td>
         <td *ngFor="let col of columns">
           {{customer[col.field]}}
@@ -55,7 +56,7 @@
 </div>
 
 <p-dialog [(visible)]="displayCategoryDialog" closable="true" [responsive]="true" [modal]="true" [width]="1200"
-  [positionTop]="150">
+  [positionTop]="50">
   <p-header>
     Categorie Preferite dall'Utente
   </p-header>

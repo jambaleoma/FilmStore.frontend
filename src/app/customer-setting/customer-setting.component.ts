@@ -9,19 +9,17 @@ import { ConfirmationService, Message } from 'primeng/api';
   templateUrl: './customer-setting.component.html',
   styleUrls: ['./customer-setting.component.scss']
 })
-export class CustomerSettingComponent implements OnInit {
+export class CustomerSettingComponent {
 
   customers: Customer[] = [];
 
   customer: Customer = { value: null };
 
+  loggedCustomer: Customer;
+
   msgs: Message[] = [];
 
   showCustomerDetails = false;
-
-  adminCheck = false;
-
-  normalUser = false;
 
   showChangePassword = false;
 
@@ -31,6 +29,10 @@ export class CustomerSettingComponent implements OnInit {
 
   repeatedNewCustomerPassword: string;
 
+  postPath: string;
+
+  uploadedFiles: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private customerService: CustomerService,
@@ -39,21 +41,13 @@ export class CustomerSettingComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params.firstName) {
         this.customerService.getCustomerByName(params.firstName).subscribe(notificationCustomer => {
-          this.customers.push(notificationCustomer);
+          this.loggedCustomer = notificationCustomer;
+          this.customers.push(this.loggedCustomer);
           this.showCustomerDetails = true;
-          if (this.customers[0].admin) {
-            this.adminCheck = true;
-            this.normalUser = false;
-          } else {
-            this.adminCheck = false;
-            this.normalUser = true;
-          }
+          this.postPath = 'http://localhost:8080/rest/customers/avatar/saveCustomerImage/' + this.loggedCustomer.id;
         });
       }
     });
-  }
-
-  ngOnInit() {
   }
 
   saveNewPassword() {
@@ -87,6 +81,19 @@ export class CustomerSettingComponent implements OnInit {
     });
   }
 
+  successfulUpload() {
+    this.loggedCustomer.avatar = true;
+    this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
+      if (response !== null) {
+        this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
+      }
+    });
+  }
+
+  errorUpload() {
+    this.msgs = [{ severity: 'error', summary: 'Aggiornamento Avatar Non Riuscito', detail: 'Avatar Non Modificato' }];
+  }
+
   cloneCustomer(r: Customer): Customer {
     const ric = { value: null };
     // tslint:disable-next-line:forin
@@ -94,6 +101,25 @@ export class CustomerSettingComponent implements OnInit {
       ric[prop] = r[prop];
     }
     return ric;
+  }
+
+  deleteAvatar() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare il tuo Avatar?',
+      header: 'Eliminazione Avatar',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.loggedCustomer.avatar = false;
+        this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Avatar Completata', detail: 'Avatar Eliminato' }];
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Avatar NON Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
   }
 
 }

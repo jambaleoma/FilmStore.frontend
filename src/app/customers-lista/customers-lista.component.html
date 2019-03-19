@@ -33,7 +33,8 @@
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
         <td>
-          <img src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%;">
+          <img *ngIf="customer.avatar" src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%">
+          <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="width: 100%">
         </td>
         <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(customer) : customer[col.field]">
         </td>
@@ -55,11 +56,11 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="950" [positionTop]="150">
+<p-dialog [(visible)]="displayDialog" closable="true" [responsive]="true" [modal]="true" [width]="950" [positionTop]="50">
   <p-header>
     Dettaglio Utente
   </p-header>
-  <form name="form" #fRichieste="ngForm">
+  <form name="form" #fCustomer="ngForm">
     <div class="ui-g ui-fluid" style="padding-bottom: 2em" *ngIf="loggedCustomer && customer">
       <div class="ui-g-12">
         <div class="ui-g-3">
