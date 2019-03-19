@@ -33,7 +33,7 @@
     <ng-template pTemplate="body" let-customer let-columns="columns">
       <tr>
         <td>
-          <img *ngIf="customer.avatar" src="assets/showcase/images/customer/{{customer.id}}.png" style="width: 100%">
+          <img *ngIf="customer.avatar" [src]="customer.avatarBase64" style="width: 100%">
           <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="width: 100%">
         </td>
         <td *ngFor="let col of columns" [innerHTML]="col.renderer ? col.renderer(customer) : customer[col.field]">

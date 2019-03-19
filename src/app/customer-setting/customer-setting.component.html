@@ -15,7 +15,7 @@
         <ng-template let-customer pTemplate="listItem">
           <div class="ui-g-12">
             <div class="ui-g-3" style="text-align:center">
-              <img *ngIf="customer.avatar" src="../../assets/showcase/images/customer/{{customers[0].id}}.png" style="width: 70%;">
+              <img *ngIf="customer.avatar" [src]="customer.avatarBase64" style="width: 70%;">
               <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="width: 70%;">
             </div>
             <div class="ui-g-9">
