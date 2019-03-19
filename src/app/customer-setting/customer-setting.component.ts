@@ -82,16 +82,12 @@ export class CustomerSettingComponent {
   }
 
   successfulUpload() {
-    this.loggedCustomer.avatar = true;
-    this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
-      if (response !== null) {
-        this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
-      }
-    });
+    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Avatar Completato', detail: 'Avatar Modificato' }];
+    location.reload();
   }
 
   errorUpload() {
-    this.msgs = [{ severity: 'error', summary: 'Aggiornamento Avatar Non Riuscito', detail: 'Avatar Non Modificato' }];
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!'}];
   }
 
   cloneCustomer(r: Customer): Customer {
@@ -110,9 +106,11 @@ export class CustomerSettingComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.loggedCustomer.avatar = false;
+        this.loggedCustomer.avatarBase64 = null;
         this.customerService.updateCustomer(this.loggedCustomer).subscribe(response => {
           if (response !== null) {
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Avatar Completata', detail: 'Avatar Eliminato' }];
+            location.reload();
           } else {
             this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Avatar NON Eliminato' }];
           }

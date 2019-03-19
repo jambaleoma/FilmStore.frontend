@@ -17,4 +17,5 @@ export interface Customer {
     categoriePreferite?: string[];
     admin?: boolean;
     avatar?: boolean;
+    avatarBase64?: string;
 }
