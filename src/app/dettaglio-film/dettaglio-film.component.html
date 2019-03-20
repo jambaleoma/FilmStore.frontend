@@ -8,7 +8,7 @@
   <ng-template let-film pTemplate="listItem">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-3" style="text-align:center">
-        <img src="../../assets/showcase/images/film/{{films[0].urlLocandina}}.jpg" style="width: 70%;">
+        <img [src]="film.locandina" style="width: 70%;">
       </div>
       <div class="ui-g-12 ui-md-8" *ngIf="voto">
         <div class="ui-g">
@@ -30,13 +30,18 @@
 
           <div class="ui-g-2 ui-sm-6">Lingua Audio: </div>
           <div class="ui-g-10 ui-sm-6">
-            <img *ngFor="let lingua of film.linguaAudio" src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+            <span *ngFor="let lingua of film.linguaAudio">
+              <img src="assets/showcase/images/flags/{{lingua}}.png" title="{{lingua}}">
+              <span>{{lingua}}</span>
+            </span>
           </div>
 
           <div class="ui-g-2 ui-sm-6">Lingua Sottotitoli: </div>
           <div class="ui-g-5 ui-sm-6">
-            <img *ngFor="let linguaSub of film.linguaSottotitoli" src="assets/showcase/images/flags/{{linguaSub}}.png"
-              title="{{linguaSub}}">
+            <span *ngFor="let linguaSub of film.linguaSottotitoli">
+              <img src="assets/showcase/images/flags/{{linguaSub}}.png" title="{{linguaSub}}">
+              <span>{{linguaSub}}</span>
+            </span>
             <span *ngIf="!film.linguaSottotitoli"> - </span>
           </div>
 

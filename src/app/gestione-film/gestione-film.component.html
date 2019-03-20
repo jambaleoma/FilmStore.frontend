@@ -73,7 +73,7 @@
     <div class="ui-g ui-fluid" *ngIf="film" style="padding-bottom: 2em">
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>Titolo Film</label>
+          <label>Titolo Film:</label>
         </div>
         <div class="ui-g-9">
           <input pInputText id="titolo" name="titolo" [(ngModel)]="film.nome" style="width: 100%" />
@@ -81,7 +81,7 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>Formato Film</label>
+          <label>Formato Film:</label>
         </div>
         <div class="ui-g-3" *ngIf="newFilm">
           <p-dropdown [options]="formats" id="formato" name="formato" [(ngModel)]="film.formato"></p-dropdown>
@@ -90,20 +90,35 @@
           <p-dropdown [options]="formatDialog" id="formato" name="formato" [(ngModel)]="film.formato"></p-dropdown>
         </div>
         <div class="ui-g-3" style="text-align: center">
-          <label>Categoria</label>
+          <label>Anno Film:</label>
         </div>
         <div class="ui-g-3">
+          <p-inputMask id="anno" name="anno" mask="9999" [(ngModel)]="film.anno" slotChar="AAAA"></p-inputMask>
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-3">
+          <label>Categoria:</label>
+        </div>
+        <div class="ui-g-9">
           <p-multiSelect name="categoria" [showToggleAll]="false" [options]="category" [filter]="false" [(ngModel)]="film.categoria"
             [panelStyle]="{minWidth:'12em'}" defaultLabel="-"></p-multiSelect>
         </div>
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>Audio</label>
+          <label>Audio:</label>
         </div>
         <div class="ui-g-3">
           <p-multiSelect name="audio" [options]="audios" [(ngModel)]="film.linguaAudio" [panelStyle]="{minWidth:'12em'}"
             defaultLabel="-">
+            <ng-template let-audio pTemplate="selectedItems">
+              <div *ngFor="let val of audio" class="ui-multiselected-item-token ui-corner-all">
+                <img src="assets/showcase/images/flags/{{val}}.png" style="width:20px;vertical-align:middle;margin-right:.5em" />
+                <span>{{val}}</span>
+            </div>
+            <span *ngIf="!audio || audio.length === 0" class="ui-multiselected-empty-token ui-corner-all">-</span>
+            </ng-template>
             <ng-template let-audio pTemplate="item">
               <img src="assets/showcase/images/flags/{{audio.value}}.png" style="width:24px;display:inline-block;vertical-align:middle" />
               <div style="font-size:14px;float:right;margin-top:4px">{{audio.label}}</div>
@@ -111,30 +126,23 @@
           </p-multiSelect>
         </div>
         <div class="ui-g-3" style="text-align: center">
-          <label>Sottotitoli</label>
+          <label>Sottotitoli:</label>
         </div>
         <div class="ui-g-3">
           <p-multiSelect name="subtitle" [options]="audios" [(ngModel)]="film.linguaSottotitoli" [panelStyle]="{minWidth:'12em'}"
             defaultLabel="-">
+            <ng-template let-audio pTemplate="selectedItems">
+              <div *ngFor="let val of audio" class="ui-multiselected-item-token ui-corner-all">
+                <img src="assets/showcase/images/flags/{{val}}.png" style="width:20px;vertical-align:middle;margin-right:.5em" />
+                <span>{{val}}</span>
+            </div>
+            <span *ngIf="!audio || audio.length === 0" class="ui-multiselected-empty-token ui-corner-all">-</span>
+            </ng-template>
             <ng-template let-subtitle pTemplate="item">
               <img src="assets/showcase/images/flags/{{subtitle.value}}.png" style="width:24px;display:inline-block;vertical-align:middle" />
               <div style="font-size:14px;float:right;margin-top:4px">{{subtitle.label}}</div>
             </ng-template>
           </p-multiSelect>
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
-          <label>Anno Film</label>
-        </div>
-        <div class="ui-g-3">
-          <p-inputMask id="anno" name="anno" mask="9999" [(ngModel)]="film.anno" slotChar="AAAA"></p-inputMask>
-        </div>
-        <div class="ui-g-3" style="text-align: center">
-          <label>Url Locandina:</label>
-        </div>
-        <div class="ui-g-3">
-          <input pInputText id="url" name="ulr" [(ngModel)]="film.urlLocandina" style="width: 100%" />
         </div>
       </div>
       <div class="ui-g-12">
@@ -145,6 +153,13 @@
           <textarea rows="3" id="trama" name="trama" pInputTextarea [(ngModel)]="film.trama"></textarea>
         </div>
       </div>
+      <div *ngIf="!newFilm && !film.locandina" class="ui-g-12" style="text-align: center">
+        <p-fileUpload name="filmLocandina" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
+        chooseLabel="Scegli Locandina" uploadLabel="Carica Locandina" cancelLabel="Cancella" accept="image/*"></p-fileUpload>
+      </div>
+      <div *ngIf="!newFilm && film.locandina" class="ui-g-6 ui-g-offset-3" style="text-align: center">
+          <button type="button" pButton class="ui-button-info" icon="fa fa-trash-o" (click)="deleteLocandina()" label="Elimina Locandina"></button>
+        </div>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">

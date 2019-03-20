@@ -62,7 +62,7 @@
           <ng-template let-film pTemplate="item">
             <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em;">
               <div class="ui-grid-row">
-                <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg"
+                <div class="ui-grid-col-12"><img [src]="film.locandina"
                     style="height: 20em;"></div>
               </div>
               <div class="ui-grid-row" style="padding-top: 2em">
@@ -105,7 +105,7 @@
           <ng-template let-film pTemplate="item">
             <div class="ui-grid ui-grid-responsive" style="height: 31em; padding-top: 2em; text-align: center">
               <div class="ui-grid-row">
-                <div class="ui-grid-col-12"><img src="../../assets/showcase/images/film/{{film.urlLocandina}}.jpg"
+                <div class="ui-grid-col-12"><img [src]="film.locandina"
                     style="height: 20em;"></div>
               </div>
               <div class="ui-grid-row" style="padding-top: 2em">

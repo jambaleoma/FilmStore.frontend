@@ -7,5 +7,5 @@ export interface Film {
     linguaSottotitoli?: string[];
     anno?: number;
     trama?: string;
-    urlLocandina?: string;
+    locandina?: string;
 }

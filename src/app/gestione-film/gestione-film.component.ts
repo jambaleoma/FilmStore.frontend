@@ -45,6 +45,8 @@ export class GestioneFilmComponent implements OnInit {
 
   category: ListItem[] = [];
 
+  postPath: string;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -131,6 +133,7 @@ export class GestioneFilmComponent implements OnInit {
     this.newFilm = false;
     this.film = this.cloneFilm(event.data);
     this.displayDialog = true;
+    this.postPath = 'http://localhost:8080/rest/films/locandina/saveLocandinaImage/' + this.filmSelezionato._id;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
@@ -153,6 +156,15 @@ export class GestioneFilmComponent implements OnInit {
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
+  }
+
+  successfulUpload() {
+    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Locandina Completato', detail: 'Locandina Modificata' }];
+    location.reload();
+  }
+
+  errorUpload() {
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!'}];
   }
 
   save() {
@@ -207,6 +219,26 @@ export class GestioneFilmComponent implements OnInit {
             this.film = null;
             this.displayDialog = false;
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Film Eliminato' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
+  }
+
+  deleteLocandina() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare la Locandina di questo Film?',
+      header: 'Eliminazione Locandina',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.filmSelezionato.locandina = null;
+        this.filmService.updateFilm(this.filmSelezionato).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Locandina Completata', detail: 'Locandina Eliminata' }];
+            location.reload();
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Locandina NON Eliminata' }];
           }
         });
       },
