@@ -2,17 +2,17 @@
   <button type="submit" pButton class="ui-button-info" (click)="goToRegistration()" label="Registrati Ora!"></button>
 </div>
 
-<div class="ui-grid-col-12" style="padding-bottom: 2em;" align="center">
+<div class="ui-g-4 ui-g-offset-4" style="padding-bottom: 2em;">
   <p-listbox [options]="customersItems" [(ngModel)]="selectedCustomer" (onDblClick)="showLoginDilog(selectedCustomer)"
-    [style]="{'width':'25%'}" [listStyle]="{'min-height':'25%'}">
-    <p-header style="padding-top: 2em">
+    [style]="{'width':'75%'}" [listStyle]="{'min-height':'75%'}">
+    <!-- <p-header style="padding-top: 2em">
       Esegui Accesso Come: {{selectedCustomer||''}}
-    </p-header>
+    </p-header> -->
     <ng-template let-customer pTemplate="item">
       <div class="ui-helper-clearfix">
-        <img *ngIf="customer.avatar" [src]="customer.avatarBase64" style="display:inline-block;margin:5px 0 0 5px"
+        <img class="cerchio" *ngIf="customer.avatar" [src]="customer.avatarBase64" style="display:inline-block;margin:5px 0 0 5px"
           width="200">
-        <img *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="display:inline-block;margin:5px 0 0 5px"
+        <img class="cerchio" *ngIf="!customer.avatar" src="assets/showcase/images/customer/user-image.png" style="display:inline-block;margin:5px 0 0 5px"
           width="200">
         <span style="float:right;margin:20px 10px 0 0">{{customer.value}}</span>
       </div>

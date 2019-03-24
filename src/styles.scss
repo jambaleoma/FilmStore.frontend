@@ -15,6 +15,19 @@ body.backImage {
   text-align: center;
 }
 
+.ui-listbox {
+  background: transparent !important;
+  border: none !important;
+}
+
+.ui-listbox .ui-listbox-list .ui-listbox-item {
+  color: white !important;
+}
+
+.ui-listbox:not(.ui-state-disabled) .ui-listbox-item:not(.ui-state-highlight):not(.ui-state-disabled):hover {
+  color: black !important;
+}
+
 [film-input] {
   font-size: 16px;
   height: 40px;
@@ -174,7 +187,7 @@ body.backImage {
   }
 }
 
-.ui-multiselect{
+.ui-multiselect {
   width: 85%;
 }
 
