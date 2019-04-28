@@ -47,6 +47,9 @@ export class GestioneFilmComponent implements OnInit {
 
   postPath: string;
 
+  blockedDocument = false;
+
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -108,8 +111,10 @@ export class GestioneFilmComponent implements OnInit {
   }
 
   subsrcibeToListOfFilm() {
+    this.blockDocument();
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
+      this.unBlockDocument();
       this.showFilm = true;
       const formati: string[] = [];
       for (const film of this.films) {
@@ -128,6 +133,15 @@ export class GestioneFilmComponent implements OnInit {
     }
     );
   }
+
+  blockDocument() {
+    this.blockedDocument = true;
+  }
+
+  unBlockDocument() {
+    this.blockedDocument = false;
+  }
+
 
   onRowSelect(event) {
     this.newFilm = false;
@@ -164,7 +178,7 @@ export class GestioneFilmComponent implements OnInit {
   }
 
   errorUpload() {
-    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!'}];
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!' }];
   }
 
   save() {

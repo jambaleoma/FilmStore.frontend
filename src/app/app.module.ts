@@ -65,6 +65,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { FileUploadModule } from 'primeng/fileupload';
 import { PickListModule } from 'primeng/picklist';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BlockUIModule } from 'primeng/blockui';
 
 registerLocaleData(localeITCA);
 
@@ -88,6 +90,8 @@ registerLocaleData(localeITCA);
     CustomerRegistrationComponent
   ],
   imports: [
+    BlockUIModule,
+    ProgressSpinnerModule,
     PickListModule,
     FileUploadModule,
     ReactiveFormsModule,

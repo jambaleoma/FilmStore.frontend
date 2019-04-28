@@ -33,6 +33,8 @@ export class RicercaFilmComponent implements OnInit {
 
   yearTimeout: any;
 
+  blockedDocument = false;
+
   @ViewChild('ft') table: Table;
 
   constructor(
@@ -76,8 +78,10 @@ export class RicercaFilmComponent implements OnInit {
   }
 
   subsrcibeToListOfFilms() {
+    this.blockDocument();
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
+      this.unBlockDocument();
       let min = this.films[0].anno;
       let max = this.films[0].anno;
       for (const film of this.films) {
@@ -99,11 +103,21 @@ export class RicercaFilmComponent implements OnInit {
     });
   }
 
+  blockDocument() {
+    this.blockedDocument = true;
+  }
+
+  unBlockDocument() {
+    this.blockedDocument = false;
+  }
+
   findForCategory(category: string[], ft: Table) {
+    this.blockDocument();
     if (category[0]) {
       this.films = [];
       this.filmService.getFilms().subscribe(notification => {
         if (notification) {
+          this.unBlockDocument();
           for (const singleCategory of category) {
             this.filmsByCategory = notification.filter(film => film.categoria.includes(singleCategory));
             this.filmsByCategory.forEach(film => {
