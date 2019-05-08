@@ -8,7 +8,7 @@
   <ng-template let-stagione pTemplate="listItem">
     <div class="ui-g" [ngClass]="{'separation': stagioni[1] }" style="padding: 2em;">
       <div class="ui-g-12 ui-md-3" style="text-align:center">
-        <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{stagione.urlLocandina}}.jpg" style="width: 70%;">
+        <img [src]="stagione.locandina" style="width: 70%">
       </div>
       <div class="ui-g-12 ui-md-8">
         <div class="ui-g">
@@ -66,7 +66,7 @@
       <div class="ui-g-8"><b>{{selectedStagione.anno}}</b></div>
     </div>
     <div class="ui-g-4">
-      <img src="../../assets/showcase/images/stagione/{{serie.nome}}/{{selectedStagione.urlLocandina}}.jpg" style="width: 100%;">
+      <img [src]="selectedStagione.locandina" style="width: 100%">
     </div>
     <div class="ui-g-8" style="padding-left: 15%; padding-right: 15%">
       <p-table film-table [value]="selectedStagione.episodi" #ft>

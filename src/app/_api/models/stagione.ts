@@ -1,6 +1,7 @@
 export interface Stagione {
     stagione_id?: string;
     serie_id?: string;
+    nome_serie?: string;
     numeroStagione?: number;
     formato?: string;
     anno?: number;
@@ -9,5 +10,5 @@ export interface Stagione {
     linguaAudio?: string;
     linguaSottotitoli?: string;
     trama?: string;
-    urlLocandina?: string;
+    locandina?: string;
 }

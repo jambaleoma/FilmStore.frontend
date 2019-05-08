@@ -42,7 +42,7 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td style="width: 15em">
-          <img src="assets/showcase/images/serieTV/{{rowData.nome}}.jpg" style="width: 100%">
+          <img [src]="rowData.locandina" style="width: 100%">
         </td>
         <td *ngFor="let col of columns">
           {{rowData[col.field]}}

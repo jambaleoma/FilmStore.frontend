@@ -55,6 +55,10 @@ export class GestioneSerieTvComponent implements OnInit {
 
   audios: ListItem[] = [];
 
+  postPath: string;
+
+  postPathSerie: string;
+
   @ViewChild('rt') rt: Table;
 
   constructor(
@@ -117,6 +121,7 @@ export class GestioneSerieTvComponent implements OnInit {
       this.stagioni = notification;
     });
     this.displayDialogSerie = true;
+    this.postPathSerie = 'http://localhost:8080/rest/serie/locandina/saveLocandinaImage/' + this.serieSelezionata.serie_id;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);
@@ -126,6 +131,7 @@ export class GestioneSerieTvComponent implements OnInit {
     this.newStagione = false;
     this.singolaStagione = this.cloneStagione(event.data);
     this.displayDialogStagione = true;
+    this.postPath = 'http://localhost:8080/rest/stagioni/locandina/saveLocandinaImage/' + this.stagioneSelezionata.stagione_id;
     // setTimeout(() => {
     //   this.renderer.selectRootElement('#anno').focus();
     // }, 100);
@@ -165,6 +171,24 @@ export class GestioneSerieTvComponent implements OnInit {
     // setTimeout(() => {
     //   this.renderer.selectRootElement('#anno').focus();
     // }, 100);
+  }
+
+  successfulUpload() {
+    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Locandina Completato', detail: 'Locandina Modificata' }];
+    location.reload();
+  }
+
+  errorUpload() {
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!' }];
+  }
+
+  successfulUploadSerieLocandina() {
+    this.msgs = [{ severity: 'success', summary: 'Aggiornamento Locandina Completato', detail: 'Locandina Modificata' }];
+    location.reload();
+  }
+
+  errorUploadSerieLocandina() {
+    this.msgs = [{ severity: 'error', summary: 'Immagine Troppo Grande', detail: 'Caricare un\'immagine più piccola!' }];
   }
 
   saveSerie() {
@@ -214,6 +238,7 @@ export class GestioneSerieTvComponent implements OnInit {
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
           this.singolaStagione.serie_id = this.singolaSerie.serie_id;
+          this.singolaStagione.nome_serie = this.singolaSerie.nome;
           this.stagioneService.addStagione(this.singolaStagione).subscribe(responseStagione => {
             if (responseStagione !== null) {
               this.stagioni = responseStagione as Stagione[];
@@ -299,6 +324,46 @@ export class GestioneSerieTvComponent implements OnInit {
             });
             this.displayDialogStagione = false;
             this.msgs = [{ severity: 'success', summary: 'Eliminazione Completata', detail: 'Stagione Eliminata' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
+  }
+
+  deleteLocandina() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare la Locandina di questa Stagione?',
+      header: 'Eliminazione Locandina',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.stagioneSelezionata.locandina = null;
+        this.stagioneService.updateStagione(this.stagioneSelezionata).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Locandina Completata', detail: 'Locandina Eliminata' }];
+            location.reload();
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Locandina NON Eliminata' }];
+          }
+        });
+      },
+      reject: () => { }
+    });
+  }
+
+  deleteLocandinaSerie() {
+    this.confirmationService.confirm({
+      message: 'Sicuro di voler Eliminare la Locandina di questa Serie?',
+      header: 'Eliminazione Locandina',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.serieSelezionata.locandina = null;
+        this.serieService.updateSerie(this.serieSelezionata).subscribe(response => {
+          if (response !== null) {
+            this.msgs = [{ severity: 'success', summary: 'Eliminazione Locandina Serie Completata', detail: 'Locandina Eliminata' }];
+            location.reload();
+          } else {
+            this.msgs = [{ severity: 'error', summary: 'Errore', detail: 'Locandina NON Eliminata' }];
           }
         });
       },

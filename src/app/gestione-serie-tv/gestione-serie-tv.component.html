@@ -117,6 +117,17 @@
           </ng-template>
         </p-table>
       </div>
+
+      <div *ngIf="!newSerie && !singolaSerie.locandina" class="ui-g-12" style="text-align: center">
+        <p-fileUpload name="serieLocandina" [url]="postPathSerie" (onUpload)="successfulUploadSerieLocandina()" (onError)="errorUploadSerieLocandina()"
+          chooseLabel="Scegli Locandina" uploadLabel="Carica Locandina" cancelLabel="Cancella" accept="image/*">
+        </p-fileUpload>
+      </div>
+      <div *ngIf="!newSerie && singolaSerie.locandina" class="ui-g-6 ui-g-offset-3" style="text-align: center">
+        <button type="button" pButton class="ui-button-info" icon="fa fa-trash-o" (click)="deleteLocandinaSerie()"
+          label="Elimina Locandina"></button>
+      </div>
+
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix" style="text-align: center">
@@ -135,7 +146,7 @@
 </p-dialog>
 
 <!-- DIALOG AGGIUNGI STAGIONE -->
-<p-dialog header="Dettaglio Serie TV" [(visible)]="displayDialogStagione" closable="true" [responsive]="true" [modal]="true"
+<p-dialog header="Dettaglio Stagione" [(visible)]="displayDialogStagione" closable="true" [responsive]="true" [modal]="true"
   [width]="1000" [positionTop]="50" [contentStyle]="{'max-height':'80vh'}" [closeOnEscape]="true" [resizable]="false">
   <form name="form" #fStagione="ngForm">
     <div class="ui-g ui-fluid" *ngIf="singolaStagione">
@@ -198,14 +209,6 @@
       </div>
       <div class="ui-g-12">
         <div class="ui-g-3">
-          <label>Url Locandina:</label>
-        </div>
-        <div class="ui-g-9">
-          <input pInputText id="url" name="ulr" [(ngModel)]="singolaStagione.urlLocandina" style="width: 100%" />
-        </div>
-      </div>
-      <div class="ui-g-12">
-        <div class="ui-g-3">
           Puntate:
         </div>
         <div class="ui-g-9">
@@ -219,6 +222,15 @@
         <div class="ui-g-9">
           <textarea rows="1" id="trama" name="trama" pInputTextarea [(ngModel)]="singolaStagione.trama"></textarea>
         </div>
+      </div>
+      <div *ngIf="!newStagione && !singolaStagione.locandina" class="ui-g-12" style="text-align: center">
+        <p-fileUpload name="stagioneLocandina" [url]="postPath" (onUpload)="successfulUpload()" (onError)="errorUpload()"
+          chooseLabel="Scegli Locandina" uploadLabel="Carica Locandina" cancelLabel="Cancella" accept="image/*">
+        </p-fileUpload>
+      </div>
+      <div *ngIf="!newStagione && singolaStagione.locandina" class="ui-g-6 ui-g-offset-3" style="text-align: center">
+        <button type="button" pButton class="ui-button-info" icon="fa fa-trash-o" (click)="deleteLocandina()"
+          label="Elimina Locandina"></button>
       </div>
     </div>
     <p-footer>
