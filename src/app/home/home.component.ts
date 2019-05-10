@@ -21,8 +21,7 @@ export class HomeComponent implements OnInit {
   recommendedFilmsToPut: Film[] = [];
   recommendedfilmNumber = 3;
   newFilms: Film[] = [];
-  newFilmsToPut: Film[] = [];
-  newfilmNumber = 9;
+  newfilmsNumber = '9';
   newSerie: Serie[] = [];
   newSerieToPut: Serie[] = [];
   newSerieNumber = 3;
@@ -74,16 +73,8 @@ export class HomeComponent implements OnInit {
   }
 
   getNewFilm() {
-    this.filmSerive.getFilms().subscribe(notification => {
-      for (let i = 0; i < this.newfilmNumber; i++) {
-        const film = notification[Math.floor(Math.random() * notification.length)];
-        if (!this.newFilmsToPut.find(f => f._id === film._id)) {
-          this.newFilmsToPut.push(film);
-        } else {
-          i--;
-        }
-      }
-      this.newFilms = this.newFilmsToPut;
+    this.filmSerive.getNewFilms(this.newfilmsNumber).subscribe(notification => {
+      this.newFilms = notification;
     });
   }
 

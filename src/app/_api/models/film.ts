@@ -8,4 +8,5 @@ export interface Film {
     anno?: number;
     trama?: string;
     locandina?: string;
+    dataDiCreazione?: string;
 }
