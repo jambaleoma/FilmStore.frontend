@@ -49,6 +49,7 @@ export class GestioneFilmComponent implements OnInit {
 
   blockedDocument = false;
 
+  loadingComplete = false;
 
   @ViewChild('rt') rt: Table;
 
@@ -115,6 +116,7 @@ export class GestioneFilmComponent implements OnInit {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
       this.unBlockDocument();
+      this.loadingComplete = true;
       this.showFilm = true;
       const formati: string[] = [];
       for (const film of this.films) {

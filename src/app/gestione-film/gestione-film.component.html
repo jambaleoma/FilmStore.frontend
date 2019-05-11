@@ -62,7 +62,7 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="emptymessage">
+    <ng-template pTemplate="emptymessage" *ngIf="loadingComplete">
       <tr>
         <td [attr.colspan]="cols.length">
           Nessun Film Trovato
@@ -70,7 +70,9 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="summary">
-      Film Torvati: {{this.rt.filteredValue ? this.rt.filteredValue.length : this.rt.totalRecords }}
+      <span *ngIf="loadingComplete">
+        Film Torvati: {{this.rt.filteredValue ? this.rt.filteredValue.length : this.rt.totalRecords }}
+      </span>
     </ng-template>
   </p-table>
 </div>

@@ -35,6 +35,8 @@ export class RicercaFilmComponent implements OnInit {
 
   blockedDocument = false;
 
+  loadingComplete = false;
+
   @ViewChild('ft') table: Table;
 
   constructor(
@@ -82,6 +84,7 @@ export class RicercaFilmComponent implements OnInit {
     this.filmService.getFilms().subscribe(notification => {
       this.films = notification;
       this.unBlockDocument();
+      this.loadingComplete = true;
       let min = this.films[0].anno;
       let max = this.films[0].anno;
       for (const film of this.films) {
