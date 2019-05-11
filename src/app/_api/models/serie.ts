@@ -5,4 +5,5 @@ export interface Serie {
     nome?: string;
     locandina?: string;
     stagioni?: Stagione[];
+    dataCreazione?: string;
 }

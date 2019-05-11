@@ -54,6 +54,43 @@ export class SerieService extends BaseService {
         );
     }
 
+     /**
+   * @return List of New Serie
+   */
+  private getNewSerieResponse(numeberOfNewSerie: string): Observable<HttpResponse<Serie[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      "GET",
+      this.rootUrl + `rest/serie/allNewSerie/` + numeberOfNewSerie,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: Serie[] = null;
+        _body = _resp.body as Serie[];
+        return _resp.clone({ body: _body }) as HttpResponse<Serie[]>;
+      })
+    );
+  }
+
+  /**
+   * @return List of New Serie
+   */
+  getNewSerie(numeberOfNewSerie: string): Observable<Serie[]> {
+    return this.getNewSerieResponse(numeberOfNewSerie).pipe(
+      map(_r => _r.body)
+    );
+  }
+
     /**
     * @return Single SerieTV
     */
@@ -85,8 +122,8 @@ export class SerieService extends BaseService {
     /**
      * @return Single SerieTV
      */
-    getSerie(idFilm: string): Observable<Serie> {
-        return this.getSerieTVResponse(idFilm).pipe(
+    getSerie(serieId: string): Observable<Serie> {
+        return this.getSerieTVResponse(serieId).pipe(
             map(_r => _r.body)
         );
     }

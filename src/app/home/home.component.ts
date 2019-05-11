@@ -23,8 +23,7 @@ export class HomeComponent implements OnInit {
   newFilms: Film[] = [];
   newfilmsNumber = '9';
   newSerie: Serie[] = [];
-  newSerieToPut: Serie[] = [];
-  newSerieNumber = 3;
+  newSerieNumber = '3';
   loadFooter = false;
   categoriaPreferita: string;
 
@@ -79,16 +78,8 @@ export class HomeComponent implements OnInit {
   }
 
   getNewSerie() {
-    this.serieService.getSerieTVs().subscribe(notification => {
-      for (let i = 0; i < this.newSerieNumber; i++) {
-        const serie = notification[Math.floor(Math.random() * notification.length)];
-        if (!this.newSerieToPut.find(s => s.serie_id === serie.serie_id)) {
-          this.newSerieToPut.push(serie);
-        } else {
-          i--;
-        }
-      }
-      this.newSerie = this.newSerieToPut;
+    this.serieService.getNewSerie(this.newSerieNumber).subscribe(notification => {
+      this.newSerie = notification;
       this.loadFooter = true;
     });
   }
