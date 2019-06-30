@@ -10,7 +10,7 @@
       <input film-input type="text" pInputText placeholder=" &#xF002; Nome" [(ngModel)]="filters.titleSerie" (input)="stvt.filter($event.target.value, 'nome', 'contains')">
     </div>
     <div class="ui-g-4">
-      <div class="label">N° Stagione SerieTV</div>
+      <div class="label">N° Stagioni SerieTV</div>
       <input film-input type="text" pInputText placeholder=" &#xF002; Stagioni" [(ngModel)]="filters.stagioni" (input)="stvt.filter($event.target.value, 'stagioni.length', 'contains')">
     </div>
     <div film-button-third class="ui-g-4 resetButton" style="text-align: right; padding-right: 0px;">
