@@ -67,6 +67,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { PickListModule } from 'primeng/picklist';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BlockUIModule } from 'primeng/blockui';
+import { AuthGuard } from './guards/auth-guard.service';
+import { RoleGuard } from './guards/role-guard.service';
+import { AuthService } from './_service/auth.service';
 
 registerLocaleData(localeITCA);
 
@@ -145,6 +148,9 @@ registerLocaleData(localeITCA);
     FilmService,
     CustomerService,
     ApiConfiguration,
+    AuthService,
+    AuthGuard,
+    RoleGuard
   ],
   bootstrap: [AppComponent]
 })

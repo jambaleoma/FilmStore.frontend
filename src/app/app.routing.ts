@@ -15,6 +15,8 @@ import { RicercaFilmComponent } from './ricerca-film/ricerca-film.component';
 import { HomeComponent } from './home/home.component';
 import { LayoutsComponent } from './layouts/admin/layouts.component';
 import { RichiesteUtenteComponent } from './richieste-utente/richieste-utente.component';
+import { AuthGuard } from './guards/auth-guard.service';
+import { RoleGuard } from './guards/role-guard.service';
 
 const appRoutes: Routes = [
     /** Login */
@@ -22,32 +24,32 @@ const appRoutes: Routes = [
     /** Registration */
     { path: 'registration', component: CustomerRegistrationComponent, data: { pageTitle: 'Registration' } },
     /** layouts */
-    {path: 'filmStore', component: LayoutsComponent, children: [
+    {path: 'filmStore', component: LayoutsComponent, canActivate: [AuthGuard], children: [
         { path: '', redirectTo: '/filmStore/home', pathMatch: 'full'},
         /** Home */
         { path: 'home', component: HomeComponent, data: { pageTitle: 'Home' } },
         /** Ricerca Film */
         { path: 'ricercaFilm', component: RicercaFilmComponent, data: { pageTitle: 'Ricerca Film' } },
         /** Gestione Film (Admin MODE) */
-        { path: 'gestioneFilm', component: GestioneFilmComponent, data: { pageTitle: 'Gestione Film' } },
+        { path: 'gestioneFilm', component: GestioneFilmComponent, canActivate: [RoleGuard], data: { pageTitle: 'Gestione Film' } },
         /** Ricerca SerieTV */
         { path: 'ricercaSerieTV', component: RicercaSerieTvComponent, data: { pageTitle: 'Ricerca SerieTV' } },
         /** Gestione SerieTV (Admin MODE) */
-        { path: 'gestioneSerieTV', component: GestioneSerieTvComponent, data: { pageTitle: 'Gestione SerieTV' } },
+        { path: 'gestioneSerieTV', component: GestioneSerieTvComponent, canActivate: [RoleGuard], data: { pageTitle: 'Gestione SerieTV' } },
         /** Dettaglio Film */
         { path: 'Film/view/:id', component: DettaglioFilmComponent, data: { pageTitle: 'Dettaglio Film' } },
         /** Dettaglio SerieTV */
         { path: 'SerieTV/view/:id', component: DettaglioSerieTvComponent, data: { pageTitle: 'Dettaglio SerieTV' } },
-        /** Statistiche */
-        { path: 'statistiche', component: StatisticheComponent, data: { pageTitle: 'Statistiche' } },
-        /** Utenti */
-        { path: 'utenti', component: CustomersListaComponent, data: { pageTitle: 'Utenti' } },
+        /** Statistiche (Admin MODE) */
+        { path: 'statistiche', component: StatisticheComponent, canActivate: [RoleGuard], data: { pageTitle: 'Statistiche' } },
+        /** Utenti (Admin MODE) */
+        { path: 'utenti', component: CustomersListaComponent, canActivate: [RoleGuard], data: { pageTitle: 'Utenti' } },
         /** Profilo Utente */
         { path: 'profiloUtente', component: CustomerProfileComponent, data: { pageTitle: 'Progilo Utente' } },
         /** Gestione Utente */
         { path: 'gestioneUtente/view/:firstName', component: CustomerSettingComponent, data: { pageTitle: 'Gestione Utente' } },
-        /** Richieste */
-        { path: 'richieste', component: RichiesteListComponent, data: { pageTitle: 'Richieste' } },
+        /** Richieste (Admin MODE) */
+        { path: 'richieste', component: RichiesteListComponent, canActivate: [RoleGuard], data: { pageTitle: 'Richieste' } },
         /** Richieste Utente*/
         { path: 'richieste/view/:firstName', component: RichiesteUtenteComponent, data: { pageTitle: 'Richieste Utente' } },
     ]},

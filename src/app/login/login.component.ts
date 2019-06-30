@@ -4,6 +4,7 @@ import { CustomerService } from '../_api/services/customer.service';
 import { Router } from '@angular/router';
 import { Customer } from '../_api/models';
 import { MessageService } from 'primeng/api';
+import { AuthService } from '../_service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
     private customerService: CustomerService,
     private renderer: Renderer2,
     private messageService: MessageService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private authService: AuthService
   ) {
     this.renderer.addClass(document.body, 'backImage');
   }
@@ -60,7 +62,11 @@ export class LoginComponent implements OnInit {
           this.applicationService.firstLogin();
           sessionStorage.setItem('customerfirstName', this.loggingCustomer.value);
           sessionStorage.setItem('customerId', this.loggingCustomer.id);
-          this.router.navigate(['filmStore']);
+          if (this.loggingCustomer.admin) {
+            this.authService.loginAdmin();
+          } else {
+            this.authService.login();
+          }
         } else {
           this.messageService.add({ key: 'KO', severity: 'error', summary: 'Accesso Negato', detail: 'Password non Corretta' });
         }

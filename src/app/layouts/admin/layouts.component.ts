@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { CustomerService } from '../../_api/services/customer.service';
+import { AuthService } from '../../_service/auth.service';
 
 @Component({
   selector: 'app-layouts',
@@ -24,6 +25,7 @@ export class LayoutsComponent implements OnInit {
   constructor(
     private router: Router,
     private customerService: CustomerService,
+    private authService: AuthService
   ) {
     this.customerService.getCustomerByName(sessionStorage.getItem('customerfirstName')).subscribe(notification => {
       this.loggedCustomer = notification;
@@ -84,8 +86,7 @@ export class LayoutsComponent implements OnInit {
   }
 
   logOut() {
-    sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.authService.logout();
   }
 
   openUsersProfile() {
