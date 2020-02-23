@@ -50,7 +50,7 @@
     </div>
     <div class="ui-g-12 ui-md-6 ui-lg-4">
       <div class="label" style="text-align: center; font-family: FontAwesome;"> &#xF002; Film dal {{yearFilter ||
-        1996}} a Oggi </div>
+        minYear}} al {{maxYear}} </div>
       <p-slider [style]="{'width':'80%','margin-top':'14px','margin-left':'10%'}" [(ngModel)]="yearFilter"
         [min]="minYear" [max]="maxYear" (onChange)="onYearChange($event, ft)"></p-slider>
     </div>

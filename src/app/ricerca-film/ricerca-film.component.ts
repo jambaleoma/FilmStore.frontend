@@ -25,6 +25,8 @@ export class RicercaFilmComponent implements OnInit {
 
   category: ListItem[];
 
+  currentOlderYearFilm: number[];
+
   maxYear: number;
 
   minYear: number;
@@ -56,6 +58,7 @@ export class RicercaFilmComponent implements OnInit {
 
   ngOnInit() {
     this.subsrcibeToListOfFilms();
+    this.subscribeToCurrentOlderYearFillms();
     this.subscribeToListOfCategory();
     this.getColumns();
   }
@@ -85,18 +88,16 @@ export class RicercaFilmComponent implements OnInit {
       this.films = notification;
       this.unBlockDocument();
       this.loadingComplete = true;
-      let min = this.films[0].anno;
-      let max = this.films[0].anno;
-      for (const film of this.films) {
-        if (film.anno < min) {
-          min = film.anno;
-        }
-        if (film.anno > max) {
-          max = film.anno;
-        }
-      }
-      this.maxYear = max;
-      this.minYear = min;
+    });
+  }
+
+  subscribeToCurrentOlderYearFillms() {
+    this.filmService.getOlderYearFilms().subscribe( notification => {
+      this.currentOlderYearFilm = notification.split('-').map((year) => {
+        return parseInt(year, 10);
+      });
+      this.minYear = this.currentOlderYearFilm[0];
+      this.maxYear = this.currentOlderYearFilm[1];
     });
   }
 

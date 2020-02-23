@@ -55,6 +55,43 @@ export class FilmService extends BaseService {
     );
   }
 
+    /**
+   * @return Older year of Films
+   */
+  private getOlderYearFilmsResponse(): Observable<HttpResponse<string>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      "GET",
+      this.rootUrl + `rest/films/recentOlderYear`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'text'
+      });
+
+    return this.http.request<any>(req).pipe(
+      filter(_r => _r instanceof HttpResponse),
+      map(_r => {
+        let _resp = _r as HttpResponse<any>;
+        let _body: string = null;
+        _body = _resp.body as string;
+        return _resp.clone({ body: _body }) as HttpResponse<string>;
+      })
+    );
+  }
+
+  /**
+   * @return List of Films
+   */
+  getOlderYearFilms(): Observable<string> {
+    return this.getOlderYearFilmsResponse().pipe(
+      map(_r => _r.body)
+    );
+  }
+
   /**
    * @return List of New Films
    */
@@ -210,9 +247,9 @@ export class FilmService extends BaseService {
 
   /**
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Film
    */
@@ -245,9 +282,9 @@ export class FilmService extends BaseService {
 
   /**
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Film
    */
