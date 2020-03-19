@@ -27,6 +27,7 @@ export class SerieService extends BaseService {
         let req = new HttpRequest<any>(
             "GET",
             this.rootUrl + `rest/serie/all`,
+            // 'https://filmstore-43be0.firebaseio.com/Serie-Tv.json',
             __body,
             {
                 headers: __headers,
@@ -170,9 +171,9 @@ export class SerieService extends BaseService {
 
     /**
      *
-     * - `id`: 
+     * - `id`:
      *
-     * - `body`: 
+     * - `body`:
      *
      * @return Updated Serie
      */
@@ -205,9 +206,9 @@ export class SerieService extends BaseService {
 
     /**
      *
-     * - `id`: 
+     * - `id`:
      *
-     * - `body`: 
+     * - `body`:
      *
      * @return Updated Serie
      */

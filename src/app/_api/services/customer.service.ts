@@ -29,6 +29,7 @@ export class CustomerService extends BaseService {
     let req = new HttpRequest<any>(
       "GET",
       this.rootUrl + `rest/customers/all`,
+      // 'https://filmstore-43be0.firebaseio.com/users.json',
       __body,
       {
         headers: __headers,
@@ -174,9 +175,9 @@ export class CustomerService extends BaseService {
   /**
    * @param params The `CustomerService.UpdateCustomerParams` containing the following parameters:
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Customers
    */
@@ -210,9 +211,9 @@ export class CustomerService extends BaseService {
   /**
    * @param params The `CustomerService.UpdateCustomerParams` containing the following parameters:
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Customers
    */
@@ -225,9 +226,9 @@ export class CustomerService extends BaseService {
     /**
    * @param params The `CustomerService.changeCustomerPsw` containing the following parameters:
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Customers
    */
@@ -261,9 +262,9 @@ export class CustomerService extends BaseService {
   /**
    * @param params The `CustomerService.changeCustomerPsw` containing the following parameters:
    *
-   * - `id`: 
+   * - `id`:
    *
-   * - `body`: 
+   * - `body`:
    *
    * @return Updated Customers
    */
