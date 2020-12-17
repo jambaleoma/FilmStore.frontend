@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   newFilms: Film[] = [];
   newfilmsNumber = '9';
   newSerie: Serie[] = [];
-  newSerieNumber = '3';
+  newSerieNumber = '9';
   loadFooter = false;
   categoriaPreferita: string;
 
