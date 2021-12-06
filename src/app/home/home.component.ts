@@ -46,25 +46,21 @@ export class HomeComponent implements OnInit {
         this.getRecommendedFilm();
       }
       if (this.applicationService.getShowWelcome()) {
-        if (this.loggedCustomer.sesso === 'Maschio') {
-          this.messageService.add({
-            key: 'homeTost', severity: 'success',
-            summary: 'Accesso Eseguito', detail: 'Bentornato ' + this.loggedCustomer.firstName
-          });
-          this.applicationService.setFalseShowWelcome();
-        } else if (this.loggedCustomer.sesso === 'Femmina') {
-          this.messageService.add({
-            key: 'homeTost', severity: 'success',
-            summary: 'Accesso Eseguito', detail: 'Bentornata ' + this.loggedCustomer.firstName
-          });
-          this.applicationService.setFalseShowWelcome();
-        } else {
-          this.messageService.add({
-            key: 'homeTost', severity: 'success',
-            summary: 'Accesso Eseguito', detail: 'Salve ' + this.loggedCustomer.firstName
-          });
-          this.applicationService.setFalseShowWelcome();
-        }
+        this.messageService.add({
+          key: 'homeTost',
+          severity: 'success',
+          summary: 'Accesso Eseguito',
+          detail: this.loggedCustomer.sesso === 'Maschio' ? 'Bentornato ' : 'Bentornata ' + this.loggedCustomer.firstName
+        });
+        this.applicationService.setFalseShowWelcome();
+      } else {
+        this.messageService.add({
+          key: 'homeTost',
+          severity: 'success',
+          summary: 'Accesso Eseguito',
+          detail: 'Salve ' + this.loggedCustomer.firstName
+        });
+        this.applicationService.setFalseShowWelcome();
       }
     });
     this.getNewFilm();

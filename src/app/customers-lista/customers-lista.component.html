@@ -126,7 +126,7 @@
               label="Elimina Avatar"></button>
           </div>
         </div>
-        <div *ngIf="!newCustomer && !showChangePassword && !customer.avatar">
+        <div *ngIf="!newCustomer && !showChangePassword && !customer?.avatar">
           <div class="ui-g-4 ui-g-offset-1" style="margin-bottom: 1em; margin-top: 2em;">
             <button type="button" pButton class="ui-button-info" icon="fa fa-pencil-square-o" (click)="showChangePassword = true;"
               label="Modifca Password"></button>
@@ -176,11 +176,11 @@
         <div class="ui-g-12" *ngIf="newCustomer" style="text-align: center">
           <button type="submit" pButton class="ui-button-success" icon="fa fa-check" (click)="save()" label="Salva Utente"></button>
         </div>
-        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && customer.admin" style="text-align: center">
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && customer?.admin" style="text-align: center">
           <button type="button" pButton class="ui-button-warning" icon="fa fa-unlock" (click)="changeCustomerRole(customer, false)"
             label="Rimuovi Admin"></button>
         </div>
-        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && !customer.admin"
+        <div class="ui-g-4" *ngIf="!newCustomer && !showChangePassword && !customer?.admin"
           style="text-align: center">
           <button type="button" pButton class="ui-button-warning" icon="fa fa-lock" (click)="changeCustomerRole(customer, true)"
             label="Assegna Admin"></button>
