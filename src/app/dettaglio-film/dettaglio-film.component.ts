@@ -39,10 +39,10 @@ export class DettaglioFilmComponent {
             this.films.push(notificationFilm);
             this.showFilmDetails = true;
             this.votoService.getVotiByIdFilm_IdCustomer(params.id, notificationCustomer.id).subscribe(notificationOldVoto => {
-              if (notificationOldVoto.voto_id) {
+              if (notificationOldVoto) {
                 this.voto = notificationOldVoto;
               } else {
-                this.voto.idFilm = notificationFilm._id;
+                this.voto.idFilm = notificationFilm._id || notificationFilm.id;
                 this.voto.nomeFilm = notificationFilm.nome;
                 this.voto.idCustomer = this.loggedCustomer.id;
                 this.voto.firstNameCustomer = this.loggedCustomer.firstName;
@@ -69,7 +69,7 @@ export class DettaglioFilmComponent {
   }
 
   upDateVoto() {
-    this.voto.idFilm = this.films[0]._id;
+    this.voto.idFilm = this.films[0]._id || this.films[0].id;
     this.voto.idCustomer = this.loggedCustomer.id;
     // Up-Date Voto
     if (this.voto.voto_id) {
@@ -77,10 +77,18 @@ export class DettaglioFilmComponent {
         this.voto = notificationUpdateVoto;
       });
     } else {
-      this.votoService.getVoto(this.voto.voto_id).subscribe(notificationGetVoto => {
+      this.votoService.getVoto(this.voto.id).subscribe(notificationGetVoto => {
         if (notificationGetVoto) {
-          this.votoService.updateVoto(notificationGetVoto).subscribe(notificationUpdateVoto => {
+          this.votoService.updateVoto(this.voto).subscribe(notificationUpdateVoto => {
             this.voto = notificationUpdateVoto;
+          });
+        } else {
+          this.voto.nomeFilm = this.films[0].nome;
+          this.voto.firstNameCustomer = this.loggedCustomer.firstName;
+          this.voto.lastNameCustomer = this.loggedCustomer.lastName;
+          this.voto.dataCreazioneVoto = this.pipe.transform(new Date(), 'fullDate'),
+          this.votoService.addVoto(this.voto).subscribe(notificationNewVoto => {
+            this.voto = notificationNewVoto.find(v => (v.idFilm === this.voto.idFilm && v.idCustomer === this.voto.idCustomer));
           });
         }
       });

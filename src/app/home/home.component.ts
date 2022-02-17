@@ -53,14 +53,6 @@ export class HomeComponent implements OnInit {
           detail: this.loggedCustomer.sesso === 'Maschio' ? 'Bentornato ' : 'Bentornata ' + this.loggedCustomer.firstName
         });
         this.applicationService.setFalseShowWelcome();
-      } else {
-        this.messageService.add({
-          key: 'homeTost',
-          severity: 'success',
-          summary: 'Accesso Eseguito',
-          detail: 'Salve ' + this.loggedCustomer.firstName
-        });
-        this.applicationService.setFalseShowWelcome();
       }
     });
     this.getNewFilm();
@@ -89,7 +81,7 @@ export class HomeComponent implements OnInit {
           const films = notification;
           for (let i = 0; i < this.recommendedfilmNumber; i++) {
             if (films[i] && this.recommendedFilmsToPut) {
-              if (!this.recommendedFilmsToPut.find(f => f._id === films[i]._id)) {
+              if (!this.recommendedFilmsToPut.find(f => f._id === (films[i]._id || films[i].id))) {
                 this.recommendedFilmsToPut.push(films[i]);
               } else {
                 i--;

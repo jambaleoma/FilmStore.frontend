@@ -28,7 +28,7 @@ export class DettaglioSerieTvComponent implements OnInit {
         this.serieTVService.getSerie(params.id).subscribe(notificationFilm => {
           this.serie = notificationFilm;
           this.showSerieDetails = true;
-          this.stagioneService.getStagioniByIdSerie(this.serie.serie_id).subscribe(notification => {
+          this.stagioneService.getStagioniByIdSerie(this.serie.serie_id || this.serie._id).subscribe(notification => {
             this.stagioni = notification;
             this.stagioni.sort(function (a, b) {
               return (a.numeroStagione - b.numeroStagione);

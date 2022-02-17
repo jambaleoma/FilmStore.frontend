@@ -186,7 +186,7 @@ export class VotoService extends BaseService {
       __body = params;
       let req = new HttpRequest<any>(
           "PUT",
-          this.rootUrl + 'rest/voti/upDateVotoById/' + params.voto_id,
+          this.rootUrl + 'rest/voti/upDateVotoById/' + params.id,
           __body,
           {
               headers: __headers,

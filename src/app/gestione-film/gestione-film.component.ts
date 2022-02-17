@@ -107,7 +107,18 @@ export class GestioneFilmComponent implements OnInit {
       },
       { field: 'formato', header: 'Formato' },
       { field: 'linguaAudio', header: 'Audio' },
-      { field: 'linguaSottotitoli', header: 'Sottotitoli' }
+      { field: 'linguaSottotitoli', header: 'Sottotitoli' },
+      {
+        field: 'dataCreazione',
+        header: 'Data Inserimento',
+        renderer: (row: Film) => {
+          if (row.dataCreazione) {
+            return this.splitDataFormat(row.dataCreazione.toString());
+          } else {
+            return '-';
+          }
+        }
+      }
     ];
   }
 
@@ -280,6 +291,12 @@ export class GestioneFilmComponent implements OnInit {
     rt.reset();
     this.filters = {};
     this.yearFilter = null;
+  }
+
+  splitDataFormat(dataCreazione: string) {
+    return dataCreazione.substring(0, 4) + '/' + dataCreazione.substring(4, 6) + '/' +
+      dataCreazione.substring(6, 8) + ' ' + dataCreazione.substring(8, 10) + ':' +
+      dataCreazione.substring(10, 12) + ':' + dataCreazione.substring(12, 14) ;
   }
 
 }

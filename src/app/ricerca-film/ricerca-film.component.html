@@ -105,7 +105,7 @@
           <span *ngIf="!rowData.linguaSottotitoli"> - </span>
         </td>
         <td>
-          <p-button icon="fa fa-file-video-o" title="Visualizza Dettagli" (onClick)="goToFilm(rowData._id)"></p-button>
+          <p-button icon="fa fa-file-video-o" title="Visualizza Dettagli" (onClick)="goToFilm(rowData._id || rowData.id)"></p-button>
         </td>
       </tr>
     </ng-template>

@@ -1,4 +1,5 @@
 export interface Voto {
+    id?: string;
     voto_id?: string;
     idFilm?: string;
     nomeFilm?: string;

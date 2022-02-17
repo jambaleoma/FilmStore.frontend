@@ -1,4 +1,5 @@
 export interface Film {
+    id?: string;
     _id?: string;
     nome?: string;
     formato?: string;
@@ -8,5 +9,5 @@ export interface Film {
     anno?: number;
     trama?: string;
     locandina?: string;
-    dataDiCreazione?: string;
+    dataCreazione?: string;
 }
