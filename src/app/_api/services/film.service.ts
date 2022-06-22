@@ -261,7 +261,7 @@ export class FilmService extends BaseService {
     __body = params;
     let req = new HttpRequest<any>(
       "PUT",
-      this.rootUrl + 'rest/films/upDateFilmById/' + params._id,
+      this.rootUrl + 'rest/films/upDateFilmById/' + params.id,
       __body,
       {
         headers: __headers,

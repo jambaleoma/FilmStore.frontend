@@ -160,7 +160,7 @@ export class GestioneFilmComponent implements OnInit {
     this.newFilm = false;
     this.film = this.cloneFilm(event.data);
     this.displayDialog = true;
-    this.postPath = 'http://localhost:8080/rest/films/locandina/saveLocandinaImage/' + this.filmSelezionato._id;
+    this.postPath = 'http://localhost:8080/rest/films/locandina/saveLocandinaImage/' + this.filmSelezionato.id;
     setTimeout(() => {
       this.renderer.selectRootElement('#titolo').focus();
     }, 100);

@@ -149,7 +149,7 @@ export class StagioneService extends BaseService {
       __body = params;
       let req = new HttpRequest<any>(
           "PUT",
-          this.rootUrl + 'rest/stagioni/upDateStagioneById/' + params.stagione_id,
+          this.rootUrl + 'rest/stagioni/upDateStagioneById/' + params.id,
           __body,
           {
               headers: __headers,

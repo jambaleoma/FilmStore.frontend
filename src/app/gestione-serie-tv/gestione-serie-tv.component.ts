@@ -25,7 +25,7 @@ export class GestioneSerieTvComponent implements OnInit {
 
   singolaSerie: Serie = { serie_id: null };
 
-  singolaStagione: Stagione = { stagione_id: null };
+  singolaStagione: Stagione = { id: null };
 
   showSerie = false;
 
@@ -117,7 +117,7 @@ export class GestioneSerieTvComponent implements OnInit {
     this.stagioni = undefined;
     this.newSerie = false;
     this.singolaSerie = this.cloneSerie(event.data);
-    this.stagioneService.getStagioniByIdSerie(this.singolaSerie.serie_id).subscribe(notification => {
+    this.stagioneService.getStagioniByIdSerie(this.singolaSerie._id).subscribe(notification => {
       this.stagioni = notification;
     });
     this.displayDialogSerie = true;
@@ -131,7 +131,7 @@ export class GestioneSerieTvComponent implements OnInit {
     this.newStagione = false;
     this.singolaStagione = this.cloneStagione(event.data);
     this.displayDialogStagione = true;
-    this.postPath = 'http://localhost:8080/rest/stagioni/locandina/saveLocandinaImage/' + this.stagioneSelezionata.stagione_id;
+    this.postPath = 'http://localhost:8080/rest/stagioni/locandina/saveLocandinaImage/' + this.stagioneSelezionata.id;
     // setTimeout(() => {
     //   this.renderer.selectRootElement('#anno').focus();
     // }, 100);
@@ -147,7 +147,7 @@ export class GestioneSerieTvComponent implements OnInit {
   }
 
   cloneStagione(s: Stagione): Stagione {
-    const sta = { stagione_id: null };
+    const sta = { id: null };
     // tslint:disable-next-line:forin
     for (const prop in s) {
       sta[prop] = s[prop];
@@ -166,7 +166,7 @@ export class GestioneSerieTvComponent implements OnInit {
 
   addStagione() {
     this.newStagione = true;
-    this.singolaStagione = { stagione_id: null };
+    this.singolaStagione = { id: null };
     this.displayDialogStagione = true;
     // setTimeout(() => {
     //   this.renderer.selectRootElement('#anno').focus();
@@ -312,7 +312,7 @@ export class GestioneSerieTvComponent implements OnInit {
       header: 'Eliminazione Stagione TV',
       icon: 'fa fa-trash',
       accept: () => {
-        this.stagioneService.deleteStagione(this.stagioneSelezionata.stagione_id).subscribe(response => {
+        this.stagioneService.deleteStagione(this.stagioneSelezionata.id).subscribe(response => {
           if (response !== null) {
             const index = this.stagioni.indexOf(this.stagioneSelezionata);
             this.stagioni = this.stagioni.filter((val, i) => i !== index);

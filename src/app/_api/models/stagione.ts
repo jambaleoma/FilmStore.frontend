@@ -1,5 +1,5 @@
 export interface Stagione {
-    stagione_id?: string;
+    id?: string;
     serie_id?: string;
     nome_serie?: string;
     numeroStagione?: number;
